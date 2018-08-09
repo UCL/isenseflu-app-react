@@ -62,6 +62,16 @@ const options = {
 
 export default class ChartComponent extends Component {
 
+	componentDidMount() {
+		fetch('http://127.0.0.1:8000/scores/1')
+		.then(results => {
+			if (!response.ok) { throw response };
+			return results.json();
+		}).then(data => {
+
+		})
+	}
+
   render() {
     return (
 			<Article header="Influenza-Like Illness Rate per Day">
