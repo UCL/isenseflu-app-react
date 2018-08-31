@@ -4,11 +4,11 @@ import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
 
 import { Article, FormFooter } from './PublicTemplates';
 
-const data = {
+let data = {
 	labels: ["January", "February", "March", "April", "May", "June", "July"],
 	datasets: [
 		{
-			label: "My First dataset",
+			label: "Model Scorea",
       fill: false,
 			borderColor: "rgba(0, 123, 255, 1)",
 			backgroundColor: "rgba(63, 127, 191, 0.2)",
@@ -62,8 +62,8 @@ const options = {
 
 export default class ChartComponent extends Component {
 
-	componentDidMount() {
-		fetch('http://127.0.0.1:8000/scores/1')
+	componentWillMount() {
+		fetch('http://127.0.0.1:8000/')
 		.then(results => {
 			if (!response.ok) { throw response };
 			return results.json();
