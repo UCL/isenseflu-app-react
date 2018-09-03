@@ -62,13 +62,27 @@ const options = {
 
 export default class ChartComponent extends Component {
 
-	componentWillMount() {
-		fetch('http://127.0.0.1:8000/')
-		.then(results => {
-			if (!response.ok) { throw response };
-			return results.json();
-		}).then(data => {
+	constructor(props) {
+		super(props);
+		this.state = {chartdata: data};
+	}
 
+	componentDidMount() {
+		fetch('http://127.0.0.1:8000/')
+		.then(response => {
+			if (!response.ok) { throw response };
+			return response.json();
+		}).then(jsondata => {
+			jsondata.datapoints.forEach(
+				datapoint => {
+					data.labels.push(datapoint.score_date);
+					data.datasets[0].data.push(datapoint.score_value);
+					data.datasets[1].data.push(datapoint.confidence_interval_upper);
+					data.datasets[2].data.push(datapoint.confidence_interval_lower);
+				}
+			);
+			data.datasets[0].label = jsondata.name;
+			this.setState({chartdata: data});
 		})
 	}
 
@@ -76,7 +90,7 @@ export default class ChartComponent extends Component {
     return (
 			<Article header="Influenza-Like Illness Rate per Day">
 				<div className="p-4 border-top">
-      		<Line data={data} options={options}/>
+      		<Line data={this.state.chartdata} options={options}/>
 				</div>
 				<div>
 					<header className="px-2">
