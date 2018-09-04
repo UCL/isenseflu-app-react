@@ -33,13 +33,15 @@ let data = {
 	]
 };
 
-const options = {
+let options = {
 	legend: {
-		position: "bottom",
-		labels: {
-			usePointStyle: true,
-			fontSize: 14
-		}
+		display: false
+	},
+	title: {
+		display: true,
+		text: "Model: ",
+		fontSize: 16,
+		fontStyle: 'normal'
 	},
 	scales: {
 		yAxes: [
@@ -57,6 +59,12 @@ const options = {
 				}
 			}
 		]
+	},
+	tooltips: {
+		backgroundColor: 'rgba(255,255,255,0.8)',
+		bodyFontColor: '#666',
+		bodyFontStyle: 'bold',
+		titleFontColor: '#666'
 	}
 };
 
@@ -68,14 +76,22 @@ export default class ChartComponent extends Component {
 	}
 
 	componentDidMount() {
-		fetch('http://127.0.0.1:8000/')
+		fetch('http://fmdetect.cs.ucl.ac.uk/')
 		.then(response => {
 			if (!response.ok) { throw response };
 			return response.json();
 		}).then(jsondata => {
+			data.labels = [];
+			data.datasets.forEach(
+				dataset => {
+					dataset.data = []
+				}
+			);
+			options.title.text += jsondata.name;
 			jsondata.datapoints.forEach(
 				datapoint => {
-					data.labels.push(datapoint.score_date);
+					const date = new Date(Date.parse(datapoint.score_date));
+					data.labels.push(date.toLocaleDateString('en-GB', { year: 'numeric', month: 'long', day: 'numeric' }));
 					data.datasets[0].data.push(datapoint.score_value);
 					data.datasets[1].data.push(datapoint.confidence_interval_upper);
 					data.datasets[2].data.push(datapoint.confidence_interval_lower);
