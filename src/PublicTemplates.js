@@ -1,11 +1,6 @@
 import React from 'react';
 import { ListGroup, ListGroupItem } from 'reactstrap';
 
-import ChartComponent from './Chart';
-import DataFilteringComponent from './DataFiltering';
-import AveragesComponent from './Averages';
-import RawScoresComponent from './RawScores';
-
 export const Article = (props) => (
   <div className="col border rounded p-0">
     <div className="bg-light text-dark form-row m-0 p-2">
@@ -22,25 +17,6 @@ export const FormFooter = (props) => (
     {props.children}
   </div>
 );
-
-export const Home = () => {
-  return (
-    <React.Fragment>
-      <article className="row mb-4">
-        <ChartComponent/>
-      </article>
-      <article className="row mb-4">
-        <DataFilteringComponent/>
-      </article>
-      <article className="row mb-4">
-        <AveragesComponent/>
-      </article>
-      <article className="row">
-        <RawScoresComponent/>
-      </article>
-    </React.Fragment>
-  );
-};
 
 export const About = () => {
   return (

@@ -4,7 +4,8 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 import './App.css';
 
 import { NavigationBar } from './NavigationBar';
-import { Home, About, Docs } from './PublicTemplates';
+import HomeComponent from './Home';
+import { About, Docs } from './PublicTemplates';
 
 class App extends Component {
   render() {
@@ -15,7 +16,7 @@ class App extends Component {
         </header>
         <Router>
           <section className="my-4">
-            <Route exact path="/" component={Home}/>
+            <Route exact path="/" component={HomeComponent}/>
             <Route exact path="/about" component={About}/>
             <Route exact path="/docs" component={Docs}/>
           </section>

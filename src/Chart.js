@@ -5,21 +5,21 @@ import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
 import { Article, FormFooter } from './PublicTemplates';
 
 let data = {
-	labels: ["January", "February", "March", "April", "May", "June", "July"],
+	labels: [],
 	datasets: [
 		{
 			label: "Model Scorea",
       fill: false,
 			borderColor: "rgba(0, 123, 255, 1)",
 			backgroundColor: "rgba(63, 127, 191, 0.2)",
-			data: [1.65, 1.59, 1.80, 1.81, 1.56, 1.55, 2.40],
+			data: [],
 			pointStyle: 'line'
 		},
 		{
 			label: "Upper confidence interval",
 			fill: false,
 			borderColor: "rgba(168, 198, 224, 1)",
-			data: [1.95, 1.99, 1.90, 1.91, 1.96, 1.85, 2.60],
+			data: [],
 			pointStyle: 'line'
 		},
 		{
@@ -27,7 +27,7 @@ let data = {
       fill: 1,
 			borderColor: "rgba(168, 198, 224, 1)",
 			backgroundColor: "rgba(63, 127, 191, 0.2)",
-			data: [0.65, 0.59, 0.80, 0.81, 1.06, 1.05, 1.40],
+			data: [],
 			pointStyle: 'line'
 		}
 	]
@@ -116,7 +116,7 @@ export default class ChartComponent extends Component {
 						<div className="px-4 py-2">
 						<FormGroup check inline>
 							<Label check>
-								<Input type="checkbox" value="1" />Google
+								<Input type="checkbox" value="1" />{this.state.chartdata.datasets[0].label}
 							</Label>
 						</FormGroup>
 						</div>
