@@ -7,20 +7,37 @@ import RawScoresComponent from './RawScores';
 
 export default class HomeComponent extends Component {
 
+  constructor(props) {
+		super(props);
+		this.state = {
+      modeldata: {}
+    };
+	}
+
+  componentDidMount() {
+    fetch('http://fmdetect.cs.ucl.ac.uk/')
+		.then(response => {
+			if (!response.ok) { throw response };
+			return response.json();
+		}).then(jsondata => {
+			this.setState({modeldata: jsondata});
+		})
+  }
+
   render() {
     return (
       <React.Fragment>
         <article className="row mb-4">
-          <ChartComponent/>
+          <ChartComponent modeldata={this.state.modeldata}/>
         </article>
         <article className="row mb-4">
           <DataFilteringComponent/>
         </article>
         <article className="row mb-4">
-          <AveragesComponent/>
+          <AveragesComponent modeldata={this.state.modeldata}/>
         </article>
         <article className="row">
-          <RawScoresComponent/>
+          <RawScoresComponent modeldata={this.state.modeldata}/>
         </article>
       </React.Fragment>
     );

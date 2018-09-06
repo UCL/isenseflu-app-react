@@ -18,9 +18,9 @@ export default class AveragesComponent extends Component {
           </thead>
           <tbody>
             <tr>
-              <td>Google v2.018.04</td>
+              <td>{this.props.modeldata.name}</td>
               <td>England</td>
-              <td>1.86123283871</td>
+              <td>{this.props.modeldata.average_score}</td>
             </tr>
           </tbody>
         </Table>
