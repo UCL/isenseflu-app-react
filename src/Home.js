@@ -15,7 +15,7 @@ export default class HomeComponent extends Component {
 	}
 
   componentDidMount() {
-    fetch('http://fmdetect.cs.ucl.ac.uk/')
+    fetch('http://localhost:8000/')
 		.then(response => {
 			if (!response.ok) { throw response };
 			return response.json();

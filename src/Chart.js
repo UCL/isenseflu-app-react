@@ -96,7 +96,7 @@ export default class ChartComponent extends Component {
 	}
 
 	componentDidMount() {
-		fetch('http://fmdetect.cs.ucl.ac.uk/models')
+		fetch('http://localhost:8000/models')
 		.then(response => {
 			if (!response.ok) { throw response };
 			return response.json();
