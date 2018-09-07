@@ -88,7 +88,35 @@ const options = (modelname) => {
 
 export default class ChartComponent extends Component {
 
+	constructor(props) {
+		super(props);
+		this.state = {
+			modellist: []
+		};
+	}
+
+	componentDidMount() {
+		fetch('http://fmdetect.cs.ucl.ac.uk/models')
+		.then(response => {
+			if (!response.ok) { throw response };
+			return response.json();
+		}).then(jsondata => {
+			this.setState({modellist: jsondata});
+		})
+	}
+
+
   render() {
+		let modelCheckboxes = this.state.modellist.map(model => {
+			return (
+				<FormGroup check inline>
+					<Label check>
+						<Input type="checkbox" value={model.id} checked={model.id === this.props.modeldata.id}/>
+						{model.name}
+					</Label>
+				</FormGroup>
+			);
+		});
     return (
 			<Article header="Influenza-Like Illness Rate per Day">
 				<div className="p-4 border-top">
@@ -100,11 +128,7 @@ export default class ChartComponent extends Component {
 					</header>
 					<Form>
 						<div className="px-4 py-2">
-						<FormGroup check inline>
-							<Label check>
-								<Input type="checkbox" value="1" />{this.props.modeldata.name}
-							</Label>
-						</FormGroup>
+							{modelCheckboxes}
 						</div>
 						<FormFooter>
 							<Button>Update chart</Button>
