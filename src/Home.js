@@ -15,7 +15,7 @@ export default class HomeComponent extends Component {
 	}
 
   componentDidMount() {
-    fetch('http://localhost:8000/')
+    fetch(env.process.REACT_APP_API_HOST} + '/')
 		.then(response => {
 			if (!response.ok) { throw response };
 			return response.json();

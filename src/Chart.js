@@ -96,7 +96,7 @@ export default class ChartComponent extends Component {
 	}
 
 	componentDidMount() {
-		fetch('http://localhost:8000/models')
+		fetch(env.process.REACT_APP_API_HOST + '/models')
 		.then(response => {
 			if (!response.ok) { throw response };
 			return response.json();
