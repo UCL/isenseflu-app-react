@@ -12,6 +12,7 @@ export default class HomeComponent extends Component {
 		this.state = {
       modeldata: {}
     };
+    this.handleUpdateModel = this.handleUpdateModel.bind(this);
 	}
 
   componentDidMount() {
@@ -24,6 +25,10 @@ export default class HomeComponent extends Component {
 		})
   }
 
+  handleUpdateModel = (updatedata) => {
+    this.setState({modeldata: updatedata});
+  }
+
   render() {
     return (
       <React.Fragment>
@@ -31,7 +36,7 @@ export default class HomeComponent extends Component {
           <ChartComponent modeldata={this.state.modeldata}/>
         </article>
         <article className="row mb-4">
-          <DataFilteringComponent/>
+          <DataFilteringComponent modelId={this.state.modeldata.id} updateCallback=(this.handleUpdateModel)/>
         </article>
         <article className="row mb-4">
           <AveragesComponent modeldata={this.state.modeldata}/>
