@@ -16,7 +16,7 @@ export default class HomeComponent extends Component {
 	}
 
   componentDidMount() {
-    fetch(env.process.REACT_APP_API_HOST} + '/')
+    fetch(process.env.REACT_APP_API_HOST + '/')
 		.then(response => {
 			if (!response.ok) { throw response };
 			return response.json();
@@ -36,7 +36,12 @@ export default class HomeComponent extends Component {
           <ChartComponent modeldata={this.state.modeldata}/>
         </article>
         <article className="row mb-4">
-          <DataFilteringComponent modelId={this.state.modeldata.id} updateCallback=(this.handleUpdateModel)/>
+          <DataFilteringComponent
+            modelId={this.state.modeldata.id}
+            startDate={this.state.modeldata.start_date}
+            endDate={this.state.modeldata.end_date}
+            updateCallback={this.handleUpdateModel}
+            />
         </article>
         <article className="row mb-4">
           <AveragesComponent modeldata={this.state.modeldata}/>

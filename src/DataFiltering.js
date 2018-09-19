@@ -8,10 +8,11 @@ export default class DataFilteringComponent extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      startDate: "",
-      endDate: "",
+      startDate: undefined,
+      endDate: undefined,
       resolution: "day",
-      smoothing: 0
+      smoothing: 0,
+      isDisabled: true
     }
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -22,18 +23,23 @@ export default class DataFilteringComponent extends Component {
     const value = target.type === 'checkbox' ? target.checked : target.value;
     const name = target.name;
     this.setState({
-      [name]: value
+      [name]: value,
+      isDisabled: false
     });
   }
 
   handleSubmit = (event) => {
-    // implement
     event.preventDefault();
-    // add fetch/mapn logic
-    const filteredData = {};
-    const queryUrl = env.process.REACT_APP_API_HOST + '/scores/' + this.props.modelId + '?startDate=' + this.state.startDate + '&endDate=' + this.state.endDate;
+    const startDateParam = this.state.startDate === undefined ? this.props.startDate : this.state.startDate;
+    const endDateParam = this.state.endDate === undefined ? this.props.endDate : this.state.endDate;
+    const queryUrl = `${process.env.REACT_APP_API_HOST}/scores/${this.props.modelId}?start_date=${startDateParam}&end_date=${endDateParam}`;
     fetch(queryUrl)
-    this.props.updateCallback(filteredData);
+    .then(response => {
+      if (!response.ok) { throw response };
+			return response.json();
+    }).then(jsondata => {
+      this.props.updateCallback(jsondata);
+    });
   }
 
   render() {
@@ -47,7 +53,7 @@ export default class DataFilteringComponent extends Component {
                 type="date"
                 name="start-date"
                 id="start-date"
-                value={this.state.startDate}
+                value={this.props.startDate}
                 onChange={this.handleChange}
                 />
               <small className="form-text text-muted">
@@ -60,7 +66,7 @@ export default class DataFilteringComponent extends Component {
                 type="date"
                 name="end-date"
                 id="end-date"
-                value={this.state.endDate}
+                value={this.props.endDate}
                 onChange={this.handleChange}
                 />
               <small className="form-text text-muted">
@@ -103,7 +109,11 @@ export default class DataFilteringComponent extends Component {
             </FormGroup>
           </div>
           <FormFooter>
-            <Button>Show data</Button>
+          {
+            this.state.isDisabled
+            ? <Button disabled>Show data</Button>
+            : <Button>Show data</Button>
+          }
           </FormFooter>
         </Form>
       </Article>
