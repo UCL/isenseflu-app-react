@@ -44,6 +44,7 @@ export default class DataFilteringComponent extends Component {
     }).then(jsondata => {
       this.props.updateCallback(jsondata);
     });
+    this.setState({isDisabled: true});
   }
 
   render() {
