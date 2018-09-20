@@ -10,7 +10,9 @@ export default class HomeComponent extends Component {
   constructor(props) {
 		super(props);
 		this.state = {
-      modeldata: {}
+      modeldata: {},
+      startDate: undefined,
+      endDate: undefined
     };
     this.handleUpdateModel = this.handleUpdateModel.bind(this);
     this.handlePropsChange = this.handlePropsChange.bind(this);

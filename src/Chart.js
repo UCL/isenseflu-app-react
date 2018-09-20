@@ -6,7 +6,6 @@ import { Article, FormFooter } from './PublicTemplates';
 
 const data = (modeldata) => {
 	let template = {
-		labels: [],
 		datasets: [
 			{
 				label: "Model Scorea",
@@ -35,13 +34,13 @@ const data = (modeldata) => {
 	}
 	if (modeldata.datapoints !== undefined) {
 		let points = modeldata.datapoints.slice();
-		points.reverse().forEach(
+		points.forEach(
 			datapoint => {
 				const date = new Date(Date.parse(datapoint.score_date));
-				template.labels.push(date.toLocaleDateString('en-GB', { year: 'numeric', month: 'long', day: 'numeric' }));
-				template.datasets[0].data.push(datapoint.score_value);
-				template.datasets[1].data.push(datapoint.confidence_interval_upper);
-				template.datasets[2].data.push(datapoint.confidence_interval_lower);
+				const dateStr = date.toLocaleDateString('en-GB', { year: 'numeric', month: 'long', day: 'numeric' });
+				template.datasets[0].data.push({t: dateStr, y: datapoint.score_value});
+				template.datasets[1].data.push({t: dateStr, y: datapoint.confidence_interval_upper});
+				template.datasets[2].data.push({t: dateStr, y: datapoint.confidence_interval_lower});
 			}
 		);
 		template.datasets[0].label = modeldata.name;
@@ -71,6 +70,12 @@ const options = (modelname) => {
 			],
 			xAxes: [
 				{
+					type: 'time',
+					time: {
+						displayFormats: {
+							day: 'D MMM'
+						}
+					},
 					ticks: {
 						fontSize: 14
 					}
