@@ -13,6 +13,7 @@ export default class HomeComponent extends Component {
       modeldata: {}
     };
     this.handleUpdateModel = this.handleUpdateModel.bind(this);
+    this.handlePropsChange = this.handlePropsChange.bind(this);
 	}
 
   componentDidMount() {
@@ -21,12 +22,25 @@ export default class HomeComponent extends Component {
 			if (!response.ok) { throw response };
 			return response.json();
 		}).then(jsondata => {
-			this.setState({modeldata: jsondata});
+			this.setState({
+        modeldata: jsondata,
+        startDate: jsondata.start_date,
+        endDate: jsondata.end_date
+      });
 		})
   }
 
   handleUpdateModel = (updatedata) => {
     this.setState({modeldata: updatedata});
+  }
+
+  handlePropsChange = (event) => {
+    const target = event.target;
+    const value = target.type === 'checkbox' ? target.checked : target.value;
+    const name = target.name;
+    this.setState({
+      [name]: value
+    });
   }
 
   render() {
@@ -38,9 +52,10 @@ export default class HomeComponent extends Component {
         <article className="row mb-4">
           <DataFilteringComponent
             modelId={this.state.modeldata.id}
-            startDate={this.state.modeldata.start_date}
-            endDate={this.state.modeldata.end_date}
+            startDate={this.state.startDate}
+            endDate={this.state.endDate}
             updateCallback={this.handleUpdateModel}
+            onChangeCallback={this.handlePropsChange}
             />
         </article>
         <article className="row mb-4">

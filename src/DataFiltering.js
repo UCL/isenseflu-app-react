@@ -8,17 +8,23 @@ export default class DataFilteringComponent extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      startDate: undefined,
-      endDate: undefined,
       resolution: "day",
       smoothing: 0,
       isDisabled: true
     }
-    this.handleChange = this.handleChange.bind(this);
+    this.handlePropsChange = this.handlePropsChange.bind(this);
+    this.handleLocalChange = this.handleLocalChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handleChange = (event) => {
+  handlePropsChange = (event) => {
+    this.props.onChangeCallback(event);
+    this.setState({
+      isDisabled: false
+    });
+  }
+
+  handleLocalChange = (event) => {
     const target = event.target;
     const value = target.type === 'checkbox' ? target.checked : target.value;
     const name = target.name;
@@ -30,9 +36,7 @@ export default class DataFilteringComponent extends Component {
 
   handleSubmit = (event) => {
     event.preventDefault();
-    const startDateParam = this.state.startDate === undefined ? this.props.startDate : this.state.startDate;
-    const endDateParam = this.state.endDate === undefined ? this.props.endDate : this.state.endDate;
-    const queryUrl = `${process.env.REACT_APP_API_HOST}/scores/${this.props.modelId}?start_date=${startDateParam}&end_date=${endDateParam}`;
+    const queryUrl = `${process.env.REACT_APP_API_HOST}/scores/${this.props.modelId}?start_date=${this.props.startDate}&end_date=${this.props.endDate}`;
     fetch(queryUrl)
     .then(response => {
       if (!response.ok) { throw response };
@@ -51,10 +55,10 @@ export default class DataFilteringComponent extends Component {
               <Label for="start-date">Start</Label>
               <Input
                 type="date"
-                name="start-date"
+                name="startDate"
                 id="start-date"
                 value={this.props.startDate}
-                onChange={this.handleChange}
+                onChange={this.handlePropsChange}
                 />
               <small className="form-text text-muted">
                 Only show data collected on or after this date
@@ -64,10 +68,10 @@ export default class DataFilteringComponent extends Component {
               <Label for="end-date">End</Label>
               <Input
                 type="date"
-                name="end-date"
+                name="endDate"
                 id="end-date"
                 value={this.props.endDate}
-                onChange={this.handleChange}
+                onChange={this.handlePropsChange}
                 />
               <small className="form-text text-muted">
                 Only show data collected on or before this date
@@ -80,7 +84,7 @@ export default class DataFilteringComponent extends Component {
                 name="resolution"
                 id="resolution"
                 value={this.state.resolution}
-                onChange={this.handleChange}
+                onChange={this.handleLocalChange}
                 >
                 <option value="day">Day</option>
                 <option value="week">Week</option>
@@ -96,7 +100,7 @@ export default class DataFilteringComponent extends Component {
                 name="smoothing"
                 id="smoothing"
                 value={this.state.smoothing}
-                onChange={this.handleChange}
+                onChange={this.handleLocalChange}
                 >
                 <option value="0">No smoothing</option>
                 <option value="3">3-day moving average</option>
