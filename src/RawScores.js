@@ -22,6 +22,9 @@ export default class RawScoresComponent extends Component {
         return <ScoreRow key={point.score_date} {...point}></ScoreRow>
       });
     }
+    const endpointUrl = `${process.env.REACT_APP_API_HOST}/csv/${this.props.modeldata.id}`;
+    const dateParam = `startDate=${this.props.modeldata.start_date}&endDate=${this.props.modeldata.end_date}`;
+    const queryUrl = `${endpointUrl}?${dateParam}`;
     return (
       <Article header="Raw Scores">
         <Table className="m-0" responsive hover>
@@ -36,7 +39,7 @@ export default class RawScoresComponent extends Component {
           </tbody>
         </Table>
         <FormFooter>
-          <Button>Export to CSV</Button>
+          <Button href={queryUrl}>Export to CSV</Button>
         </FormFooter>
       </Article>
     );
