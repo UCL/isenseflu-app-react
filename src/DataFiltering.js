@@ -36,7 +36,11 @@ export default class DataFilteringComponent extends Component {
 
   handleSubmit = (event) => {
     event.preventDefault();
-    const queryUrl = `${process.env.REACT_APP_API_HOST}/scores/${this.props.modelId}?startDate=${this.props.startDate}&endDate=${this.props.endDate}`;
+    const endpointUrl = `${process.env.REACT_APP_API_HOST}/scores/${this.props.modelId}`;
+    const dateParam = `startDate=${this.props.startDate}&endDate=${this.props.endDate}`;
+    const resParam = `&resolution=${this.state.resolution}`;
+    const smoothParam = `&smoothing=${this.state.smoothing}`;
+    const queryUrl = `${endpointUrl}?${dateParam}${resParam}${smoothParam}`;
     fetch(queryUrl)
     .then(response => {
       if (!response.ok) { throw response };
