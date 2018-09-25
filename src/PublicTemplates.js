@@ -22,7 +22,7 @@ export const About = () => {
   return (
     <article className="mb-4">
       <p>
-        Flu Detector (version 2; find more about version 1 here) uses Google search data to
+        i-Sense Flu (version 2; find more about version 1 here) uses Google search data to
         estimate influenza-like illness (flu) rates in England. Daily flu rate estimates reflect on
         data from the past 7 days. This website is supported by the EPSRC IRC
         project <a href="https://www.i-sense.org.uk/">i-sense</a> (Early-Warning Sensing Systems for
@@ -38,7 +38,7 @@ export const About = () => {
         <h3>Research Team</h3>
       </header>
       <p>
-        The research team behind Flu Detector is based at
+        The research team behind i-Sense Flu is based at
         the <a href="http://www.cs.ucl.ac.uk/">Computer Science Department</a> of <a href="http://www.ucl.ac.uk/">University College London</a>.
       </p>
       <dl>
