@@ -21,7 +21,7 @@ export const NavigationBar = () => (
         <NavLink href="/docs" active={isActive("/docs")}>Docs</NavLink>
       </NavItem>
       <NavItem>
-        <NavLink href="https://www.twitter.com/fludetector">
+        <NavLink href="https://www.twitter.com/isenseflu">
           <FontAwesomeIcon icon={faTwitter}/>
         </NavLink>
       </NavItem>
