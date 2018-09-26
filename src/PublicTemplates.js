@@ -20,7 +20,7 @@ export const FormFooter = (props) => (
 
 export const About = () => {
   return (
-    <article class="mb-5 text-content">
+    <article className="mb-5 text-content">
       <p>
         i-Sense Flu (version 2; find more about version 1 here) uses Google search data to
         estimate influenza-like illness (flu) rates in England. Daily flu rate estimates reflect on
@@ -34,7 +34,7 @@ export const About = () => {
         disclaimer below).
       </p>
 
-      <header class="mt-5">
+      <header className="mt-5">
         <h3>Research Team</h3>
       </header>
       <p>
@@ -51,7 +51,7 @@ export const About = () => {
         <dt><strong>Past Members:</strong></dt><dd><a href="http://www.jkg.dk">Jens K. Geyti</a></dd>
       </dl>
 
-      <header class="mt-5">
+      <header className="mt-5">
         <h3>Relevant Publications</h3>
       </header>
 
@@ -79,7 +79,7 @@ export const About = () => {
         </ListGroupItem>
       </ListGroup>
 
-      <header class="mt-5">
+      <header className="mt-5">
         <h3>Disclaimer</h3>
       </header>
       <p>
@@ -113,13 +113,24 @@ export const Docs = () => {
       <section>
         <header>
           <h4>Scores</h4>
-          <p>
-            To fetch score data use the following URL:
-          </p>
-          <pre className="bg-light border p-1">
-            http://fludetector.cs.ucl.ac.uk/api/scores/
-          </pre>
         </header>
+        <p>
+          To fetch score data use the following URL:
+        </p>
+        <pre className="bg-light border p-1">
+          http://fludetector.cs.ucl.ac.uk/api/scores/
+        </pre>
+      </section>
+      <section>
+        <header>
+          <h4>Models</h4>
+        </header>
+        <p>
+          To fetch a list of public models available:
+        </p>
+        <pre className="bg-light border p-1">
+          http://fludetector.cs.ucl.ac.uk/api/models/
+        </pre>
       </section>
     </article>
   );

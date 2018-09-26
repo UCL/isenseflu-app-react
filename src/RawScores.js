@@ -25,13 +25,9 @@ export default class RawScoresComponent extends Component {
     const endpointUrl = `${process.env.REACT_APP_API_HOST}/csv/${this.props.modeldata.id}`;
     const dateParam = `startDate=${this.props.modeldata.start_date}&endDate=${this.props.modeldata.end_date}`;
     const queryUrl = `${endpointUrl}?${dateParam}`;
-    const tableStyle= {
-      height: 25 + 'em',
-      'overflow-y': 'auto'
-    }
     return (
       <Article header="Raw Scores">
-        <div style={tableStyle}>
+        <div style={{height: 25 + 'em', overflowY: 'auto'}}>
         <Table className="m-0" responsive hover>
           <thead>
             <tr>
