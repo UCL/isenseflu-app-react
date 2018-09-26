@@ -20,7 +20,7 @@ export const FormFooter = (props) => (
 
 export const About = () => {
   return (
-    <article className="mb-4">
+    <article class="mb-5 text-content">
       <p>
         i-Sense Flu (version 2; find more about version 1 here) uses Google search data to
         estimate influenza-like illness (flu) rates in England. Daily flu rate estimates reflect on
@@ -34,7 +34,7 @@ export const About = () => {
         disclaimer below).
       </p>
 
-      <header>
+      <header class="mt-5">
         <h3>Research Team</h3>
       </header>
       <p>
@@ -51,7 +51,7 @@ export const About = () => {
         <dt><strong>Past Members:</strong></dt><dd><a href="http://www.jkg.dk">Jens K. Geyti</a></dd>
       </dl>
 
-      <header>
+      <header class="mt-5">
         <h3>Relevant Publications</h3>
       </header>
 
@@ -79,7 +79,7 @@ export const About = () => {
         </ListGroupItem>
       </ListGroup>
 
-      <header>
+      <header class="mt-5">
         <h3>Disclaimer</h3>
       </header>
       <p>
