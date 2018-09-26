@@ -8,7 +8,7 @@ const isActive = (pathname) => {
 };
 
 export const NavigationBar = () => (
-  <Navbar>
+  <Navbar className="pl-0">
     <h2 className="text-muted">i-Sense Flu</h2>
     <Nav pills>
       <NavItem>

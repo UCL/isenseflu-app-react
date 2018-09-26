@@ -56,25 +56,25 @@ export const About = () => {
       </header>
 
       <ListGroup flush>
-        <ListGroupItem>
+        <ListGroupItem className="pl-0">
           Vasileios Lampos, Andrew Miller, Steve Crossan and Christian Stefansen. <a href="http://www.nature.com/articles/srep12760">Advances in nowcasting influenza-like illness rates using search query logs</a>. <strong>Scientific Reports</strong>, vol. 5 (12760), 2015. doi:10.1038/srep12760.
         </ListGroupItem>
-        <ListGroupItem>
+        <ListGroupItem className="pl-0">
           Vasileios Lampos, Bin Zou and Ingemar J. Cox. <a href="http://dl.acm.org/citation.cfm?doid=3038912.3052622">Enhancing feature selection using word embeddings: The case of flu surveillance</a>. <strong>Proc. of the 2017 World Wide Web Conference</strong>, pp. 695-704, 2017.
         </ListGroupItem>
-        <ListGroupItem>
+        <ListGroupItem className="pl-0">
           Vasileios Lampos. <a href="https://arxiv.org/abs/1612.03494">Flu Detector: Estimating influenza-like illness rates from online user-generated content</a>. Technical Report, <strong>Computing Research Repository</strong>, 2016. arXiv:1612.03494.
         </ListGroupItem>
-        <ListGroupItem>
+        <ListGroupItem className="pl-0">
           Moritz Wagner, Vasileios Lampos, Ingemar J. Cox and Richard Pebody. <a href="https://www.nature.com/articles/s41598-018-32029-6">The added value of online user-generated content in traditional methods for influenza surveillance</a>. <strong>Scientific Reports</strong>, vol. 8 (13963), 2018. doi:10.1038/s41598-018-32029-6.
         </ListGroupItem>
-        <ListGroupItem>
+        <ListGroupItem className="pl-0">
           Vasileios Lampos, Elad Yom-Tov, Richard Pebody and Ingemar J. Cox. <a href="http://link.springer.com/article/10.1007/s10618-015-0427-9">Assessing the impact of a health intervention via user-generated Internet content</a>. <strong>Data Mining and Knowledge Discovery</strong>, vol. 29 (5), pp. 1434-1457, 2015. doi:10.1007/s10618-015-0427-9.
         </ListGroupItem>
-        <ListGroupItem>
+        <ListGroupItem className="pl-0">
           Moritz Wagner, Vasileios Lampos, Elad Yom-Tov, Richard Pebody, Ingemar J. Cox. <a href="https://www.jmir.org/2017/12/e416">Estimating the Population Impact of a New Pediatric Influenza Vaccination Program in England Using Social Media Content</a>. <strong>Journal of Medical Internet Research</strong>, vol. 19 (12), 2017. doi:10.2196/jmir.8184.
         </ListGroupItem>
-        <ListGroupItem>
+        <ListGroupItem className="pl-0">
           Bin Zou, Vasileios Lampos and Ingemar J. Cox. <a href="https://dl.acm.org/citation.cfm?id=3186050">Multi-Task Learning Improves Disease Models from Web Search</a>. <strong>Proc. of the 2018 World Wide Web Conference</strong>, pp. 87-96, 2018.
         </ListGroupItem>
       </ListGroup>
@@ -118,7 +118,48 @@ export const Docs = () => {
           To fetch score data use the following URL:
         </p>
         <pre className="bg-light border p-1">
-          http://fludetector.cs.ucl.ac.uk/api/scores/
+          GET /api/scores/[model-id]?startDate=YYYY-MM-DD&endDate=YYYY-MM-DD&resolution=[day|week]&smoothing=[0|3|5|7]
+        </pre>
+        <header>
+          <h5>Request parameters</h5>
+        </header>
+        <dl className="row">
+          <dt className="col-2"><pre>model-id</pre></dt>
+          <dd className="col-10">The ID of the model you'd like data for</dd>
+          <dt className="col-2"><pre>startDate</pre></dt>
+          <dd className="col-10">Start date of requested time period, inclusive. In the format YYYY-MM-DD</dd>
+          <dt className="col-2"><pre>endDate</pre></dt>
+          <dd className="col-10">End date of requested time period, inclusive. In the format YYYY-MM-DD</dd>
+          <dt className="col-2"><pre>resolution</pre></dt>
+          <dd className="col-10">The density of the data points returned, either day or week</dd>
+          <dt className="col-2"><pre>smoothing</pre></dt>
+          <dd className="col-10">Number of days to smooth data over using a moving average filter, either 0, 3, 5 or 7</dd>
+        </dl>
+        <header>
+          <h5>Response</h5>
+        </header>
+        <pre className="bg-light p-1">
+{`{
+    "displayModel": true,
+    "id": 1,
+    "sourceType": "google",
+    "average_score": 2.8756543043478264,
+    "parameters": {
+        "smoothing": 7,
+        "georegion": "e"
+    },
+    "start_date": "2018-09-01",
+    "end_date": "2018-09-23",
+    "name": "Google v2018.07",
+    "datapoints": [
+        {
+            "score_date": "2018-09-23",
+            "score_value": 4.735919,
+            "confidence_interval_lower": 0.0,
+            "confidence_interval_upper": 10.81382
+        }, ....
+    ]
+}`}
         </pre>
       </section>
       <section>
@@ -129,7 +170,18 @@ export const Docs = () => {
           To fetch a list of public models available:
         </p>
         <pre className="bg-light border p-1">
-          http://fludetector.cs.ucl.ac.uk/api/models/
+          GET /api/models/
+        </pre>
+        <header>
+          <h5>Response</h5>
+        </header>
+        <pre className="bg-light p-1">
+{`[
+    {
+        "name": "Google v2018.07",
+        "id": 1
+    }
+]`}
         </pre>
       </section>
     </article>
