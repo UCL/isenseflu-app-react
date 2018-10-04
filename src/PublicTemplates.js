@@ -30,7 +30,7 @@ export const About = () => {
       </p>
       <p>
         Note that regional scores (i.e., everything but the scores for "England") are still under
-        development. All estimates should be considered as experimental (see the website's
+        development. All estimates should be considered as experimental (see the website&apos;s
         disclaimer below).
       </p>
 
@@ -125,7 +125,7 @@ export const Docs = () => {
         </header>
         <dl className="row">
           <dt className="col-2"><pre>model-id</pre></dt>
-          <dd className="col-10">The ID of the model you'd like data for</dd>
+          <dd className="col-10">The ID of the model you&apos;d like data for</dd>
           <dt className="col-2"><pre>startDate</pre></dt>
           <dd className="col-10">Start date of requested time period, inclusive. In the format YYYY-MM-DD</dd>
           <dt className="col-2"><pre>endDate</pre></dt>
