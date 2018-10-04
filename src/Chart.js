@@ -65,6 +65,11 @@ const options = (modelname) => {
 					ticks: {
 						beginAtZero: true,
 						fontSize: 14
+					},
+					scaleLabel: {
+						display: true,
+						labelString: 'Influenza-like illness rate per 100,000 people',
+						fontSize: 16
 					}
 				}
 			],
@@ -122,8 +127,10 @@ export default class ChartComponent extends Component {
 				</FormGroup>
 			);
 		});
+		const georegion = this.props.modeldata.parameters.georegion == 'e' ? ' (England)' : '';
+		const modelname = `${this.props.modeldata.name}${georegion}`
     return (
-			<Article header="Influenza-Like Illness Rate per Day">
+			<Article header="Influenza-like illness rate per day">
 				<div className="p-4 border-top">
       		<Line data={data(this.props.modeldata)} options={options(this.props.modeldata.name)}/>
 				</div>
