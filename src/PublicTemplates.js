@@ -1,16 +1,23 @@
-import React from 'react';
+import React, {Component} from 'react';
 import { ListGroup, ListGroupItem } from 'reactstrap';
 
-export const Article = (props) => (
-  <div className="col border rounded p-0">
-    <div className="bg-light text-dark form-row m-0 p-2">
-      <header>
-        <h4>{props.header}</h4>
-      </header>
-    </div>
-    {props.children}
-  </div>
-);
+export class Article extends Component {
+
+  render() {
+    return (
+      <div className="col border rounded p-0">
+        <div className="bg-light text-dark form-row m-0 p-2">
+          <header>
+            <h4>{this.props.header}</h4>
+          </header>
+        </div>
+        {this.props.children}
+      </div>
+    );
+  };
+
+}
+
 
 export const FormFooter = (props) => (
   <div className="bg-light form-row border-top m-0 p-2">

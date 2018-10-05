@@ -9,7 +9,7 @@ it('renders About without crashing', () => {
 
 it('renders Article without crashing', () => {
   const div = document.createElement('div');
-  ReactDOM.render(<Article />, div);
+  ReactDOM.render(<Article header="header" />, div);
 });
 
 it('renders Docs without crashing', () => {
