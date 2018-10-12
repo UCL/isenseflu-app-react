@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { Line } from 'react-chartjs-2';
-import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
+import { Button, Form } from 'reactstrap';
 
 import { Article, FormFooter } from './PublicTemplates';
+import ModelCheckboxesComponent from './ModelCheckboxes';
 
 const data = (modeldata) => {
 	let template = {
@@ -117,22 +118,12 @@ export default class ChartComponent extends Component {
 
 
   render() {
-		let modelCheckboxes = this.state.modellist.map(model => {
-			return (
-				<FormGroup check inline>
-					<Label check>
-						<Input type="checkbox" value={model.id} checked={model.id === this.props.modeldata.id}/>
-						{model.name}
-					</Label>
-				</FormGroup>
-			);
-		});
-		const georegion = this.props.modeldata.parameters.georegion == 'e' ? ' (England)' : '';
+		const georegion = this.props.modeldata.parameters.georegion === 'e' ? ' (England)' : '';
 		const modelname = `${this.props.modeldata.name}${georegion}`
     return (
 			<Article header="Influenza-like illness rate per day">
 				<div className="p-4 border-top">
-      		<Line data={data(this.props.modeldata)} options={options(this.props.modeldata.name)}/>
+      		<Line data={data(this.props.modeldata)} options={options(modelname)}/>
 				</div>
 				<div>
 					<header className="px-2">
@@ -140,7 +131,7 @@ export default class ChartComponent extends Component {
 					</header>
 					<Form>
 						<div className="px-4 py-2">
-							{modelCheckboxes}
+							<ModelCheckboxesComponent modellist={this.state.modellist} />
 						</div>
 						<FormFooter>
 							<Button disabled>Update chart</Button>

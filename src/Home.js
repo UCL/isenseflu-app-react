@@ -10,7 +10,9 @@ export default class HomeComponent extends Component {
   constructor(props) {
 		super(props);
 		this.state = {
-      modeldata: {},
+      modeldata: {
+				parameters: {}
+			},
       startDate: undefined,
       endDate: undefined
     };
