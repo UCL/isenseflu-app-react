@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Line } from 'react-chartjs-2';
 import { Button, Form } from 'reactstrap';
+import 'chartjs-plugin-annotation';
 
 import { Article, FormFooter } from './PublicTemplates';
 import ModelCheckboxesComponent from './ModelCheckboxes';
@@ -93,6 +94,27 @@ const options = (modelname) => {
 			bodyFontColor: '#666',
 			bodyFontStyle: 'bold',
 			titleFontColor: '#666'
+		},
+		annotation: {
+			drawTime: 'beforeDatasetsDraw',
+			annotations: [
+				{
+					type: 'line',
+					mode: 'horizontal',
+					scaleID: 'y-axis-0',
+					value: 13.1,
+					borderColor: 'red',
+					borderWidth: 2,
+					label: {
+						backgroundColor: 'rgba(0,0,0,0.05)',
+						fontColor: '#666',
+						position: 'left',
+						yAdjust: -10,
+						enabled: true,
+						content: 'Low epidemic rate'
+					}
+				}
+			]
 		}
 	}
 };
@@ -130,9 +152,9 @@ export default class ChartComponent extends Component {
 						<h5>Select model to display</h5>
 					</header>
 					<Form>
-						<div className="px-4 py-2">
-							<ModelCheckboxesComponent modellist={this.state.modellist} />
-						</div>
+						<ModelCheckboxesComponent
+							modellist={this.state.modellist}
+							flagid={this.props.modeldata.id} />
 						<FormFooter>
 							<Button disabled>Update chart</Button>
 						</FormFooter>
