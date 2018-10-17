@@ -39,7 +39,10 @@ const data = (modeldata) => {
 		points.forEach(
 			datapoint => {
 				const date = new Date(Date.parse(datapoint.score_date));
-				const dateStr = date.toLocaleDateString('en-GB', { year: 'numeric', month: 'long', day: 'numeric' });
+				const dateStr = date.toLocaleDateString(
+					'en-GB',
+					{ year: 'numeric', month: 'long', day: 'numeric' }
+				);
 				template.datasets[0].data.push({t: dateStr, y: datapoint.score_value});
 				template.datasets[1].data.push({t: dateStr, y: datapoint.confidence_interval_upper});
 				template.datasets[2].data.push({t: dateStr, y: datapoint.confidence_interval_lower});
@@ -50,7 +53,7 @@ const data = (modeldata) => {
 	return template;
 };
 
-const options = (modelname) => {
+const options = (modelname, annotationArr) => {
 	return {
 		legend: {
 			display: false
@@ -96,14 +99,32 @@ const options = (modelname) => {
 			titleFontColor: '#666'
 		},
 		annotation: {
-			drawTime: 'beforeDatasetsDraw',
-			annotations: [
+			drawTime: 'afterDatasetsDraw',
+			annotations: annotationArr
+		}
+	}
+};
+
+export const generateAnnotations = (thresholddata, maxvalue) => {
+	if (thresholddata === undefined) {
+		return [];
+	}
+	const thresholdColours = {
+	  low_value: 'green',
+		medium_value: 'yellow',
+	  high_value: 'orange',
+		very_high_value: 'red'
+	};
+	let annotations = [];
+	for (let entry of Object.entries(thresholddata)) {
+		if (entry[1].value <= maxvalue) {
+			annotations.push(
 				{
 					type: 'line',
 					mode: 'horizontal',
 					scaleID: 'y-axis-0',
-					value: 13.1,
-					borderColor: 'red',
+					value: entry[1].value,
+					borderColor: thresholdColours[entry[0]],
 					borderWidth: 2,
 					label: {
 						backgroundColor: 'rgba(0,0,0,0.05)',
@@ -111,13 +132,30 @@ const options = (modelname) => {
 						position: 'left',
 						yAdjust: -10,
 						enabled: true,
-						content: 'Low epidemic rate'
+						content: entry[1].label
 					}
 				}
-			]
+			);
 		}
 	}
-};
+	return annotations;
+}
+
+export const formatModelname = (modelname, georegion) => {
+	const geoCountry = georegion === 'e' ? ' (England)' : '';
+	return `${modelname}${geoCountry}`;
+}
+
+export const getMaxScoreValue = (datapoints, hasConfidenceInterval) => {
+	if (datapoints === undefined) {
+		return -Infinity;
+	}
+	if (hasConfidenceInterval) {
+		return Math.max(...datapoints.map(x => x.confidence_interval_upper));
+	} else {
+		return Math.max(...datapoints.map(x => x.score_value));
+	}
+}
 
 export default class ChartComponent extends Component {
 
@@ -135,17 +173,26 @@ export default class ChartComponent extends Component {
 			return response.json();
 		}).then(jsondata => {
 			this.setState({modellist: jsondata});
-		})
+		});
 	}
 
-
   render() {
-		const georegion = this.props.modeldata.parameters.georegion === 'e' ? ' (England)' : '';
-		const modelname = `${this.props.modeldata.name}${georegion}`
+		const modelname = formatModelname(
+			this.props.modeldata.name,
+			this.props.modeldata.parameters.georegion
+		);
+		const maxscorevalue = getMaxScoreValue(
+			this.props.modeldata.datapoints,
+			this.props.modeldata.hasConfidenceInterval
+		);
+		const annotations = generateAnnotations(
+			this.props.modeldata.rate_thresholds,
+			maxscorevalue
+		);
     return (
 			<Article header="Influenza-like illness rate per day">
 				<div className="p-4 border-top">
-      		<Line data={data(this.props.modeldata)} options={options(modelname)}/>
+      		<Line data={data(this.props.modeldata)} options={options(modelname, annotations)}/>
 				</div>
 				<div>
 					<header className="px-2">
