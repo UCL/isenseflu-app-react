@@ -3,19 +3,21 @@ import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
 
 import { Article, FormFooter } from './PublicTemplates';
 
+export const generateQueryUrl = (params) => {
+	const endpointUrl = `${params.apiHost}/scores/${params.modelId}`;
+	const dateParam = `startDate=${params.startDate}&endDate=${params.endDate}`;
+	const resParam = `&resolution=${params.resolution}`;
+	const smoothParam = `&smoothing=${params.smoothing}`;
+	return `${endpointUrl}?${dateParam}${resParam}${smoothParam}`;
+}
+
 export default class DataFilteringComponent extends Component {
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      resolution: "day",
-      smoothing: 0,
-      isDisabled: true
-    }
-    this.handlePropsChange = this.handlePropsChange.bind(this);
-    this.handleLocalChange = this.handleLocalChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }
+	state = {
+		resolution: "day",
+		smoothing: 0,
+		isDisabled: true
+	}
 
   handlePropsChange = (event) => {
     this.props.onChangeCallback(event);
@@ -34,13 +36,8 @@ export default class DataFilteringComponent extends Component {
     });
   }
 
-  handleSubmit = (event) => {
+  handleSubmit = (queryUrl) => (event) => {
     event.preventDefault();
-    const endpointUrl = `${process.env.REACT_APP_API_HOST}/scores/${this.props.modelId}`;
-    const dateParam = `startDate=${this.props.startDate}&endDate=${this.props.endDate}`;
-    const resParam = `&resolution=${this.state.resolution}`;
-    const smoothParam = `&smoothing=${this.state.smoothing}`;
-    const queryUrl = `${endpointUrl}?${dateParam}${resParam}${smoothParam}`;
     fetch(queryUrl)
     .then(response => {
       if (!response.ok) { throw response };
@@ -52,9 +49,23 @@ export default class DataFilteringComponent extends Component {
   }
 
   render() {
+
+		const { endDate, startDate } = this.props;
+
+		const { isDisabled, resolution, smoothing } = this.state;
+
+		const queryUrlParams = {
+			...this.props,
+			resolution,
+			smoothing,
+			apiHost: process.env.REACT_APP_API_HOST
+		}
+
+		const queryUrl = generateQueryUrl(queryUrlParams);
+
     return (
       <Article header="Data Filtering">
-        <Form onSubmit={this.handleSubmit}>
+        <Form onSubmit={this.handleSubmit(queryUrl)}>
           <div className="form-row border-top border-bottom m-0 p-2">
             <FormGroup className="col-md-3">
               <Label for="start-date">Start</Label>
@@ -62,7 +73,7 @@ export default class DataFilteringComponent extends Component {
                 type="date"
                 name="startDate"
                 id="start-date"
-                value={this.props.startDate}
+                value={startDate}
                 onChange={this.handlePropsChange}
                 />
               <small className="form-text text-muted">
@@ -75,7 +86,7 @@ export default class DataFilteringComponent extends Component {
                 type="date"
                 name="endDate"
                 id="end-date"
-                value={this.props.endDate}
+                value={endDate}
                 onChange={this.handlePropsChange}
                 />
               <small className="form-text text-muted">
@@ -88,7 +99,7 @@ export default class DataFilteringComponent extends Component {
                 type="select"
                 name="resolution"
                 id="resolution"
-                value={this.state.resolution}
+                value={resolution}
                 onChange={this.handleLocalChange}
                 >
                 <option value="day">Day</option>
@@ -104,7 +115,7 @@ export default class DataFilteringComponent extends Component {
                 type="select"
                 name="smoothing"
                 id="smoothing"
-                value={this.state.smoothing}
+                value={smoothing}
                 onChange={this.handleLocalChange}
                 >
                 <option value="0">No smoothing</option>
@@ -119,7 +130,7 @@ export default class DataFilteringComponent extends Component {
           </div>
           <FormFooter>
           {
-            this.state.isDisabled
+            isDisabled
             ? <Button disabled>Show data</Button>
             : <Button>Show data</Button>
           }

@@ -7,17 +7,12 @@ import RawScoresComponent from './RawScores';
 
 export default class HomeComponent extends Component {
 
-  constructor(props) {
-		super(props);
-		this.state = {
-      modeldata: {
-				parameters: {}
-			},
-      startDate: undefined,
-      endDate: undefined
-    };
-    this.handleUpdateModel = this.handleUpdateModel.bind(this);
-    this.handlePropsChange = this.handlePropsChange.bind(this);
+	state = {
+		modeldata: {
+			parameters: {}
+		},
+		startDate: undefined,
+		endDate: undefined
 	}
 
   componentDidMount() {
@@ -48,25 +43,28 @@ export default class HomeComponent extends Component {
   }
 
   render() {
+
+		const { endDate, modeldata, startDate } = this.state;
+
     return (
       <React.Fragment>
         <article className="row mb-4">
-          <ChartComponent modeldata={this.state.modeldata}/>
+          <ChartComponent modeldata={modeldata}/>
         </article>
         <article className="row mb-4">
           <DataFilteringComponent
-            modelId={this.state.modeldata.id}
-            startDate={this.state.startDate}
-            endDate={this.state.endDate}
+            modelId={modeldata.id}
+            startDate={startDate}
+            endDate={endDate}
             updateCallback={this.handleUpdateModel}
             onChangeCallback={this.handlePropsChange}
             />
         </article>
         <article className="row mb-4">
-          <AveragesComponent modeldata={this.state.modeldata}/>
+          <AveragesComponent modeldata={modeldata}/>
         </article>
         <article className="row">
-          <RawScoresComponent modeldata={this.state.modeldata}/>
+          <RawScoresComponent modeldata={modeldata}/>
         </article>
       </React.Fragment>
     );
