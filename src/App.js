@@ -15,6 +15,21 @@ const theme = createMuiTheme({
   typography: {
     useNextVariants: true,
   },
+  overrides: {
+    MuiTableCell: {
+      body: {
+        fontSize: 16,
+      },
+      head: {
+        fontSize: 16,
+      },
+    },
+    MuiTablePagination: {
+      caption: {
+        fontSize: 14,
+      }
+    }
+  }
 });
 
 const styles = (theme) => ({
