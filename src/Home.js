@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
+import React from 'react';
 
 import ChartComponent from './Chart';
 import DataFilteringComponent from './DataFiltering';
 import AveragesComponent from './Averages';
-import RawScoresComponent from './RawScores';
+import { RawScores } from './RawScores';
 
-export default class HomeComponent extends Component {
+export default class HomeComponent extends React.Component {
 
 	state = {
 		modeldata: {
@@ -40,33 +40,25 @@ export default class HomeComponent extends Component {
     this.setState({
       [name]: value
     });
-  }
+	}
 
-  render() {
+	render() {
 
 		const { endDate, modeldata, startDate } = this.state;
 
-    return (
-      <React.Fragment>
-        <article className="row mb-4">
-          <ChartComponent modeldata={modeldata}/>
-        </article>
-        <article className="row mb-4">
-          <DataFilteringComponent
-            modelId={modeldata.id}
-            startDate={startDate}
-            endDate={endDate}
-            updateCallback={this.handleUpdateModel}
-            onChangeCallback={this.handlePropsChange}
-            />
-        </article>
-        <article className="row mb-4">
-          <AveragesComponent modeldata={modeldata}/>
-        </article>
-        <article className="row">
-          <RawScoresComponent modeldata={modeldata}/>
-        </article>
-      </React.Fragment>
+		return (
+			<React.Fragment>
+				<ChartComponent modeldata={modeldata}/>
+				<DataFilteringComponent
+					modelId={modeldata.id}
+					startDate={startDate}
+					endDate={endDate}
+					updateCallback={this.handleUpdateModel}
+					onChangeCallback={this.handlePropsChange}
+					/>
+				<AveragesComponent modeldata={modeldata}/>
+				<RawScores modeldata={modeldata}/>
+			</React.Fragment>
     );
   }
 

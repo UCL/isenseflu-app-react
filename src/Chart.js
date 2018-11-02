@@ -1,10 +1,21 @@
-import React, { Component } from 'react';
+import React from 'react';
+
+import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
+import { withStyles } from '@material-ui/core/styles';
+
 import { Line } from 'react-chartjs-2';
-import { Button, Form } from 'reactstrap';
 import 'chartjs-plugin-annotation';
 
 import { Article, FormFooter } from './PublicTemplates';
 import ModelCheckboxesComponent from './ModelCheckboxes';
+
+const styles = theme => ({
+	lineChart: {
+		padding: theme.spacing.unit * 2,
+	},
+});
 
 const data = (modeldata) => {
 	let template = {
@@ -157,13 +168,10 @@ export const getMaxScoreValue = (datapoints, hasConfidenceInterval) => {
 	}
 }
 
-export default class ChartComponent extends Component {
+class ChartComponent extends React.Component {
 
-	constructor(props) {
-		super(props);
-		this.state = {
-			modellist: []
-		};
+	state = {
+		modellist: []
 	}
 
 	componentDidMount() {
@@ -177,38 +185,36 @@ export default class ChartComponent extends Component {
 	}
 
   render() {
-		const modelname = formatModelname(
-			this.props.modeldata.name,
-			this.props.modeldata.parameters.georegion
-		);
-		const maxscorevalue = getMaxScoreValue(
-			this.props.modeldata.datapoints,
-			this.props.modeldata.hasConfidenceInterval
-		);
-		const annotations = generateAnnotations(
-			this.props.modeldata.rate_thresholds,
-			maxscorevalue
-		);
-    return (
+
+		const { classes, modeldata } = this.props;
+		const { modellist } = this.state;
+
+		const modelname = formatModelname(modeldata.name,	modeldata.parameters.georegion);
+		const maxscorevalue = getMaxScoreValue(modeldata.datapoints, modeldata.hasConfidenceInterval);
+		const annotations = generateAnnotations(modeldata.rate_thresholds, maxscorevalue);
+
+		return (
 			<Article header="Influenza-like illness rate per day">
-				<div className="p-4 border-top">
-      		<Line data={data(this.props.modeldata)} options={options(modelname, annotations)}/>
-				</div>
-				<div>
-					<header className="px-2">
-						<h5>Select model to display</h5>
-					</header>
-					<Form>
+				<Grid item xs={12} className={classes.lineChart}>
+					<Line data={data(modeldata)} options={options(modelname, annotations)}/>
+				</Grid>
+				<Grid item xs={12}>
+					<form>
+						<Typography variant="h6">
+							Select model to display
+						</Typography>
 						<ModelCheckboxesComponent
-							modellist={this.state.modellist}
-							flagid={this.props.modeldata.id} />
+							modellist={modellist}
+							flagid={modeldata.id} />
 						<FormFooter>
-							<Button disabled>Update chart</Button>
+							<Button variant="contained" disabled>Update chart</Button>
 						</FormFooter>
-					</Form>
-				</div>
+					</form>
+				</Grid>
 			</Article>
     );
   }
 
 }
+
+export default withStyles(styles)(ChartComponent);

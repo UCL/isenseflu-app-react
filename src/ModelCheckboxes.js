@@ -1,16 +1,21 @@
-import React, { Component } from 'react';
-import { FormGroup, Label, Input } from 'reactstrap';
+import React from 'react';
 
-export default class ModelCheckboxesComponent extends Component {
+import Checkbox from '@material-ui/core/Checkbox';
+import FormGroup from '@material-ui/core/FormGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+
+export default class ModelCheckboxesComponent extends React.Component {
 
   render() {
     const models = this.props.modellist.map(model => {
 			return (
-				<FormGroup check inline>
-					<Label check>
-						<Input type="checkbox" value={model.id} checked={model.id === this.props.flagid}/>
-						{model.name}
-					</Label>
+				<FormGroup>
+					<FormControlLabel
+						control={
+							<Checkbox value={model.id} checked={model.id === this.props.flagid} color="primary"/>
+						}
+						label={model.name}
+					/>
 				</FormGroup>
 			);
   	});

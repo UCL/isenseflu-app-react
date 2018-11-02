@@ -1,5 +1,13 @@
 import React, { Component } from 'react';
-import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
+
+import Button from '@material-ui/core/Button';
+import FormGroup from '@material-ui/core/FormGroup';
+import Grid from '@material-ui/core/Grid';
+import Input from '@material-ui/core/Input';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import Select from '@material-ui/core/Select';
+import Typography from '@material-ui/core/Typography';
 
 import { Article, FormFooter } from './PublicTemplates';
 
@@ -63,80 +71,86 @@ export default class DataFilteringComponent extends Component {
 
 		const queryUrl = generateQueryUrl(queryUrlParams);
 
-    return (
-      <Article header="Data Filtering">
-        <Form onSubmit={this.handleSubmit(queryUrl)}>
-          <div className="form-row border-top border-bottom m-0 p-2">
-            <FormGroup className="col-md-3">
-              <Label for="start-date">Start</Label>
-              <Input
-                type="date"
-                name="startDate"
-                id="start-date"
-                value={startDate}
-                onChange={this.handlePropsChange}
-                />
-              <small className="form-text text-muted">
-                Only show data collected on or after this date
-              </small>
-            </FormGroup>
-            <FormGroup className="col-md-3">
-              <Label for="end-date">End</Label>
-              <Input
-                type="date"
-                name="endDate"
-                id="end-date"
-                value={endDate}
-                onChange={this.handlePropsChange}
-                />
-              <small className="form-text text-muted">
-                Only show data collected on or before this date
-              </small>
-            </FormGroup>
-            <FormGroup className="col-md-3">
-              <Label for="resolution">Resolution</Label>
-              <Input
-                type="select"
-                name="resolution"
-                id="resolution"
-                value={resolution}
-                onChange={this.handleLocalChange}
-                >
-                <option value="day">Day</option>
-                <option value="week">Week</option>
-              </Input>
-              <small className="form-text text-muted">
-                How many data points to show
-              </small>
-            </FormGroup>
-            <FormGroup className="col-md-3">
-              <Label for="smoothing">Smoothing</Label>
-              <Input
-                type="select"
-                name="smoothing"
-                id="smoothing"
-                value={smoothing}
-                onChange={this.handleLocalChange}
-                >
-                <option value="0">No smoothing</option>
-                <option value="3">3-day moving average</option>
-                <option value="5">5-day moving average</option>
-                <option value="7">7-day moving average</option>
-              </Input>
-              <small className="form-text text-muted">
-                Smooth the data to avoid overly spiky results
-              </small>
-            </FormGroup>
-          </div>
-          <FormFooter>
-          {
-            isDisabled
-            ? <Button disabled>Show data</Button>
-            : <Button>Show data</Button>
-          }
-          </FormFooter>
-        </Form>
-      </Article>
-    );
+		return (
+			<Article header="Data Filtering">
+				<Grid item xs={12}>
+					<form onSubmit={this.handleSubmit(queryUrl)}>
+						<Grid container spacing={24}>
+							<Grid item xs={3}>
+								<FormGroup>
+									<InputLabel htmlFor="start-date">Start</InputLabel>
+									<Input
+										type="date"
+										name="startDate"
+										id="start-date"
+										value={startDate}
+										onChange={this.handlePropsChange}
+										/>
+									<Typography variant="caption">
+										Only show data collected on or after this date
+									</Typography>
+								</FormGroup>
+							</Grid>
+							<Grid item xs={3}>
+								<FormGroup>
+									<InputLabel htmlFor="end-date">End</InputLabel>
+									<Input
+										type="date"
+										name="endDate"
+										id="end-date"
+										value={endDate}
+										onChange={this.handlePropsChange}
+										/>
+									<Typography variant="caption">
+										Only show data collected on or before this date
+									</Typography>
+								</FormGroup>
+							</Grid>
+							<Grid item xs={3}>
+								<FormGroup>
+									<InputLabel htmlFor="resolution">Resolution</InputLabel>
+									<Select
+										value={resolution}
+										onChange={this.handleLocalChange}
+										inputProps={{name: "resolution", id: "resolution"}}
+										>
+										<MenuItem value="day">Day</MenuItem>
+										<MenuItem value="week">Week</MenuItem>
+									</Select>
+									<Typography variant="caption">
+										How many data points to show
+									</Typography>
+								</FormGroup>
+							</Grid>
+							<Grid item xs={3}>
+								<FormGroup>
+									<InputLabel htmlFor="smoothing">Smoothing</InputLabel>
+									<Select
+										value={smoothing}
+										onChange={this.handleLocalChange}
+										inputProps={{name: "smoothing", id: "smoothing"}}
+										>
+										<MenuItem value={0}>No smoothing</MenuItem>
+										<MenuItem value={3}>3-day moving average</MenuItem>
+										<MenuItem value={5}>5-day moving average</MenuItem>
+										<MenuItem value={7}>7-day moving average</MenuItem>
+									</Select>
+									<Typography variant="caption">
+										Smooth the data to avoid overly spiky results
+									</Typography>
+								</FormGroup>
+							</Grid>
+						</Grid>
+						<FormFooter>
+							{
+								isDisabled
+								? <Button type="submit" variant="contained" disabled>Show data</Button>
+								: <Button type="submit" variant="contained">Show data</Button>
+						}
+					</FormFooter>
+				</form>
+			</Grid>
+		</Article>
+	);
   }
 }

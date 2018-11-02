@@ -1,95 +1,170 @@
-import React, {Component} from 'react';
-import { ListGroup, ListGroupItem } from 'reactstrap';
+import React from 'react';
+import PropTypes from 'prop-types';
+import classNames from 'classnames';
 
-export class Article extends Component {
+import Divider from '@material-ui/core/Divider';
+import grey from '@material-ui/core/colors/grey';
+import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
+import { withStyles } from '@material-ui/core/styles';
 
-  render() {
-    return (
-      <div className="col border rounded p-0">
-        <div className="bg-light text-dark form-row m-0 p-2">
-          <header>
-            <h4>{this.props.header}</h4>
-          </header>
-        </div>
-        {this.props.children}
-      </div>
-    );
-  };
+const styles = theme => ({
+	paper: {
+    //...theme.mixins.gutters(),
+    marginBottom: theme.spacing.unit * 3,
+  },
+	header: {
+		padding: theme.spacing.unit,
+		backgroundColor: grey[50],
+	},
+	formToolbar: {
+		backgroundColor: grey[100],
+		padding: theme.spacing.unit,
+	}
+});
 
-}
+const anchorStyles = theme => ({
+	root: {
+    color: 'inherit',
+    textDecoration: 'inherit',
+    '&:hover': {
+      textDecoration: 'underline',
+    },
+  },
+  primary: {
+    color: theme.palette.primary.main,
+},
+});
 
+const AnchorComponent = (props) => {
 
-export const FormFooter = (props) => (
-  <div className="bg-light form-row border-top m-0 p-2">
-    {props.children}
-  </div>
+	const { children, classes, className, variant, ...other } = props;
+
+	return (
+		<a
+      className={classNames(
+        classes.root,
+        {
+          [classes.primary]: variant === 'primary',
+        },
+        className,
+      )}
+      {...other}
+    >
+      {children}
+		</a>
+	);
+
+};
+
+AnchorComponent.propTypes = {
+  children: PropTypes.node.isRequired,
+  classes: PropTypes.object.isRequired,
+  className: PropTypes.string,
+  variant: PropTypes.oneOf(['primary']),
+};
+
+const Anchor = withStyles(anchorStyles)(AnchorComponent);
+
+export const ArticleComponent = (props) => {
+	return (
+		<Paper className={props.classes.paper}>
+			<Grid container spacing={0}>
+				<Grid item xs={12} className={props.classes.header}>
+					<Typography variant="h5" component="h2">
+						{props.header}
+					</Typography>
+				</Grid>
+				<Grid container item xs={12}>
+					{props.children}
+				</Grid>
+			</Grid>
+		</Paper>
+	)
+};
+
+ArticleComponent.propTypes = {
+  header: PropTypes.string.isRequired
+};
+
+export const Article = withStyles(styles, { withTheme: true })(
+  ArticleComponent
 );
 
-export const About = () => {
+
+const FormFooterComponent = (props) => (
+  <Toolbar variant="dense" className={props.classes.formToolbar} disableGutters>
+    {props.children}
+  </Toolbar>
+);
+
+export const FormFooter = withStyles(styles)(FormFooterComponent);
+
+const AboutComponent = (props) => {
   return (
-    <article className="mb-5 text-content">
-      <p>
+    <article>
+      <Typography variant="body1" gutterBottom>
         i-Sense Flu (version 2; find more about version 1 here) uses Google search data to
         estimate influenza-like illness (flu) rates in England. Daily flu rate estimates reflect on
         data from the past 7 days. This website is supported by the EPSRC IRC
-        project <a href="https://www.i-sense.org.uk/">i-sense</a> (Early-Warning Sensing Systems for
+        project <Anchor variant="primary" href="https://www.i-sense.org.uk/">i-sense</Anchor> (Early-Warning Sensing Systems for
         Infectious Diseases) and a Google Research Sponsorship.
-      </p>
-      <p>
+      </Typography>
+      <Typography variant="body1">
         Note that regional scores (i.e., everything but the scores for "England") are still under
         development. All estimates should be considered as experimental (see the website&apos;s
         disclaimer below).
-      </p>
+      </Typography>
 
-      <header className="mt-5">
-        <h3>Research Team</h3>
-      </header>
-      <p>
+      <Typography variant="h6" component="h3">Research Team</Typography>
+      <Typography variant="body1">
         The research team behind i-Sense Flu is based at
-        the <a href="http://www.cs.ucl.ac.uk/">Computer Science Department</a> of <a href="http://www.ucl.ac.uk/">University College London</a>.
-      </p>
+        the <Anchor variant="primary" href="http://www.cs.ucl.ac.uk/">Computer Science Department</Anchor> of <Anchor variant="primary" href="http://www.ucl.ac.uk/">University College London</Anchor>.
+      </Typography>
       <dl>
-        <dt><a href="http://www.lampos.net">Vasileios Lampos</a></dt><dd>Senior Research Fellow</dd>
-        <dt><a href="http://www.cs.ucl.ac.uk/people/D.Guzman.html">David Guzman</a></dt><dd>Lead Software Engineer</dd>
-        <dt><a href="http://www0.cs.ucl.ac.uk/people/B.Zou.html">Bin Zou</a></dt><dd>PhD Student</dd>
-        <dt><a href="http://mediafutures.cs.ucl.ac.uk/people/IngemarCox/">Ingemar J. Cox</a></dt><dd>Professor in Information Retrieval</dd>
+        <dt><Anchor variant="primary" href="http://www.lampos.net">Vasileios Lampos</Anchor></dt><dd>Senior Research Fellow</dd>
+        <dt><Anchor variant="primary" href="http://www.cs.ucl.ac.uk/people/D.Guzman.html">David Guzman</Anchor></dt><dd>Lead Software Engineer</dd>
+        <dt><Anchor variant="primary" href="http://www0.cs.ucl.ac.uk/people/B.Zou.html">Bin Zou</Anchor></dt><dd>PhD Student</dd>
+        <dt><Anchor variant="primary" href="http://mediafutures.cs.ucl.ac.uk/people/IngemarCox/">Ingemar J. Cox</Anchor></dt><dd>Professor in Information Retrieval</dd>
       </dl>
       <dl>
         <dt><strong>Past Members:</strong></dt><dd><a href="http://www.jkg.dk">Jens K. Geyti</a></dd>
       </dl>
 
-      <header className="mt-5">
-        <h3>Relevant Publications</h3>
-      </header>
+      <Typography variant="h6" component="h3">Relevant Publications</Typography>
 
-      <ListGroup flush>
-        <ListGroupItem className="pl-0">
-          Vasileios Lampos, Andrew Miller, Steve Crossan and Christian Stefansen. <a href="http://www.nature.com/articles/srep12760">Advances in nowcasting influenza-like illness rates using search query logs</a>. <strong>Scientific Reports</strong>, vol. 5 (12760), 2015. doi:10.1038/srep12760.
-        </ListGroupItem>
-        <ListGroupItem className="pl-0">
-          Vasileios Lampos, Bin Zou and Ingemar J. Cox. <a href="http://dl.acm.org/citation.cfm?doid=3038912.3052622">Enhancing feature selection using word embeddings: The case of flu surveillance</a>. <strong>Proc. of the 2017 World Wide Web Conference</strong>, pp. 695-704, 2017.
-        </ListGroupItem>
-        <ListGroupItem className="pl-0">
-          Vasileios Lampos. <a href="https://arxiv.org/abs/1612.03494">Flu Detector: Estimating influenza-like illness rates from online user-generated content</a>. Technical Report, <strong>Computing Research Repository</strong>, 2016. arXiv:1612.03494.
-        </ListGroupItem>
-        <ListGroupItem className="pl-0">
-          Moritz Wagner, Vasileios Lampos, Ingemar J. Cox and Richard Pebody. <a href="https://www.nature.com/articles/s41598-018-32029-6">The added value of online user-generated content in traditional methods for influenza surveillance</a>. <strong>Scientific Reports</strong>, vol. 8 (13963), 2018. doi:10.1038/s41598-018-32029-6.
-        </ListGroupItem>
-        <ListGroupItem className="pl-0">
-          Vasileios Lampos, Elad Yom-Tov, Richard Pebody and Ingemar J. Cox. <a href="http://link.springer.com/article/10.1007/s10618-015-0427-9">Assessing the impact of a health intervention via user-generated Internet content</a>. <strong>Data Mining and Knowledge Discovery</strong>, vol. 29 (5), pp. 1434-1457, 2015. doi:10.1007/s10618-015-0427-9.
-        </ListGroupItem>
-        <ListGroupItem className="pl-0">
-          Moritz Wagner, Vasileios Lampos, Elad Yom-Tov, Richard Pebody, Ingemar J. Cox. <a href="https://www.jmir.org/2017/12/e416">Estimating the Population Impact of a New Pediatric Influenza Vaccination Program in England Using Social Media Content</a>. <strong>Journal of Medical Internet Research</strong>, vol. 19 (12), 2017. doi:10.2196/jmir.8184.
-        </ListGroupItem>
-        <ListGroupItem className="pl-0">
-          Bin Zou, Vasileios Lampos and Ingemar J. Cox. <a href="https://dl.acm.org/citation.cfm?id=3186050">Multi-Task Learning Improves Disease Models from Web Search</a>. <strong>Proc. of the 2018 World Wide Web Conference</strong>, pp. 87-96, 2018.
-        </ListGroupItem>
-      </ListGroup>
+			<Typography variant="body1" gutterBottom>
+				Vasileios Lampos, Andrew Miller, Steve Crossan and Christian Stefansen. <Anchor variant="primary" href="http://www.nature.com/articles/srep12760">Advances in nowcasting influenza-like illness rates using search query logs</Anchor>. <strong>Scientific Reports</strong>, vol. 5 (12760), 2015. doi:10.1038/srep12760.
+			</Typography>
+			<Divider />
+			<Typography variant="body1" gutterBottom>
+				Vasileios Lampos, Bin Zou and Ingemar J. Cox. <Anchor variant="primary" href="http://dl.acm.org/citation.cfm?doid=3038912.3052622">Enhancing feature selection using word embeddings: The case of flu surveillance</Anchor>. <strong>Proc. of the 2017 World Wide Web Conference</strong>, pp. 695-704, 2017.
+			</Typography>
+			<Divider />
+			<Typography variant="body1" gutterBottom>
+				Vasileios Lampos. <Anchor variant="primary" href="https://arxiv.org/abs/1612.03494">Flu Detector: Estimating influenza-like illness rates from online user-generated content</Anchor>. Technical Report, <strong>Computing Research Repository</strong>, 2016. arXiv:1612.03494.
+			</Typography>
+			<Divider />
+			<Typography variant="body1" gutterBottom>
+				Moritz Wagner, Vasileios Lampos, Ingemar J. Cox and Richard Pebody. <Anchor variant="primary" href="https://www.nature.com/articles/s41598-018-32029-6">The added value of online user-generated content in traditional methods for influenza surveillance</Anchor>. <strong>Scientific Reports</strong>, vol. 8 (13963), 2018. doi:10.1038/s41598-018-32029-6.
+			</Typography>
+			<Divider />
+			<Typography variant="body1" gutterBottom>
+				Vasileios Lampos, Elad Yom-Tov, Richard Pebody and Ingemar J. Cox. <Anchor variant="primary" href="http://link.springer.com/article/10.1007/s10618-015-0427-9">Assessing the impact of a health intervention via user-generated Internet content</Anchor>. <strong>Data Mining and Knowledge Discovery</strong>, vol. 29 (5), pp. 1434-1457, 2015. doi:10.1007/s10618-015-0427-9.
+			</Typography>
+			<Divider />
+			<Typography variant="body1" gutterBottom>
+				Moritz Wagner, Vasileios Lampos, Elad Yom-Tov, Richard Pebody, Ingemar J. Cox. <Anchor variant="primary" href="https://www.jmir.org/2017/12/e416">Estimating the Population Impact of a New Pediatric Influenza Vaccination Program in England Using Social Media Content</Anchor>. <strong>Journal of Medical Internet Research</strong>, vol. 19 (12), 2017. doi:10.2196/jmir.8184.
+			</Typography>
+			<Divider />
+			<Typography variant="body1">
+				Bin Zou, Vasileios Lampos and Ingemar J. Cox. <Anchor variant="primary" href="https://dl.acm.org/citation.cfm?id=3186050">Multi-Task Learning Improves Disease Models from Web Search</Anchor>. <strong>Proc. of the 2018 World Wide Web Conference</strong>, pp. 87-96, 2018.
+			</Typography>
 
-      <header className="mt-5">
-        <h3>Disclaimer</h3>
-      </header>
-      <p>
+      <Typography variant="h6" component="h3">Disclaimer</Typography>
+      <Typography variant="body1" component="p">
         The information contained in this web site serves as a demonstration of research currently
         under way at University College London (UCL) and is provided 'as is' without warranty of
         any kind. Any reliance you place on this information is strictly at your own risk. Flu
@@ -101,11 +176,13 @@ export const About = () => {
         temporarily and without any notice in circumstances of system failure or maintenance or for
         reasons beyond our control. We reserve the right to remove or alter the content of this
         web site at any time and without prior notice.
-      </p>
+      </Typography>
 
     </article>
   );
 };
+
+export const About = withStyles(styles)(AboutComponent);
 
 export const Docs = () => {
   return (

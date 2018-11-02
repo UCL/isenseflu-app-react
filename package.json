@@ -6,18 +6,16 @@
     "@fortawesome/fontawesome-svg-core": "^1.2.5",
     "@fortawesome/free-brands-svg-icons": "^5.4.0",
     "@fortawesome/react-fontawesome": "^0.1.3",
-    "ajv": "^6.5.4",
-    "bootstrap": "^4.1.3",
+    "@material-ui/core": "^3.3.2",
+    "@material-ui/icons": "^3.0.1",
     "chart.js": "^2.7.2",
     "chartjs-plugin-annotation": "^0.5.7",
-    "jquery": "^3.3.1",
-    "popper.js": "^1.14.4",
     "react": "^16.5.2",
     "react-chartjs-2": "^2.7.4",
     "react-dom": "^16.5.2",
     "react-router-dom": "^4.3.1",
     "react-scripts": "2.0.4",
-    "reactstrap": "^6.5.0"
+    "typeface-clear-sans": "0.0.44"
   },
   "scripts": {
     "start": "react-scripts start",
