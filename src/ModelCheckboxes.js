@@ -7,18 +7,22 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 export default class ModelCheckboxesComponent extends React.Component {
 
   render() {
-    const models = this.props.modellist.map(model => {
+
+		const { flagid, modellist } = this.props;
+
+    const models = modellist.map(model => {
 			return (
-				<FormGroup>
+				<FormGroup key={model.id}>
 					<FormControlLabel
 						control={
-							<Checkbox value={model.id} checked={model.id === this.props.flagid} color="primary"/>
+							<Checkbox value={String(model.id)} checked={model.id === flagid} color="primary"/>
 						}
 						label={model.name}
 					/>
 				</FormGroup>
 			);
   	});
+
 		return (
 			<div className="px-4 py-2">
 				{models}
