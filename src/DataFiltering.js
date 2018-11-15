@@ -8,8 +8,15 @@ import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import Typography from '@material-ui/core/Typography';
+import { withStyles } from '@material-ui/core/styles';
 
 import { Article, FormFooter } from './PublicTemplates';
+
+const styles = theme => ({
+	filteringFields: {
+		padding: theme.spacing.unit * 2,
+	}
+});
 
 export const generateQueryUrl = (params) => {
 	const endpointUrl = `${params.apiHost}/scores/${params.modelId}`;
@@ -19,7 +26,7 @@ export const generateQueryUrl = (params) => {
 	return `${endpointUrl}?${dateParam}${resParam}${smoothParam}`;
 }
 
-export default class DataFilteringComponent extends Component {
+class DataFilteringComponent extends Component {
 
 	state = {
 		resolution: "day",
@@ -58,7 +65,7 @@ export default class DataFilteringComponent extends Component {
 
   render() {
 
-		const { endDate, startDate } = this.props;
+		const { classes, endDate, startDate } = this.props;
 
 		const { isDisabled, resolution, smoothing } = this.state;
 
@@ -75,7 +82,7 @@ export default class DataFilteringComponent extends Component {
 			<Article header="Data Filtering">
 				<Grid item xs={12}>
 					<form onSubmit={this.handleSubmit(queryUrl)}>
-						<Grid container spacing={24}>
+						<Grid container spacing={24} className={classes.filteringFields}>
 							<Grid item xs={3}>
 								<FormGroup>
 									<InputLabel htmlFor="start-date">Start</InputLabel>
@@ -154,3 +161,5 @@ export default class DataFilteringComponent extends Component {
 	);
   }
 }
+
+export default withStyles(styles)(DataFilteringComponent);

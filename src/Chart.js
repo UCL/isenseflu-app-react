@@ -1,6 +1,5 @@
 import React from 'react';
 
-import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
@@ -8,13 +7,16 @@ import { withStyles } from '@material-ui/core/styles';
 import { Line } from 'react-chartjs-2';
 import 'chartjs-plugin-annotation';
 
-import { Article, FormFooter } from './PublicTemplates';
-import ModelCheckboxesComponent from './ModelCheckboxes';
+import { Article } from './PublicTemplates';
 
 const styles = theme => ({
 	lineChart: {
 		padding: theme.spacing.unit * 2,
 	},
+	selectModel: {
+		paddingLeft: theme.spacing.unit * 2,
+		paddingRight: theme.spacing.unit * 2,
+	}
 });
 
 const data = (modeldata) => {
@@ -170,24 +172,9 @@ export const getMaxScoreValue = (datapoints, hasConfidenceInterval) => {
 
 class ChartComponent extends React.Component {
 
-	state = {
-		modellist: []
-	}
-
-	componentDidMount() {
-		fetch(process.env.REACT_APP_API_HOST + '/models')
-		.then(response => {
-			if (!response.ok) { throw response };
-			return response.json();
-		}).then(jsondata => {
-			this.setState({modellist: jsondata});
-		});
-	}
-
   render() {
 
 		const { classes, modeldata } = this.props;
-		const { modellist } = this.state;
 
 		const modelname = formatModelname(modeldata.name,	modeldata.parameters.georegion);
 		const maxscorevalue = getMaxScoreValue(modeldata.datapoints, modeldata.hasConfidenceInterval);
@@ -198,18 +185,11 @@ class ChartComponent extends React.Component {
 				<Grid item xs={12} className={classes.lineChart}>
 					<Line data={data(modeldata)} options={options(modelname, annotations)}/>
 				</Grid>
-				<Grid item xs={12}>
-					<form>
-						<Typography variant="h6">
-							Select model to display
-						</Typography>
-						<ModelCheckboxesComponent
-							modellist={modellist}
-							flagid={modeldata.id} />
-						<FormFooter>
-							<Button variant="contained" disabled>Update chart</Button>
-						</FormFooter>
-					</form>
+				<Grid item xs={12} className={classes.selectModel}>
+					<Typography variant="h6">
+						Select model to display
+					</Typography>
+					{this.props.modelcontrols}
 				</Grid>
 			</Article>
     );
