@@ -63,7 +63,13 @@ export default class RawScoresComponent extends React.Component {
             <TableHead>
               <TableRow>
                 <TableCell>Date</TableCell>
-                <TableCell>{modeldata.name} (England)</TableCell>
+                {
+                  modeldata.map(item => {
+                    return (
+                      <TableCell>{item.name} (England)</TableCell>
+                    );
+                  })
+                }
               </TableRow>
             </TableHead>
             <TableBody>

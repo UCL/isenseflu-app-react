@@ -47,35 +47,35 @@ const data = (modeldata) => {
 			}
 		]
 	}
-	if (modeldata.datapoints !== undefined) {
-		let points = modeldata.datapoints.slice();
-		points.forEach(
-			datapoint => {
-				const date = new Date(Date.parse(datapoint.score_date));
-				const dateStr = date.toLocaleDateString(
-					'en-GB',
-					{ year: 'numeric', month: 'long', day: 'numeric' }
-				);
-				template.datasets[0].data.push({t: dateStr, y: datapoint.score_value});
-				template.datasets[1].data.push({t: dateStr, y: datapoint.confidence_interval_upper});
-				template.datasets[2].data.push({t: dateStr, y: datapoint.confidence_interval_lower});
-			}
-		);
+
+	if (modeldata.length === 0) {
+		return template;
+	}
+
+	if (modeldata.length === 1) {
+		modeldata[0].datapoints.slice().forEach(datapoint => {
+			const date = new Date(Date.parse(datapoint.score_date));
+			const dateStr = date.toLocaleDateString(
+				'en-GB',
+				{ year: 'numeric', month: 'long', day: 'numeric' }
+			);
+			template.datasets[0].data.push({t: dateStr, y: datapoint.score_value});
+			template.datasets[1].data.push({t: dateStr, y: datapoint.confidence_interval_upper});
+			template.datasets[2].data.push({t: dateStr, y: datapoint.confidence_interval_lower});
+		});
 		template.datasets[0].label = modeldata.name;
 	}
+
 	return template;
 };
 
-const options = (modelname, annotationArr) => {
+const options = (annotationArr) => {
 	return {
 		legend: {
 			display: false
 		},
 		title: {
-			display: true,
-			text: "Model: " + modelname,
-			fontSize: 16,
-			fontStyle: 'normal'
+			display: false
 		},
 		scales: {
 			yAxes: [
@@ -159,14 +159,20 @@ export const formatModelname = (modelname, georegion) => {
 	return `${modelname}${geoCountry}`;
 }
 
-export const getMaxScoreValue = (datapoints, hasConfidenceInterval) => {
-	if (datapoints === undefined) {
+export const getMaxScoreValue = (modeldata, hasConfidenceInterval) => {
+	if (modeldata === undefined) {
 		return -Infinity;
 	}
 	if (hasConfidenceInterval) {
-		return Math.max(...datapoints.map(x => x.confidence_interval_upper));
+		const res = modeldata.map(x => x.datapoints).reduce(
+			(arr, item) => [...arr, ...item.map(x => x.confidence_interval_upper)], []
+		);
+		return Math.max(...res);
 	} else {
-		return Math.max(...datapoints.map(x => x.score_value));
+		const res = modeldata.map(x => x.datapoints).reduce(
+			(arr, item) => [...arr, ...item.map(x => x.score_value)], []
+		);
+		return Math.max(...res);
 	}
 }
 
@@ -174,16 +180,15 @@ class ChartComponent extends React.Component {
 
   render() {
 
-		const { classes, modeldata } = this.props;
+		const { classes, modelannotations, modelconfinterval, modeldata } = this.props;
 
-		const modelname = formatModelname(modeldata.name,	modeldata.parameters.georegion);
-		const maxscorevalue = getMaxScoreValue(modeldata.datapoints, modeldata.hasConfidenceInterval);
-		const annotations = generateAnnotations(modeldata.rate_thresholds, maxscorevalue);
+		const maxscorevalue = getMaxScoreValue(modeldata, modelconfinterval);
+		const annotations = generateAnnotations(modelannotations, maxscorevalue);
 
 		return (
 			<Article header="Influenza-like illness rate per day">
 				<Grid item xs={12} className={classes.lineChart}>
-					<Line data={data(modeldata)} options={options(modelname, annotations)}/>
+					<Line data={data(modeldata)} options={options(annotations)}/>
 				</Grid>
 				<Grid item xs={12} className={classes.selectModel}>
 					<Typography variant="h6">
