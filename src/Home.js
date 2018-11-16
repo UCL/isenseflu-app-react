@@ -61,6 +61,23 @@ export default class HomeComponent extends React.Component {
 	}
 
 	handleChangeCallback = event => {
+		if (event.target.checked) {
+			// Download data for that particular model
+			fetch(process.env.REACT_APP_API_HOST + `/scores?id=${event.target.value}`)
+			.then(response => {
+				if (!response.ok) { throw response };
+				return response.json();
+			}).then(jsondata => {
+				const addModel = {
+					id: jsondata.id,
+					name: jsondata.name,
+					datapoints: jsondata.datapoints,
+				}
+				this.setState({
+					modeldata: [...this.state.modeldata, addModel]
+				});
+			});
+		}
 		this.setState({
 			[`isModelActive${event.target.value}`]: event.target.checked,
 		});
