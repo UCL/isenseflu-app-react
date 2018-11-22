@@ -23,7 +23,7 @@ const data = (modeldata) => {
 	let template = {
 		datasets: [
 			{
-				label: "Model Scorea",
+				label: "Model Scores",
 				fill: false,
 				borderColor: "rgba(0, 123, 255, 1)",
 				backgroundColor: "rgba(63, 127, 191, 0.2)",
@@ -48,6 +48,25 @@ const data = (modeldata) => {
 		]
 	}
 
+	let templateMultiple = {
+		datasets: [
+			{
+				label: "Google v2018.07",
+				fill: false,
+				borderColor: "rgba(0, 123, 255, 1)",
+				data: [],
+				pointStyle: 'line'
+			},
+			{
+				label: "Google v2018.04",
+				fill: false,
+				borderColor: "rgba(0, 127, 121, 1)",
+				data: [],
+				pointStyle: 'line'
+			}
+		]
+	}
+
 	if (modeldata.length === 0) {
 		return template;
 	}
@@ -63,7 +82,50 @@ const data = (modeldata) => {
 			template.datasets[1].data.push({t: dateStr, y: datapoint.confidence_interval_upper});
 			template.datasets[2].data.push({t: dateStr, y: datapoint.confidence_interval_lower});
 		});
-		template.datasets[0].label = modeldata.name;
+		template.datasets[0].label = modeldata[0].name;
+	}
+
+	if (modeldata.length === 2) {
+		modeldata[0].datapoints.slice().forEach(datapoint => {
+			const date = new Date(Date.parse(datapoint.score_date));
+			const dateStr = date.toLocaleDateString(
+				'en-GB',
+				{ year: 'numeric', month: 'long', day: 'numeric' }
+			);
+			templateMultiple.datasets[0].data.push({t: dateStr, y: datapoint.score_value});
+		});
+
+		modeldata[1].datapoints.slice().forEach(datapoint => {
+			const date = new Date(Date.parse(datapoint.score_date));
+			const dateStr = date.toLocaleDateString(
+				'en-GB',
+				{ year: 'numeric', month: 'long', day: 'numeric' }
+			);
+			templateMultiple.datasets[1].data.push({t: dateStr, y: datapoint.score_value});
+		});
+
+		return templateMultiple;
+	}
+
+	if (modeldata.length > 2) {
+		modeldata.forEach(model => {
+			let datasetTemplate = {
+				label: "",
+				fill: false,
+				borderColor: "rgba(0, 123, 255, 1)",
+				data: [],
+				pointStyle: 'line'
+			}
+			model.datapoints.slice().forEach(datapoint => {
+				const date = new Date(Date.parse(datapoint.score_date));
+				const dateStr = date.toLocaleDateString(
+					'en-GB',
+					{ year: 'numeric', month: 'long', day: 'numeric' }
+				);
+				datasetTemplate.data.push({t: dateStr, y: datapoint.score_value});
+			});
+
+		});
 	}
 
 	return template;
@@ -72,7 +134,12 @@ const data = (modeldata) => {
 const options = (annotationArr) => {
 	return {
 		legend: {
-			display: false
+			display: true,
+			position: 'bottom',
+			labels: {
+				fontSize: 14,
+				usePointStyle: true
+			}
 		},
 		title: {
 			display: false

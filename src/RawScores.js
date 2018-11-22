@@ -20,9 +20,15 @@ const styles = theme => ({
 
 const ScoreRow = (props) => {
   return (
-    <TableRow key={props.key} hover>
+    <TableRow key={props.score_date} hover>
       <TableCell>{props.score_date}</TableCell>
-      <TableCell>{props.score_value}</TableCell>
+      {
+        props.model_scores.map(s => {
+          return (
+            <TableCell key={s.model_id}>{s.score_value}</TableCell>
+          );
+        })
+      }
     </TableRow>
   );
 }
@@ -31,6 +37,34 @@ const generateQueryUrl = (modeldata) => {
   const endpointUrl = `${process.env.REACT_APP_API_HOST}/csv/${modeldata.id}`;
   const dateParam = `startDate=${modeldata.start_date}&endDate=${modeldata.end_date}`;
   return `${endpointUrl}?${dateParam}`;
+}
+
+const generateTableMatrix = (allDates, modeldata) => {
+  let matrix = []
+  allDates !== undefined && allDates.forEach(ad => {
+
+    const score_values = modeldata.map(m => {
+      const id = m.id;
+      const val = m.datapoints.filter(
+        p => {return p.score_date === ad}
+      ).map(
+        p => p.score_value
+      );
+      return {
+        model_id: id,
+        score_value: val[0]
+      };
+    });
+
+    const row = {
+      score_date: ad,
+      model_scores: score_values
+    }
+
+    matrix.push(row);
+  });
+  console.log(matrix);
+  return matrix;
 }
 
 export default class RawScoresComponent extends React.Component {
@@ -50,11 +84,11 @@ export default class RawScoresComponent extends React.Component {
 
   render() {
 
-    const { modeldata } = this.props;
+    const { allDates, modeldata } = this.props;
 
     const { page, rowsPerPage } = this.state;
 
-    const totalCount = (modeldata.datapoints !== undefined) ? modeldata.datapoints.length : 0;
+    const totalCount = (allDates !== undefined) ? allDates.length : 0;
 
     return (
       <Article header="Raw Scores">
@@ -64,9 +98,9 @@ export default class RawScoresComponent extends React.Component {
               <TableRow>
                 <TableCell>Date</TableCell>
                 {
-                  modeldata.map(item => {
+                  modeldata.map(m => {
                     return (
-                      <TableCell>{item.name} (England)</TableCell>
+                      <TableCell key={m.id}>{m.name} (England)</TableCell>
                     );
                   })
                 }
@@ -74,13 +108,10 @@ export default class RawScoresComponent extends React.Component {
             </TableHead>
             <TableBody>
               {
-                (modeldata.datapoints !== undefined) &&
-
-                modeldata.datapoints
+                generateTableMatrix(allDates, modeldata)
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .reverse()
-                .map(point => {
-                  return <ScoreRow key={point.score_date} {...point}></ScoreRow>
+                .map(row => {
+                  return <ScoreRow {...row} />
                 })
               }
             </TableBody>

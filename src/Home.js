@@ -28,6 +28,7 @@ export default class HomeComponent extends React.Component {
 			return response.json();
 		}).then(jsondata => {
 			const switchStateId = `isModelActive${jsondata.id}`;
+			const allDates = jsondata.datapoints.slice().map(p => {return p.score_date});
 			this.setState({
         modeldata: [
 					{
@@ -41,7 +42,8 @@ export default class HomeComponent extends React.Component {
 				modellist: jsondata.model_list,
 				hasConfidenceInterval: jsondata.hasConfidenceInterval,
 				[switchStateId]: true,
-				rateThresholds: jsondata.rate_thresholds
+				rateThresholds: jsondata.rate_thresholds,
+				allDates: allDates
       });
 		});
 
@@ -69,15 +71,33 @@ export default class HomeComponent extends React.Component {
 				return response.json();
 			}).then(jsondata => {
 				const addModel = {
-					id: jsondata.id,
-					name: jsondata.name,
-					datapoints: jsondata.datapoints,
+					id: jsondata.modeldata[0].id,
+					name: jsondata.modeldata[0].label,
+					datapoints: jsondata.modeldata[0].datapoints,
 				}
 				this.setState({
 					modeldata: [...this.state.modeldata, addModel]
 				});
+				if (this.state.modeldata.startDate > jsondata.start_date) {
+					this.setState({
+						startDate: jsondata.start_date
+					});
+				};
+				if (this.state.modeldata.endDate < jsondata.end_date) {
+					this.setState({
+						endDate: jsondata.end_date
+					});
+				}
+			});
+		} else {
+			const filteredmodel = this.state.modeldata.slice().filter(
+				item => { return item.id !== parseInt(event.target.value) }
+			);
+			this.setState({
+				modeldata: filteredmodel
 			});
 		}
+
 		this.setState({
 			[`isModelActive${event.target.value}`]: event.target.checked,
 		});
@@ -86,6 +106,7 @@ export default class HomeComponent extends React.Component {
 	render() {
 
 		const {
+			allDates,
 			endDate,
 			hasConfidenceInterval,
 			modeldata,
@@ -127,7 +148,7 @@ export default class HomeComponent extends React.Component {
 					onChangeCallback={this.handlePropsChange}
 					/>
 				<AveragesComponent modeldata={modeldata}/>
-				<RawScores modeldata={modeldata}/>
+				<RawScores modeldata={modeldata} allDates={allDates}/>
 			</React.Fragment>
     );
   }
