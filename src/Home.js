@@ -50,7 +50,7 @@ export default class HomeComponent extends React.Component {
   }
 
   handleUpdateModel = (updatedata) => {
-    this.setState({modeldata: updatedata});
+    this.setState({modeldata: updatedata.modeldata});
   }
 
   handlePropsChange = (event) => {
@@ -141,7 +141,7 @@ export default class HomeComponent extends React.Component {
 					modelconfinterval={hasConfidenceInterval}
 					/>
 				<DataFilteringComponent
-					modelId={modeldata.id}
+					modelIds={modeldata.map(m => m.id)}
 					startDate={startDate}
 					endDate={endDate}
 					updateCallback={this.handleUpdateModel}

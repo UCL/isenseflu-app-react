@@ -19,11 +19,12 @@ const styles = theme => ({
 });
 
 export const generateQueryUrl = (params) => {
-	const endpointUrl = `${params.apiHost}/scores/${params.modelId}`;
+	const models = params.modelIds.map(m => `id=${m}`).join('&');
+	const endpointUrl = `${params.apiHost}/scores?`;
 	const dateParam = `startDate=${params.startDate}&endDate=${params.endDate}`;
 	const resParam = `&resolution=${params.resolution}`;
 	const smoothParam = `&smoothing=${params.smoothing}`;
-	return `${endpointUrl}?${dateParam}${resParam}${smoothParam}`;
+	return `${endpointUrl}${models}&${dateParam}${resParam}${smoothParam}`;
 }
 
 class DataFilteringComponent extends Component {
