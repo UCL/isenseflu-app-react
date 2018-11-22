@@ -20,7 +20,7 @@ const styles = theme => ({
 
 const ScoreRow = (props) => {
   return (
-    <TableRow key={props.score_date} hover>
+    <TableRow hover>
       <TableCell>{props.score_date}</TableCell>
       {
         props.model_scores.map(s => {
@@ -63,7 +63,6 @@ const generateTableMatrix = (allDates, modeldata) => {
 
     matrix.push(row);
   });
-  console.log(matrix);
   return matrix;
 }
 
@@ -111,7 +110,7 @@ export default class RawScoresComponent extends React.Component {
                 generateTableMatrix(allDates, modeldata)
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map(row => {
-                  return <ScoreRow {...row} />
+                  return <ScoreRow key={row.score_date} {...row} />
                 })
               }
             </TableBody>
