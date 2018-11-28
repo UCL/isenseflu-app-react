@@ -29,39 +29,43 @@ const createColour = index => {
 }
 
 const data = (modeldata) => {
-	let template = {
-		datasets: [
-			{
-				label: "Model Scores",
-				fill: false,
-				borderColor: "rgba(0, 123, 255, 1)",
-				backgroundColor: "rgba(63, 127, 191, 0.2)",
-				data: [],
-				pointStyle: 'line'
-			},
-			{
-				label: "Upper confidence interval",
-				fill: false,
-				borderColor: "rgba(168, 198, 224, 1)",
-				data: [],
-				pointStyle: 'line'
-			},
-			{
-				label: "Lower confidence interval",
-				fill: 1,
-				borderColor: "rgba(168, 198, 224, 1)",
-				backgroundColor: "rgba(63, 127, 191, 0.2)",
-				data: [],
-				pointStyle: 'line'
-			}
-		]
-	}
 
 	if (modeldata.length === 0) {
-		return template;
+		return {};
 	}
 
 	if (modeldata.length === 1) {
+		let template = {
+			datasets: [
+				{
+					label: "Model Scores",
+					fill: false,
+					borderColor: "rgba(0, 123, 255, 1)",
+					backgroundColor: "rgba(63, 127, 191, 0.2)",
+					data: [],
+					pointStyle: 'line'
+				}
+			]
+		}
+		if (modeldata[0].hasConfidenceInterval) {
+			template.datasets.push(
+				{
+					label: "Upper confidence interval",
+					fill: false,
+					borderColor: "rgba(168, 198, 224, 1)",
+					data: [],
+					pointStyle: 'line'
+				},
+				{
+					label: "Lower confidence interval",
+					fill: 1,
+					borderColor: "rgba(168, 198, 224, 1)",
+					backgroundColor: "rgba(63, 127, 191, 0.2)",
+					data: [],
+					pointStyle: 'line'
+				}
+			);
+		}
 		modeldata[0].datapoints.slice().forEach(datapoint => {
 			const date = new Date(Date.parse(datapoint.score_date));
 			const dateStr = date.toLocaleDateString(
@@ -69,18 +73,22 @@ const data = (modeldata) => {
 				{ year: 'numeric', month: 'long', day: 'numeric' }
 			);
 			template.datasets[0].data.push({t: dateStr, y: datapoint.score_value});
-			template.datasets[1].data.push({t: dateStr, y: datapoint.confidence_interval_upper});
-			template.datasets[2].data.push({t: dateStr, y: datapoint.confidence_interval_lower});
+			if (modeldata[0].hasConfidenceInterval) {
+				template.datasets[1].data.push({t: dateStr, y: datapoint.confidence_interval_upper});
+				template.datasets[2].data.push({t: dateStr, y: datapoint.confidence_interval_lower});
+			}
 		});
 		template.datasets[0].label = modeldata[0].name;
+		return template;
 	}
 
 	if (modeldata.length > 1) {
 
-		template.datasets.length = 0;
-
+		let template = {
+			datasets: []
+		}
 		modeldata.forEach(model => {
-			let datasetTemplate = {
+			let modelTemplate = {
 				label: model.name,
 				fill: false,
 				borderColor: createColour(model.id - 1),
@@ -93,13 +101,14 @@ const data = (modeldata) => {
 					'en-GB',
 					{ year: 'numeric', month: 'long', day: 'numeric' }
 				);
-				datasetTemplate.data.push({t: dateStr, y: datapoint.score_value});
+				modelTemplate.data.push({t: dateStr, y: datapoint.score_value});
 			});
-			template.datasets.push(datasetTemplate);
+			template.datasets.push(modelTemplate);
 		});
+		return template;
 	}
 
-	return template;
+	return {};
 };
 
 const options = (annotationArr) => {
@@ -197,30 +206,36 @@ export const formatModelname = (modelname, georegion) => {
 	return `${modelname}${geoCountry}`;
 }
 
-export const getMaxScoreValue = (modeldata, hasConfidenceInterval) => {
+export const getMaxScoreValue = (modeldata) => {
 	if (modeldata === undefined) {
 		return -Infinity;
 	}
-	if (hasConfidenceInterval) {
-		const res = modeldata.map(x => x.datapoints).reduce(
-			(arr, item) => [...arr, ...item.map(x => x.confidence_interval_upper)], []
-		);
-		return Math.max(...res);
-	} else {
-		const res = modeldata.map(x => x.datapoints).reduce(
-			(arr, item) => [...arr, ...item.map(x => x.score_value)], []
-		);
-		return Math.max(...res);
-	}
+	const res = modeldata.map(
+		m => {
+			return {
+				datapoints: m.datapoints,
+				hasConfidenceInterval: m.hasConfidenceInterval
+			}
+		}
+	).reduce(
+		(arr, model) => [...arr, ...model.datapoints.map((p, conf = model.hasConfidenceInterval) => {
+			return 	(conf) ? p.confidence_interval_upper : p.score_value
+		})], []
+	);
+	return Math.max(...res);
 }
 
 class ChartComponent extends React.Component {
 
   render() {
 
-		const { classes, modelannotations, modelconfinterval, modeldata } = this.props;
+		const {
+			classes,
+			modelannotations,
+			modeldata
+		} = this.props;
 
-		const maxscorevalue = getMaxScoreValue(modeldata, modelconfinterval);
+		const maxscorevalue = getMaxScoreValue(modeldata);
 		const annotations = generateAnnotations(modelannotations, maxscorevalue);
 
 		return (

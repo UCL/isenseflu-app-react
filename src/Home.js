@@ -34,13 +34,13 @@ export default class HomeComponent extends React.Component {
 					{
 						id: jsondata.id,
 						name: jsondata.name,
+						hasConfidenceInterval: jsondata.hasConfidenceInterval,
 						datapoints: jsondata.datapoints
 					}
 				],
         startDate: jsondata.start_date,
         endDate: jsondata.end_date,
 				modellist: jsondata.model_list,
-				hasConfidenceInterval: jsondata.hasConfidenceInterval,
 				[switchStateId]: true,
 				rateThresholds: jsondata.rate_thresholds,
 				allDates: allDates
@@ -65,7 +65,8 @@ export default class HomeComponent extends React.Component {
 	handleChangeCallback = (event, startDate, endDate) => {
 		if (event.target.checked) {
 			// Download data for that particular model
-			fetch(process.env.REACT_APP_API_HOST + `/scores?id=${event.target.value}&startDate=${startDate}&endDate=${endDate}`)
+			const endpoint = `/scores?id=${event.target.value}&startDate=${startDate}&endDate=${endDate}`;
+			fetch(process.env.REACT_APP_API_HOST + endpoint)
 			.then(response => {
 				if (!response.ok) { throw response };
 				return response.json();
@@ -74,6 +75,7 @@ export default class HomeComponent extends React.Component {
 					id: jsondata.modeldata[0].id,
 					name: jsondata.modeldata[0].name,
 					datapoints: jsondata.modeldata[0].datapoints,
+					hasConfidenceInterval: jsondata.modeldata[0].hasConfidenceInterval
 				}
 				this.setState({
 					modeldata: [...this.state.modeldata, addModel]
@@ -97,7 +99,6 @@ export default class HomeComponent extends React.Component {
 				modeldata: filteredmodel
 			});
 		}
-
 		this.setState({
 			[`isModelActive${event.target.value}`]: event.target.checked,
 		});
@@ -108,7 +109,6 @@ export default class HomeComponent extends React.Component {
 		const {
 			allDates,
 			endDate,
-			hasConfidenceInterval,
 			modeldata,
 			modellist,
 			rateThresholds,
@@ -138,7 +138,6 @@ export default class HomeComponent extends React.Component {
 					modeldata={modeldata}
 					modelcontrols={modelToggleControls}
 					modelannotations={rateThresholds}
-					modelconfinterval={hasConfidenceInterval}
 					/>
 				<DataFilteringComponent
 					modelIds={modeldata.map(m => m.id)}
