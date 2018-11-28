@@ -19,6 +19,15 @@ const styles = theme => ({
 	}
 });
 
+const createColour = index => {
+	const hexColours = ['#007bff', '#d100c7', '#ff008b', '#ff0055', '#ff6d28', '#ffa600'];
+	if (index < hexColours.length) {
+		return hexColours[index];
+	} else {
+		return `#${Math.floor(Math.random() * 0x1000000).toString(16).padStart(6, 0)}`;
+	}
+}
+
 const data = (modeldata) => {
 	let template = {
 		datasets: [
@@ -48,25 +57,6 @@ const data = (modeldata) => {
 		]
 	}
 
-	let templateMultiple = {
-		datasets: [
-			{
-				label: "Google v2018.07",
-				fill: false,
-				borderColor: "rgba(0, 123, 255, 1)",
-				data: [],
-				pointStyle: 'line'
-			},
-			{
-				label: "Google v2018.04",
-				fill: false,
-				borderColor: "rgba(0, 127, 121, 1)",
-				data: [],
-				pointStyle: 'line'
-			}
-		]
-	}
-
 	if (modeldata.length === 0) {
 		return template;
 	}
@@ -85,34 +75,15 @@ const data = (modeldata) => {
 		template.datasets[0].label = modeldata[0].name;
 	}
 
-	if (modeldata.length === 2) {
-		modeldata[0].datapoints.slice().forEach(datapoint => {
-			const date = new Date(Date.parse(datapoint.score_date));
-			const dateStr = date.toLocaleDateString(
-				'en-GB',
-				{ year: 'numeric', month: 'long', day: 'numeric' }
-			);
-			templateMultiple.datasets[0].data.push({t: dateStr, y: datapoint.score_value});
-		});
+	if (modeldata.length > 1) {
 
-		modeldata[1].datapoints.slice().forEach(datapoint => {
-			const date = new Date(Date.parse(datapoint.score_date));
-			const dateStr = date.toLocaleDateString(
-				'en-GB',
-				{ year: 'numeric', month: 'long', day: 'numeric' }
-			);
-			templateMultiple.datasets[1].data.push({t: dateStr, y: datapoint.score_value});
-		});
+		template.datasets.length = 0;
 
-		return templateMultiple;
-	}
-
-	if (modeldata.length > 2) {
 		modeldata.forEach(model => {
 			let datasetTemplate = {
-				label: "",
+				label: model.name,
 				fill: false,
-				borderColor: "rgba(0, 123, 255, 1)",
+				borderColor: createColour(model.id - 1),
 				data: [],
 				pointStyle: 'line'
 			}
@@ -124,7 +95,7 @@ const data = (modeldata) => {
 				);
 				datasetTemplate.data.push({t: dateStr, y: datapoint.score_value});
 			});
-
+			template.datasets.push(datasetTemplate);
 		});
 	}
 

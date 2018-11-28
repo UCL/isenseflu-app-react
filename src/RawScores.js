@@ -33,10 +33,11 @@ const ScoreRow = (props) => {
   );
 }
 
-const generateQueryUrl = (modeldata) => {
-  const endpointUrl = `${process.env.REACT_APP_API_HOST}/csv/${modeldata.id}`;
-  const dateParam = `startDate=${modeldata.start_date}&endDate=${modeldata.end_date}`;
-  return `${endpointUrl}?${dateParam}`;
+const generateQueryUrl = (modeldata, start_date, end_date) => {
+  const modelids = modeldata.map(m => m.id).map(m => `id=${m}`).join('&');
+  const endpointUrl = `${process.env.REACT_APP_API_HOST}/csv?${modelids}&`;
+  const dateParam = `startDate=${start_date}&endDate=${end_date}`;
+  return `${endpointUrl}${dateParam}`;
 }
 
 const generateTableMatrix = (allDates, modeldata) => {
@@ -83,7 +84,7 @@ export default class RawScoresComponent extends React.Component {
 
   render() {
 
-    const { allDates, modeldata } = this.props;
+    const { allDates, endDate, modeldata, startDate } = this.props;
 
     const { page, rowsPerPage } = this.state;
 
@@ -135,7 +136,9 @@ export default class RawScoresComponent extends React.Component {
             </TableFooter>
           </Table>
           <FormFooter>
-            <Button href={generateQueryUrl(modeldata)} variant="contained">Export to CSV</Button>
+            <Button href={generateQueryUrl(modeldata, startDate, endDate)} variant="contained">
+              Export to CSV
+            </Button>
           </FormFooter>
         </Grid>
       </Article>

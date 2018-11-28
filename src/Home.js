@@ -62,17 +62,17 @@ export default class HomeComponent extends React.Component {
     });
 	}
 
-	handleChangeCallback = event => {
+	handleChangeCallback = (event, startDate, endDate) => {
 		if (event.target.checked) {
 			// Download data for that particular model
-			fetch(process.env.REACT_APP_API_HOST + `/scores?id=${event.target.value}`)
+			fetch(process.env.REACT_APP_API_HOST + `/scores?id=${event.target.value}&startDate=${startDate}&endDate=${endDate}`)
 			.then(response => {
 				if (!response.ok) { throw response };
 				return response.json();
 			}).then(jsondata => {
 				const addModel = {
 					id: jsondata.modeldata[0].id,
-					name: jsondata.modeldata[0].label,
+					name: jsondata.modeldata[0].name,
 					datapoints: jsondata.modeldata[0].datapoints,
 				}
 				this.setState({
@@ -123,7 +123,7 @@ export default class HomeComponent extends React.Component {
 							<Switch
 								value={String(model.id)}
 								checked={this.state[`isModelActive${model.id}`]}
-								onChange={this.handleChangeCallback}
+								onChange={(e) => this.handleChangeCallback(e, startDate, endDate)}
 								color="primary"/>
 						}
 						label={model.name}
@@ -148,7 +148,11 @@ export default class HomeComponent extends React.Component {
 					onChangeCallback={this.handlePropsChange}
 					/>
 				<AveragesComponent modeldata={modeldata}/>
-				<RawScores modeldata={modeldata} allDates={allDates}/>
+				<RawScores
+					modeldata={modeldata}
+					allDates={allDates}
+					startDate={startDate}
+					endDate={endDate}/>
 			</React.Fragment>
     );
   }
