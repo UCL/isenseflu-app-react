@@ -68,14 +68,10 @@ const data = (modeldata) => {
 		}
 		modeldata[0].datapoints.slice().forEach(datapoint => {
 			const date = new Date(Date.parse(datapoint.score_date));
-			const dateStr = date.toLocaleDateString(
-				'en-GB',
-				{ year: 'numeric', month: 'long', day: 'numeric' }
-			);
-			template.datasets[0].data.push({t: dateStr, y: datapoint.score_value});
+			template.datasets[0].data.push({t: date, y: datapoint.score_value});
 			if (modeldata[0].hasConfidenceInterval) {
-				template.datasets[1].data.push({t: dateStr, y: datapoint.confidence_interval_upper});
-				template.datasets[2].data.push({t: dateStr, y: datapoint.confidence_interval_lower});
+				template.datasets[1].data.push({t: date, y: datapoint.confidence_interval_upper});
+				template.datasets[2].data.push({t: date, y: datapoint.confidence_interval_lower});
 			}
 		});
 		template.datasets[0].label = modeldata[0].name;
@@ -97,11 +93,7 @@ const data = (modeldata) => {
 			}
 			model.datapoints.slice().forEach(datapoint => {
 				const date = new Date(Date.parse(datapoint.score_date));
-				const dateStr = date.toLocaleDateString(
-					'en-GB',
-					{ year: 'numeric', month: 'long', day: 'numeric' }
-				);
-				modelTemplate.data.push({t: dateStr, y: datapoint.score_value});
+				modelTemplate.data.push({t: date, y: datapoint.score_value});
 			});
 			template.datasets.push(modelTemplate);
 		});
