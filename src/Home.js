@@ -77,9 +77,11 @@ export default class HomeComponent extends React.Component {
 					datapoints: jsondata.modeldata[0].datapoints,
 					hasConfidenceInterval: jsondata.modeldata[0].hasConfidenceInterval
 				}
-				this.setState({
-					modeldata: [...this.state.modeldata, addModel]
-				});
+				const modelDates = jsondata.modeldata[0].datapoints.slice().map(p => {return p.score_date});
+				this.setState(prevState => ({
+					modeldata: [...prevState.modeldata, addModel],
+					allDates: [...new Set([...prevState.allDates, ...modelDates])]
+				}));
 				if (this.state.modeldata.startDate > jsondata.start_date) {
 					this.setState({
 						startDate: jsondata.start_date
@@ -92,11 +94,17 @@ export default class HomeComponent extends React.Component {
 				}
 			});
 		} else {
-			const filteredmodel = this.state.modeldata.slice().filter(
+			const filteredModel = this.state.modeldata.slice().filter(
 				item => { return item.id !== parseInt(event.target.value) }
 			);
+			const filteredDates = filteredModel.map(
+				m => m.datapoints
+			).reduce(
+				(arr, datapoint) => [...arr, ...new Set([...datapoint.map(p => p.score_date)])], []
+			);
 			this.setState({
-				modeldata: filteredmodel
+				modeldata: filteredModel,
+				allDates: filteredDates
 			});
 		}
 		this.setState({
