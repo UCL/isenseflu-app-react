@@ -203,16 +203,18 @@ export const getMaxScoreValue = (modeldata) => {
 		return -Infinity;
 	}
 	const res = modeldata.map(
-		m => {
+		(m, cinf = modeldata.length === 1) => {
 			return {
 				datapoints: m.datapoints,
-				hasConfidenceInterval: m.hasConfidenceInterval
+				hasConfidenceInterval: (cinf) ? m.hasConfidenceInterval : false
 			}
 		}
-	).reduce(
-		(arr, model) => [...arr, ...model.datapoints.map((p, conf = model.hasConfidenceInterval) => {
-			return 	(conf) ? p.confidence_interval_upper : p.score_value
-		})], []
+	).flatMap(
+		m => {
+			return (m.hasConfidenceInterval)
+			? [...m.datapoints.map(d => d.confidence_interval_upper)]
+			: [...m.datapoints.map(d => d.score_value)]
+		}
 	);
 	return Math.max(...res);
 }
