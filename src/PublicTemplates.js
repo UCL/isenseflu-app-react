@@ -38,6 +38,12 @@ const anchorStyles = theme => ({
 },
 });
 
+const docsStyles = theme => ({
+	monospace: {
+		fontFamily: 'monospace',
+	}
+});
+
 const AnchorComponent = (props) => {
 
 	const { children, classes, className, variant, ...other } = props;
@@ -184,90 +190,97 @@ const AboutComponent = (props) => {
 
 export const About = withStyles(styles)(AboutComponent);
 
-export const Docs = () => {
+const DocsComponent = (props) => {
   return (
-    <article className="mb-4">
-      <header>
-        <h3>The API</h3>
-      </header>
-      <p>
+    <article>
+			<Typography variant="h4" component="h3">
+				The API
+			</Typography>
+      <Typography variant="body1" component="p" gutterBottom>
         As well as the graphs, tables, and CSV exports available from the home page, we also
         provide an API for programatic access to our data.
-      </p>
-      <section>
-        <header>
-          <h4>Scores</h4>
-        </header>
-        <p>
-          To fetch score data use the following URL:
-        </p>
-        <pre className="bg-light border p-1">
-          GET /api/scores/[model-id]?startDate=YYYY-MM-DD&endDate=YYYY-MM-DD&resolution=[day|week]&smoothing=[0|3|5|7]
-        </pre>
-        <header>
-          <h5>Request parameters</h5>
-        </header>
-        <dl className="row">
-          <dt className="col-2"><pre>model-id</pre></dt>
-          <dd className="col-10">The ID of the model you&apos;d like data for</dd>
-          <dt className="col-2"><pre>startDate</pre></dt>
-          <dd className="col-10">Start date of requested time period, inclusive. In the format YYYY-MM-DD</dd>
-          <dt className="col-2"><pre>endDate</pre></dt>
-          <dd className="col-10">End date of requested time period, inclusive. In the format YYYY-MM-DD</dd>
-          <dt className="col-2"><pre>resolution</pre></dt>
-          <dd className="col-10">The density of the data points returned, either day or week</dd>
-          <dt className="col-2"><pre>smoothing</pre></dt>
-          <dd className="col-10">Number of days to smooth data over using a moving average filter, either 0, 3, 5 or 7</dd>
-        </dl>
-        <header>
-          <h5>Response</h5>
-        </header>
-        <pre className="bg-light p-1">
+      </Typography>
+			<Typography variant="h5" component="h4">
+				Scores
+			</Typography>
+			<Typography variant="body1" component="p">
+				To fetch score data use the following URL:
+			</Typography>
+			<Typography variant="body1" component="p" className={props.classes.monospace} gutterBottom>
+				GET /scores/[model-id]?startDate=YYYY-MM-DD&endDate=YYYY-MM-DD&resolution=[day|week]&smoothing=[0|3|5|7]
+			</Typography>
+			<Typography variant="h6" component="h4">
+				Request parameters
+			</Typography>
+			<Typography variant="body1" component="p">
+				<span className={props.classes.monospace}>model-id:	</span>
+				 The ID of the model you would like data for
+			</Typography>
+			<Typography variant="body1" component="p">
+				<span className={props.classes.monospace}>startDate:	</span>
+				 Start date of requested time period, inclusive. In the format YYYY-MM-DD
+			</Typography>
+			<Typography variant="body1" component="p">
+				<span className={props.classes.monospace}>endDate:	</span>
+				 End date of requested time period, inclusive. In the format YYYY-MM-DD
+			</Typography>
+			<Typography variant="body1" component="p">
+				<span className={props.classes.monospace}>resolution:	</span>
+				 The density of the data points returned, either day or week
+			</Typography>
+			<Typography variant="body1" component="p" gutterBottom>
+				<span className={props.classes.monospace}>smoothing:	</span>
+				 Number of days to smooth data over using a moving average filter, either 0, 3, 5 or 7
+			</Typography>
+			<Typography variant="h6" component="h4">
+				Response
+			</Typography>
+      <pre>
 {`{
-    "displayModel": true,
-    "id": 1,
-    "sourceType": "google",
-    "average_score": 2.8756543043478264,
-    "parameters": {
-        "smoothing": 7,
-        "georegion": "e"
-    },
-    "start_date": "2018-09-01",
-    "end_date": "2018-09-23",
-    "name": "Google v2018.07",
-    "datapoints": [
-        {
-            "score_date": "2018-09-23",
-            "score_value": 4.735919,
-            "confidence_interval_lower": 0.0,
-            "confidence_interval_upper": 10.81382
-        }, ....
-    ]
-}`}
-        </pre>
-      </section>
-      <section>
-        <header>
-          <h4>Models</h4>
-        </header>
-        <p>
-          To fetch a list of public models available:
-        </p>
-        <pre className="bg-light border p-1">
-          GET /api/models/
-        </pre>
-        <header>
-          <h5>Response</h5>
-        </header>
-        <pre className="bg-light p-1">
-{`[
+  "displayModel": true,
+  "id": 1,
+  "sourceType": "google",
+  "average_score": 2.8756543043478264,
+  "parameters": {
+    "smoothing": 7,
+    "georegion": "e"
+  },
+  "start_date": "2018-09-01",
+  "end_date": "2018-09-23",
+  "name": "Google v2018.07",
+  "datapoints": [
     {
-        "name": "Google v2018.07",
-        "id": 1
-    }
+      "score_date": "2018-09-23",
+      "score_value": 4.735919,
+      "confidence_interval_lower": 0.0,
+      "confidence_interval_upper": 10.81382
+    }, ....
+  ]
+}`}
+      </pre>
+			<Typography variant="h5" component="h4">
+				Models
+			</Typography>
+			<Typography variant="body1" component="p">
+				To fetch a list of public models available:
+			</Typography>
+			<Typography variant="body1" component="p" className={props.classes.monospace} gutterBottom>
+				GET /models/
+			</Typography>
+			<Typography variant="h6" component="h4">
+				Response
+			</Typography>
+			<pre className="bg-light p-1">
+{`[
+  {
+    "name": "Google v2018.07",
+    "id": 1
+  }
 ]`}
-        </pre>
-      </section>
+			</pre>
+
     </article>
   );
 };
+
+export const Docs = withStyles(docsStyles)(DocsComponent);
