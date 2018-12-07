@@ -12,11 +12,11 @@ import { RawScores } from './RawScores';
 export default class HomeComponent extends React.Component {
 
 	state = {
-		modeldata: [],				// For all components
+		modeldata: [],													// For all components
 		rateThresholds: undefined,
-		modellist: [], 				// For toggle switches to select models being displayed
-		startDate: undefined, // For DataFiltering
-		endDate: undefined		// For DataFiltering
+		modellist: [], 													// For toggle switches to select models being displayed
+		startDate: (new Date(0)).toISOString(), // For DataFiltering
+		endDate: (new Date()).toISOString()			// For DataFiltering
 	}
 
   componentDidMount() {
@@ -57,9 +57,11 @@ export default class HomeComponent extends React.Component {
     const target = event.target;
     const value = target.type === 'checkbox' ? target.checked : target.value;
     const name = target.name;
-    this.setState({
-      [name]: value
-    });
+		if (value !== undefined) {
+    	this.setState({
+      	[name]: value
+    	});
+	  }
 	}
 
 	handleChangeCallback = (event, startDate, endDate) => {
