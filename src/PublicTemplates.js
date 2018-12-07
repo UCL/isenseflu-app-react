@@ -207,13 +207,13 @@ const DocsComponent = (props) => {
 				To fetch score data use the following URL:
 			</Typography>
 			<Typography variant="body1" component="p" className={props.classes.monospace} gutterBottom>
-				GET /scores/[model-id]?startDate=YYYY-MM-DD&endDate=YYYY-MM-DD&resolution=[day|week]&smoothing=[0|3|5|7]
+				GET /scores?id=[int]&startDate=YYYY-MM-DD&endDate=YYYY-MM-DD&resolution=[day|week]&smoothing=[0|3|5|7]
 			</Typography>
 			<Typography variant="h6" component="h4">
 				Request parameters
 			</Typography>
 			<Typography variant="body1" component="p">
-				<span className={props.classes.monospace}>model-id:	</span>
+				<span className={props.classes.monospace}>id:	</span>
 				 The ID of the model you would like data for
 			</Typography>
 			<Typography variant="body1" component="p">
@@ -237,24 +237,48 @@ const DocsComponent = (props) => {
 			</Typography>
       <pre>
 {`{
-  "displayModel": true,
-  "id": 1,
-  "sourceType": "google",
-  "average_score": 2.8756543043478264,
-  "parameters": {
-    "smoothing": 7,
-    "georegion": "e"
-  },
   "start_date": "2018-09-01",
-  "end_date": "2018-09-23",
-  "name": "Google v2018.07",
-  "datapoints": [
+  "end_date": "2018-09-16",
+  "dates": [
+    "2018-09-16",
+    "2018-09-15",
+    ...
+    "2018-09-01"
+  ],
+  "rate_thresholds": {
+    "low_value": {
+      "label": "Low epidemic rate",
+      "value": 13.1
+    },
+    "high_value": {
+      "label": "High epidemic rate",
+      "value": 68.7
+    },
+    "medium_value": {
+      "label": "Medium epidemic rate",
+      "value": 24.2
+    },
+    "very_high_value": {
+      "label": "Very high epidemic rate",
+      "value": 108.9
+    }
+  },
+  "modeldata": [
     {
-      "score_date": "2018-09-23",
-      "score_value": 4.735919,
-      "confidence_interval_lower": 0.0,
-      "confidence_interval_upper": 10.81382
-    }, ....
+      "id": 1,
+      "name": "Google v2018.07",
+      "hasConfidenceInterval": true,
+      "average_score": 2.2507245,
+      "datapoints": [
+        {
+          "confidence_interval_lower": 0.0,
+          "score_value": 3.682423,
+          "score_date": "2018-09-16",
+          "confidence_interval_upper": 9.730234
+        },
+        ...
+      ]
+    }
   ]
 }`}
       </pre>
@@ -270,7 +294,7 @@ const DocsComponent = (props) => {
 			<Typography variant="h6" component="h4">
 				Response
 			</Typography>
-			<pre className="bg-light p-1">
+			<pre>
 {`[
   {
     "name": "Google v2018.07",
