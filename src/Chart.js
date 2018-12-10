@@ -202,13 +202,11 @@ export const getMaxScoreValue = (modeldata) => {
 	if (modeldata === undefined) {
 		return -Infinity;
 	}
-	const cinf = modeldata.length === 1;
 	const res = modeldata.map(
-		(m, cinf) => {
-			cinf = true;
+		(m) => {
 			return {
 				datapoints: m.datapoints,
-				hasConfidenceInterval: (cinf) ? m.hasConfidenceInterval : false
+				hasConfidenceInterval: (modeldata.length === 1) ? m.hasConfidenceInterval : false
 			}
 		}
 	).flatMap(
