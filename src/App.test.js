@@ -1,12 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import ShallowRenderer from 'react-test-renderer/shallow';
+import { Route } from "react-router-dom";
+
+import { createShallow } from '@material-ui/core/test-utils';
 
 import App from './App';
+import NavigationBar from './NavigationBar';
 
 it('renders App without crashing', () => {
-  const renderer = new ShallowRenderer();
-  renderer.render(<App />);
-  const result = renderer.getRenderOutput();
-  //expect(result.type).toBe('div');
+  const shallow = createShallow();
+  const wrapper = shallow(<App />);
+  // it should render 3 routes
+  expect(wrapper.dive().find(Route)).toHaveLength(3);
+  // it should render 1 NavigationBar
+  expect(wrapper.dive().find(NavigationBar)).toHaveLength(1);
 });

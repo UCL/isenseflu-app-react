@@ -1,12 +1,15 @@
 import React from 'react';
-import ShallowRenderer from 'react-test-renderer/shallow';
 
-import RawScoresComponent from './DataFiltering';
-import {Article} from './PublicTemplates';
+import { createShallow } from '@material-ui/core/test-utils';
 
-it('renders DataFilteringComponent wihout crashing', () => {
-  const renderer = new ShallowRenderer();
-  renderer.render(<RawScoresComponent />);
-  const result = renderer.getRenderOutput();
-  expect(result.type).toBe(Article);
+import { RawScores } from './RawScores';
+import { Article } from './PublicTemplates';
+
+it('renders RawScoresComponent wihout crashing', () => {
+  const props = {
+    modeldata: []
+  }
+  const shallow = createShallow();
+  const wrapper = shallow(<RawScores {...props} />);
+  expect(wrapper.dive().find(Article)).toHaveLength(1);
 });

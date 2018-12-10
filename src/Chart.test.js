@@ -10,9 +10,8 @@ it('renders ChartComponent without crashing', () => {
   const props = {
     modeldata : []
   }
-  const wrapper = shallow(<div />);
-  console.log(wrapper);
-  expect(wrapper.exists()).toEqual(true);
+  const wrapper = shallow(<ChartComponent {...props}/>);
+  expect(wrapper.dive().find(Article)).toHaveLength(1);
 });
 
 it('formats model name', () => {

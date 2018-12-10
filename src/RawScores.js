@@ -67,7 +67,7 @@ const generateTableMatrix = (allDates, modeldata) => {
   return matrix;
 }
 
-export default class RawScoresComponent extends React.Component {
+class RawScoresComponent extends React.Component {
 
   state = {
     page: 0,
