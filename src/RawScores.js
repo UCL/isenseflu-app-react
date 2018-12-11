@@ -33,14 +33,14 @@ const ScoreRow = (props) => {
   );
 }
 
-const generateQueryUrl = (modeldata, start_date, end_date) => {
+export const generateQueryUrl = (modeldata, start_date, end_date) => {
   const modelids = modeldata.map(m => m.id).map(m => `id=${m}`).join('&');
   const endpointUrl = `${process.env.REACT_APP_API_HOST}/csv?${modelids}&`;
   const dateParam = `startDate=${start_date}&endDate=${end_date}`;
   return `${endpointUrl}${dateParam}`;
 }
 
-const generateTableMatrix = (allDates, modeldata) => {
+export const generateTableMatrix = (allDates, modeldata) => {
   let matrix = []
   allDates !== undefined && allDates.forEach(ad => {
 
@@ -74,7 +74,7 @@ class RawScoresComponent extends React.Component {
     rowsPerPage: 10
   }
 
-  handleChangePage = (event, page) => {
+  handleChangePage = (page) => (event) => {
     this.setState({ page });
   };
 
