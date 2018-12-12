@@ -118,7 +118,7 @@ const AboutComponent = (props) => {
         project <Anchor variant="primary" href="https://www.i-sense.org.uk/">i-sense</Anchor> (Early-Warning Sensing Systems for
         Infectious Diseases) and a Google Research Sponsorship.
       </Typography>
-      <Typography variant="body1">
+      <Typography variant="body1" gutterBottom>
         Note that regional scores (i.e., everything but the scores for "England") are still under
         development. All estimates should be considered as experimental (see the website&apos;s
         disclaimer below).
@@ -165,7 +165,7 @@ const AboutComponent = (props) => {
 				Moritz Wagner, Vasileios Lampos, Elad Yom-Tov, Richard Pebody, Ingemar J. Cox. <Anchor variant="primary" href="https://www.jmir.org/2017/12/e416">Estimating the Population Impact of a New Pediatric Influenza Vaccination Program in England Using Social Media Content</Anchor>. <strong>Journal of Medical Internet Research</strong>, vol. 19 (12), 2017. doi:10.2196/jmir.8184.
 			</Typography>
 			<Divider />
-			<Typography variant="body1">
+			<Typography variant="body1" gutterBottom>
 				Bin Zou, Vasileios Lampos and Ingemar J. Cox. <Anchor variant="primary" href="https://dl.acm.org/citation.cfm?id=3186050">Multi-Task Learning Improves Disease Models from Web Search</Anchor>. <strong>Proc. of the 2018 World Wide Web Conference</strong>, pp. 87-96, 2018.
 			</Typography>
 
