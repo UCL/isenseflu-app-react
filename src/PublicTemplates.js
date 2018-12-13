@@ -112,8 +112,8 @@ const AboutComponent = (props) => {
   return (
     <article>
       <Typography variant="body1" gutterBottom>
-        i-Sense Flu (version 2; find more about version 1 here) uses Google search data to
-        estimate influenza-like illness (flu) rates in England. Daily flu rate estimates reflect on
+        i-Sense Flu uses Twitter content or Google search data to estimate influenza-like illness
+				(flu) rates in England. Daily flu rate estimates reflect on
         data from the past 7 days. This website is supported by the EPSRC IRC
         project <Anchor variant="primary" href="https://www.i-sense.org.uk/">i-sense</Anchor> (Early-Warning Sensing Systems for
         Infectious Diseases) and a Google Research Sponsorship.
@@ -130,10 +130,26 @@ const AboutComponent = (props) => {
         the <Anchor variant="primary" href="http://www.cs.ucl.ac.uk/">Computer Science Department</Anchor> of <Anchor variant="primary" href="http://www.ucl.ac.uk/">University College London</Anchor>.
       </Typography>
       <dl>
-        <dt><Anchor variant="primary" href="http://www.lampos.net">Vasileios Lampos</Anchor></dt><dd>Senior Research Fellow</dd>
-        <dt><Anchor variant="primary" href="http://www.cs.ucl.ac.uk/people/D.Guzman.html">David Guzman</Anchor></dt><dd>Lead Software Engineer</dd>
-        <dt><Anchor variant="primary" href="http://www0.cs.ucl.ac.uk/people/B.Zou.html">Bin Zou</Anchor></dt><dd>PhD Student</dd>
-        <dt><Anchor variant="primary" href="http://mediafutures.cs.ucl.ac.uk/people/IngemarCox/">Ingemar J. Cox</Anchor></dt><dd>Professor in Information Retrieval</dd>
+        <dt>
+					<Anchor variant="primary" href="http://www.lampos.net">Vasileios Lampos</Anchor>
+				</dt>
+				<dd>Senior Research Fellow</dd>
+
+        <dt>
+					<Anchor variant="primary" href="http://www.cs.ucl.ac.uk/people/D.Guzman.html">David Guzman</Anchor>
+				</dt>
+				<dd>Lead Software Engineer</dd>
+
+        <dt>
+					<Anchor variant="primary" href="http://www0.cs.ucl.ac.uk/people/B.Zou.html">Bin Zou</Anchor>
+				</dt>
+				<dd>PhD Student</dd>
+
+        <dt>
+					<Anchor variant="primary" href="http://mediafutures.cs.ucl.ac.uk/people/IngemarCox/">Ingemar J. Cox</Anchor>
+				</dt>
+				<dd>Professor in Information Retrieval</dd>
+
       </dl>
       <dl>
         <dt><strong>Past Members:</strong></dt><dd><a href="http://www.jkg.dk">Jens K. Geyti</a></dd>
