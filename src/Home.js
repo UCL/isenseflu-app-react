@@ -21,8 +21,8 @@ export default class HomeComponent extends React.Component {
 
   componentDidMount() {
 
-		// Download default model
-    fetch(process.env.REACT_APP_API_HOST + '/')
+		// Download default model or use query parameters if available (link from Twitter)
+    fetch(`${process.env.REACT_APP_API_HOST}/${this.props.location.search}`)
 		.then(response => {
 			if (!response.ok) { throw response };
 			return response.json();
