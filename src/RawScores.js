@@ -136,7 +136,10 @@ class RawScoresComponent extends React.Component {
             </TableFooter>
           </Table>
           <FormFooter>
-            <Button href={generateQueryUrl(modeldata, startDate, endDate)} variant="contained">
+            <Button
+              href={generateQueryUrl(modeldata, startDate, endDate)}
+              variant="contained"
+              download>
               Export to CSV
             </Button>
           </FormFooter>

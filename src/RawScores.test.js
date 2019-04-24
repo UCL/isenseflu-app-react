@@ -1,13 +1,14 @@
 import React from 'react';
 
 import { createShallow } from '@material-ui/core/test-utils';
+import Button from '@material-ui/core/Button';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 
 import { generateQueryUrl, generateTableMatrix, RawScores } from './RawScores';
-import { Article } from './PublicTemplates';
+import { Article, FormFooter } from './PublicTemplates';
 
 it('renders RawScoresComponent wihout crashing', () => {
   const props = {
@@ -169,4 +170,48 @@ it('renders a table body with 3 rows', () => {
   const wrapper = shallow(<RawScores {...props} />);
   const cells = wrapper.find(TableBody);
   expect(wrapper.find(TableBody).children()).toHaveLength(3);
+});
+
+it('renders a form footer with a download button', () => {
+  const allDates = ['2018-10-01', '2018-10-02', '2018-10-03'];
+  const modeldata = [
+    {
+      id: 1,
+      datapoints: [
+        {
+          score_date: '2018-10-01',
+          score_value: 0.1
+        },
+        {
+          score_date: '2018-10-02',
+          score_value: 0.2
+        }
+      ]
+    },
+    {
+      id: 2,
+      datapoints: [
+        {
+          score_date: '2018-10-02',
+          score_value: 0.3
+        },
+        {
+          score_date: '2018-10-03',
+          score_value: 0.4
+        }
+      ]
+    }
+  ];
+  const props = {
+    allDates,
+    modeldata,
+    startDate: '2018-10-01',
+    endDate: '2018-10-03'
+  };
+  const shallow = createShallow({dive: true});
+  const wrapper = shallow(<RawScores {...props} />);
+  const button = wrapper.find(FormFooter).find(Button);
+  expect(button.prop('download')).toBe(true);
+  expect(button.prop('href'))
+  .toBe('undefined/csv?id=1&id=2&startDate=2018-10-01&endDate=2018-10-03');
 });
