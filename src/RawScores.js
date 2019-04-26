@@ -35,9 +35,9 @@ const ScoreRow = (props) => {
 
 export const generateQueryUrl = (modeldata, start_date, end_date) => {
   const modelids = modeldata.map(m => m.id).map(m => `id=${m}`).join('&');
-  const endpointUrl = `${process.env.REACT_APP_API_HOST}/csv?${modelids}&`;
-  const dateParam = `startDate=${start_date}&endDate=${end_date}`;
-  return `${endpointUrl}${dateParam}`;
+  let apihost = `${process.env.REACT_APP_API_HOST}`;
+  apihost += apihost.endsWith("/") ? "" : "/";
+  return `${apihost}csv?${modelids}&startDate=${start_date}&endDate=${end_date}&ctype=.csv`;
 }
 
 export const generateTableMatrix = (allDates, modeldata) => {

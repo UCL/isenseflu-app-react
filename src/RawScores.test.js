@@ -24,7 +24,7 @@ it('returns queryUrl', () => {
   const startDate = '2018-11-01';
   const endDate = '2018-11-30';
   const result = generateQueryUrl(modeldata, startDate, endDate);
-  const re = '/csv\?id\=1&startDate\=2018\-11\-01&endDate\=2018\-11\-30';
+  const re = '/csv\?id\=1&startDate\=2018\-11\-01&endDate\=2018\-11\-30&ctype\=.csv';
   expect(result).toMatch(re);
 });
 
@@ -213,5 +213,5 @@ it('renders a form footer with a download button', () => {
   const button = wrapper.find(FormFooter).find(Button);
   expect(button.prop('download')).toBe(true);
   expect(button.prop('href'))
-  .toBe('undefined/csv?id=1&id=2&startDate=2018-10-01&endDate=2018-10-03');
+  .toBe('undefined/csv?id=1&id=2&startDate=2018-10-01&endDate=2018-10-03&ctype=.csv');
 });
