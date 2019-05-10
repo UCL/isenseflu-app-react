@@ -61,12 +61,12 @@ export const FormFooter = withStyles(styles)(FormFooterComponent);
 
 export const About = (props) => {
 	return (
-		<InlineFrame title="About" src="/muistatic/about.html" height="1400px" width="100%" />
+		<InlineFrame title="About" src="/muistatic/about.html" height="1450px" width="100%" />
 	);
 };
 
 export const Docs = (props) => {
 	return (
-		<InlineFrame title="Docs" src="/muistatic/docs.html" height="1750px" width="100%" />
+		<InlineFrame title="Docs" src="/muistatic/docs.html" height="1900px" width="100%" />
 	);
 };
