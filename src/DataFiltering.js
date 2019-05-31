@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 import Button from '@material-ui/core/Button';
 import FormGroup from '@material-ui/core/FormGroup';
+import FormLabel from '@material-ui/core/FormLabel'
 import Grid from '@material-ui/core/Grid';
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -25,6 +26,14 @@ export const generateQueryUrl = (params) => {
 	const resParam = `&resolution=${params.resolution}`;
 	const smoothParam = `&smoothing=${params.smoothing}`;
 	return `${endpointUrl}${models}&${dateParam}${resParam}${smoothParam}`;
+}
+
+export const generatePermalinkUrl = (params) => {
+	const models = params.modelIds.map((m,i) => `model_regions-${i}=${m}-e`).join('&');
+	const dateParam = `start=${params.startDate}&end=${params.endDate}`;
+	const resParam = `&resolution=${params.resolution}`;
+	const smoothParam = `&smoothing=${params.smoothing}`;
+	return `${window.location.origin}/?${dateParam}${resParam}${smoothParam}&${models}`;
 }
 
 class DataFilteringComponent extends Component {
@@ -78,6 +87,8 @@ class DataFilteringComponent extends Component {
 		}
 
 		const queryUrl = generateQueryUrl(queryUrlParams);
+
+		const permalinkUrl = generatePermalinkUrl(queryUrlParams);
 
 		return (
 			<Article header="Data Filtering">
@@ -147,6 +158,12 @@ class DataFilteringComponent extends Component {
 										Smooth the data to avoid overly spiky results
 									</Typography>
 								</FormGroup>
+							</Grid>
+						</Grid>
+						<Grid container spacing={24} className={classes.filteringFields}>
+							<Grid item xs={12}>
+								<FormLabel>Permalink </FormLabel>
+								<FormLabel component="a" href={permalinkUrl}>{permalinkUrl}</FormLabel>
 							</Grid>
 						</Grid>
 						<FormFooter>

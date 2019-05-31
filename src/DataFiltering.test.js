@@ -2,7 +2,7 @@ import React from 'react';
 
 import { createShallow } from '@material-ui/core/test-utils';
 
-import DataFilteringComponent, { generateQueryUrl } from './DataFiltering';
+import DataFilteringComponent, { generateQueryUrl, generatePermalinkUrl } from './DataFiltering';
 import { Article } from './PublicTemplates';
 
 it('renders DataFilteringComponent wihout crashing', () => {
@@ -29,4 +29,20 @@ it('generates query url', () => {
   const result = generateQueryUrl(params);
   const re = 'h/scores\?id\=1&startDate\=2018\-10\-01&endDate\=2018\-11\-01&resolution\=7&smoothing\=0';
   expect(result).toMatch(re);
+});
+
+it('generates permalink url', () => {
+  const props = {
+    endDate: '2018-11-01',
+    startDate: '2018-10-01',
+    modelIds: [1, 2]
+  };
+  const resolution = 'day';
+  const smoothing = 0;
+
+  const params = {...props, resolution, smoothing};
+
+  const result = generatePermalinkUrl(params);
+  const expected = 'http://localhost/?start=2018-10-01&end=2018-11-01&resolution=day&smoothing=0&model_regions-0=1-e&model_regions-1=2-e';
+  expect(result).toEqual(expected);
 });

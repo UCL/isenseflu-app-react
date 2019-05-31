@@ -15,8 +15,8 @@ export default class HomeComponent extends React.Component {
 		modeldata: [],													// For all components
 		rateThresholds: undefined,
 		modellist: [], 													// For toggle switches to select models being displayed
-		startDate: (new Date(0)).toISOString(), // For DataFiltering
-		endDate: (new Date()).toISOString()			// For DataFiltering
+		startDate: (new Date(0)).toISOString().substring(0,10), // For DataFiltering
+		endDate: (new Date()).toISOString().substring(0,10)			// For DataFiltering
 	}
 
   componentDidMount() {
