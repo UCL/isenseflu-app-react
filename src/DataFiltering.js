@@ -29,7 +29,7 @@ export const generateQueryUrl = (params) => {
 }
 
 export const generatePermalinkUrl = (params) => {
-	const models = params.modelIds.map((m,i) => `model_regions-${i}=${m}-e`).join('&');
+	const models = params.modelIds.map(m => `id=${m}`).join('&');
 	const dateParam = `start=${params.startDate}&end=${params.endDate}`;
 	const resParam = `&resolution=${params.resolution}`;
 	const smoothParam = `&smoothing=${params.smoothing}`;
