@@ -22,3 +22,9 @@ export const homeFetchUrl = (locationSearch) => {
   }
   return fetchUrl;
 };
+
+export const homeFetchScoresUrl = (id, startDate, endDate) => {
+  let fetchUrl = process.env.REACT_APP_API_HOST;
+  fetchUrl += fetchUrl.endsWith('/') ? '' : '/';
+  return `${fetchUrl}scores?id=${id}&startDate=${startDate}&endDate=${endDate}`;
+};
