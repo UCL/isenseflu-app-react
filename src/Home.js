@@ -19,7 +19,8 @@ export default class HomeComponent extends React.Component {
 		rateThresholds: undefined,
 		modelList: [], 													// For toggle switches to select models being displayed
 		startDate: (new Date(0)).toISOString().substring(0,10), // For DataFiltering
-		endDate: (new Date()).toISOString().substring(0,10)			// For DataFiltering
+		endDate: (new Date()).toISOString().substring(0,10),		// For DataFiltering
+		permaLink: process.env.REACT_APP_API_HOST
 	}
 
   componentDidMount() {
@@ -99,6 +100,7 @@ export default class HomeComponent extends React.Component {
 	}
 
 	handleUpdatePermalink = (permalinkUrl) => {
+		this.setState({permaLink: permalinkUrl})
 	}
 
 	render() {
@@ -109,6 +111,7 @@ export default class HomeComponent extends React.Component {
 			endDate,
 			modelData,
 			modelList,
+			permaLink,
 			rateThresholds,
 			startDate
 		} = this.state;
@@ -136,6 +139,7 @@ export default class HomeComponent extends React.Component {
 					modeldata={modelData}
 					modelcontrols={modelToggleControls}
 					modelannotations={rateThresholds}
+					permalink={permaLink}
 					/>
 				<DataFilteringComponent
 					modelIds={modelData.map(m => m.id)}
