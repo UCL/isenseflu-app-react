@@ -8,49 +8,32 @@ import ChartComponent from './Chart';
 import DataFilteringComponent from './DataFiltering';
 import AveragesComponent from './Averages';
 import { RawScores } from './RawScores';
+import { homeFetchUrl, homeFetchScoresUrl } from './Url';
+import { homeModelData } from './JsonData';
 
 export default class HomeComponent extends React.Component {
 
 	state = {
-		modeldata: [],													// For all components
+		activeModels: [],
+		modelData: [],													// For all components
 		rateThresholds: undefined,
-		modellist: [], 													// For toggle switches to select models being displayed
+		modelList: [], 													// For toggle switches to select models being displayed
 		startDate: (new Date(0)).toISOString().substring(0,10), // For DataFiltering
 		endDate: (new Date()).toISOString().substring(0,10)			// For DataFiltering
 	}
 
   componentDidMount() {
-
-		// Download default model or use query parameters if available (link from Twitter)
-    fetch(`${process.env.REACT_APP_API_HOST}/${this.props.location.search}`)
-		.then(response => {
+		const fetchUrl = homeFetchUrl(this.props.location.search);
+    fetch(fetchUrl).then(response => {
 			if (!response.ok) { throw response };
 			return response.json();
 		}).then(jsondata => {
-			const switchStateId = `isModelActive${jsondata.id}`;
-			const allDates = jsondata.datapoints.slice().map(p => {return p.score_date});
-			this.setState({
-        modeldata: [
-					{
-						id: jsondata.id,
-						name: jsondata.name,
-						hasConfidenceInterval: jsondata.hasConfidenceInterval,
-						datapoints: jsondata.datapoints
-					}
-				],
-        startDate: jsondata.start_date,
-        endDate: jsondata.end_date,
-				modellist: jsondata.model_list,
-				[switchStateId]: true,
-				rateThresholds: jsondata.rate_thresholds,
-				allDates: allDates
-      });
+			this.setState(homeModelData(jsondata));
 		});
-
   }
 
   handleUpdateModel = (updatedata) => {
-    this.setState({modeldata: updatedata.modeldata});
+    this.setState({modelData: updatedata.modeldata});
   }
 
   handlePropsChange = (event) => {
@@ -67,8 +50,9 @@ export default class HomeComponent extends React.Component {
 	handleChangeCallback = (event, startDate, endDate) => {
 		if (event.target.checked) {
 			// Download data for that particular model
-			const endpoint = `/scores?id=${event.target.value}&startDate=${startDate}&endDate=${endDate}`;
-			fetch(process.env.REACT_APP_API_HOST + endpoint)
+			const fetchUrl = homeFetchScoresUrl(event.target.value, startDate, endDate);
+
+			fetch(fetchUrl)
 			.then(response => {
 				if (!response.ok) { throw response };
 				return response.json();
@@ -81,7 +65,7 @@ export default class HomeComponent extends React.Component {
 				}
 				const modelDates = jsondata.modeldata[0].datapoints.slice().map(p => {return p.score_date});
 				this.setState(prevState => ({
-					modeldata: [...prevState.modeldata, addModel],
+					modelData: [...prevState.modeldata, addModel],
 					allDates: [...new Set([...prevState.allDates, ...modelDates])]
 				}));
 				if (this.state.modeldata.startDate > jsondata.start_date) {
@@ -105,7 +89,7 @@ export default class HomeComponent extends React.Component {
 				(arr, datapoint) => [...arr, ...new Set([...datapoint.map(p => p.score_date)])], []
 			);
 			this.setState({
-				modeldata: filteredModel,
+				modelData: filteredModel,
 				allDates: filteredDates
 			});
 		}
@@ -114,25 +98,29 @@ export default class HomeComponent extends React.Component {
 		});
 	}
 
+	handleUpdatePermalink = (permalinkUrl) => {
+	}
+
 	render() {
 
 		const {
+			activeModels,
 			allDates,
 			endDate,
-			modeldata,
-			modellist,
+			modelData,
+			modelList,
 			rateThresholds,
 			startDate
 		} = this.state;
 
-		const modelToggleControls = modellist.map(model => {
+		const modelToggleControls = modelList.map(model => {
 			return (
 				<FormGroup key={model.id}>
 					<FormControlLabel
 						control={
 							<Switch
 								value={String(model.id)}
-								checked={this.state[`isModelActive${model.id}`]}
+								checked={activeModels.includes(model.id)}
 								onChange={(e) => this.handleChangeCallback(e, startDate, endDate)}
 								color="primary"/>
 						}
@@ -145,20 +133,21 @@ export default class HomeComponent extends React.Component {
 		return (
 			<React.Fragment>
 				<ChartComponent
-					modeldata={modeldata}
+					modeldata={modelData}
 					modelcontrols={modelToggleControls}
 					modelannotations={rateThresholds}
 					/>
 				<DataFilteringComponent
-					modelIds={modeldata.map(m => m.id)}
+					modelIds={modelData.map(m => m.id)}
 					startDate={startDate}
 					endDate={endDate}
 					updateCallback={this.handleUpdateModel}
 					onChangeCallback={this.handlePropsChange}
+					permalinkCallback={this.handleUpdatePermalink}
 					/>
-				<AveragesComponent modeldata={modeldata}/>
+				<AveragesComponent modeldata={modelData}/>
 				<RawScores
-					modeldata={modeldata}
+					modeldata={modelData}
 					allDates={allDates}
 					startDate={startDate}
 					endDate={endDate}/>
