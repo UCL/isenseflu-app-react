@@ -9,7 +9,7 @@ import DataFilteringComponent from './DataFiltering';
 import AveragesComponent from './Averages';
 import { RawScores } from './RawScores';
 import { homeFetchUrl, homeFetchScoresUrl } from './Url';
-import { homeModelData } from './JsonData';
+import { homeModelData, homeScoresData } from './JsonData';
 
 export default class HomeComponent extends React.Component {
 
@@ -58,30 +58,21 @@ export default class HomeComponent extends React.Component {
 				if (!response.ok) { throw response };
 				return response.json();
 			}).then(jsondata => {
-				const addModel = {
-					id: jsondata.modeldata[0].id,
-					name: jsondata.modeldata[0].name,
-					datapoints: jsondata.modeldata[0].datapoints,
-					hasConfidenceInterval: jsondata.modeldata[0].hasConfidenceInterval
-				}
-				const modelDates = jsondata.modeldata[0].datapoints.slice().map(p => {return p.score_date});
+				const addModel = homeScoresData(jsondata);
 				this.setState(prevState => ({
-					modelData: [...prevState.modeldata, addModel],
-					allDates: [...new Set([...prevState.allDates, ...modelDates])]
+					modelData: [...prevState.modelData, ...addModel.noModelDates],
+					allDates: [...new Set([...prevState.allDates, ...addModel.modelDates])],
+					activeModels: [...prevState.activeModels, addModel.id]
 				}));
-				if (this.state.modeldata.startDate > jsondata.start_date) {
-					this.setState({
-						startDate: jsondata.start_date
-					});
+				if (this.state.modelData.startDate > addModel.startDate) {
+					this.setState({ startDate: addModel.startDate });
 				};
-				if (this.state.modeldata.endDate < jsondata.end_date) {
-					this.setState({
-						endDate: jsondata.end_date
-					});
+				if (this.state.modelData.endDate < addModel.endDate) {
+					this.setState({	endDate: addModel.endDate });
 				}
 			});
 		} else {
-			const filteredModel = this.state.modeldata.slice().filter(
+			const filteredModel = this.state.modelData.slice().filter(
 				item => { return item.id !== parseInt(event.target.value) }
 			);
 			const filteredDates = filteredModel.map(
@@ -89,14 +80,12 @@ export default class HomeComponent extends React.Component {
 			).reduce(
 				(arr, datapoint) => [...arr, ...new Set([...datapoint.map(p => p.score_date)])], []
 			);
-			this.setState({
+			this.setState(prevState => ({
 				modelData: filteredModel,
-				allDates: filteredDates
-			});
+				allDates: filteredDates,
+				activeModels: prevState.activeModels.filter(id === event.target.value)
+			}));
 		}
-		this.setState({
-			[`isModelActive${event.target.value}`]: event.target.checked,
-		});
 	}
 
 	handleUpdatePermalink = (permalinkUrl) => {
