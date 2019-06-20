@@ -1,5 +1,3 @@
-import React from 'react';
-
 /**
  * Builds the URL used to fetch data for the Home component on componentDidMount(). Depending on
  * the value of the parameter 'source' it will map to the either /plink or /twlink paths.

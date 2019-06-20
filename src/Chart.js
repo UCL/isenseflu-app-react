@@ -1,8 +1,12 @@
 import React from 'react';
 
 import Grid from '@material-ui/core/Grid';
+import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faLink } from '@fortawesome/free-solid-svg-icons'
 
 import { Line } from 'react-chartjs-2';
 import 'chartjs-plugin-annotation';
@@ -16,6 +20,9 @@ const styles = theme => ({
 	selectModel: {
 		paddingLeft: theme.spacing.unit * 2,
 		paddingRight: theme.spacing.unit * 2,
+	},
+	permalink: {
+		textAlign: 'center'
 	}
 });
 
@@ -226,7 +233,8 @@ class ChartComponent extends React.Component {
 		const {
 			classes,
 			modelannotations,
-			modeldata
+			modeldata,
+			permalink
 		} = this.props;
 
 		const maxscorevalue = getMaxScoreValue(modeldata);
@@ -237,11 +245,16 @@ class ChartComponent extends React.Component {
 				<Grid item xs={12} className={classes.lineChart}>
 					<Line data={data(modeldata)} options={options(annotations)}/>
 				</Grid>
-				<Grid item xs={12} className={classes.selectModel}>
+				<Grid item xs={11} className={classes.selectModel}>
 					<Typography variant="h6">
 						Select model to display
 					</Typography>
 					{this.props.modelcontrols}
+				</Grid>
+				<Grid item xs={1} className={classes.permalink}>
+					<IconButton href={permalink}>
+						<FontAwesomeIcon icon={faLink}/>
+					</IconButton>
 				</Grid>
 			</Article>
     );
