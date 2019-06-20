@@ -1,6 +1,6 @@
-import { homeModelData } from './JsonData';
+import { homeModelData, homeScoresData } from './JsonData';
 
-it('converts JSON response from / path into a state object for Home', () => {
+it('converts JSON response from / or /plink or /twlink path into a state object for Home', () => {
   const response = {
     model_list: [
       {id: 1, name: 'Model name'},
@@ -93,5 +93,57 @@ it('converts JSON response from / path into a state object for Home', () => {
     },
     allDates: ['2019-06-01']
   };
+  expect(result).toEqual(expected);
+});
+
+it('converts JSON response from /scores into a state object for Home', () => {
+  const response = [
+    {
+      id: 1,
+      name: 'Model name',
+      has_confidence_interval: true,
+      display_model: true,
+      start_date: '2019-06-01',
+      end_date: '2019-06-02',
+      average_score: 1.5,
+      data_points: [
+        {
+          score_date: '2019-06-01',
+          score_value: 1.0,
+          confidence_interval_lower: 0.9,
+          confidence_interval_upper: 1.1
+        },
+        {
+          score_date: '2019-06-02',
+          score_value: 2.0,
+          confidence_interval_lower: 1.9,
+          confidence_interval_upper: 2.1
+        }
+      ]
+    }
+  ]
+  const result = homeScoresData(response);
+  const expected = {
+    id: 1,
+    name: 'Model name',
+    datapoints: [
+      {
+        score_date: '2019-06-01',
+        score_value: 1,
+        confidence_interval_lower: 0.9,
+        confidence_interval_upper: 1.1
+      },
+      {
+        score_date: '2019-06-02',
+        score_value: 2,
+        confidence_interval_lower: 1.9,
+        confidence_interval_upper: 2.1
+      }
+    ],
+    hasConfidenceInterval: true,
+    startDate: '2019-06-01',
+    endDate: '2019-06-02',
+    modelDates: [ '2019-06-01', '2019-06-02' ]
+  }
   expect(result).toEqual(expected);
 });
