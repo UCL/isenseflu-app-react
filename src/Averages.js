@@ -27,11 +27,11 @@ export default class AveragesComponent extends React.Component {
           <TableBody>
             {
               modeldata.map(item => {
-                  const avg = item.datapoints.map(
+                  const avg = item.data_points.map(
                     x => x.score_value
                   ).reduce(
                     (sum, score) => sum + score
-                  ) / item.datapoints.length;
+                  ) / item.data_points.length;
                   return (
                     <TableRow key={item.id}>
                       <TableCell>{item.name}</TableCell>
