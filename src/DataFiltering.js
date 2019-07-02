@@ -32,7 +32,7 @@ export const generatePermalinkUrl = (params) => {
 	const dateParam = `start=${params.startDate}&end=${params.endDate}`;
 	const resParam = `&resolution=${params.resolution}`;
 	const smoothParam = `&smoothing=${params.smoothing}`;
-	return `${window.location.origin}/?${dateParam}${resParam}${smoothParam}&${models}`;
+	return `${window.location.origin}/?source=plink&${dateParam}${resParam}${smoothParam}&${models}`;
 }
 
 class DataFilteringComponent extends Component {

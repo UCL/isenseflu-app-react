@@ -21,8 +21,8 @@ export const homeModelData = (jsondata) => {
       }
     );
   });
-  const startDate = new Date(Math.min.apply(null, datesList.map(e => { return new Date(e) })));
-  const endDate = new Date(Math.max.apply(null, datesList.map(e => { return new Date(e) })));
+  const startDate = new Date(Math.min.apply(null, datesList.flat().map(e => { return new Date(e) })));
+  const endDate = new Date(Math.max.apply(null, datesList.flat().map(e => { return new Date(e) })));
 
   return {
     modelData: modelData,
