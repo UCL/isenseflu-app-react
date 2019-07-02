@@ -212,8 +212,8 @@ export const getMaxScoreValue = (modeldata) => {
 	const res = modeldata.map(
 		(m) => {
 			return {
-				datapoints: m.data_points,
-				hasConfidenceInterval: (modeldata.length === 1) ? m.has_confidence_interval : false
+				datapoints: m.datapoints,
+				hasConfidenceInterval: (modeldata.length === 1) ? m.hasConfidenceInterval : false
 			}
 		}
 	).flatMap(
