@@ -21,7 +21,7 @@ it('renders a table with the model name, region and average', () => {
     {
       id: 1,
       name: 'Model 1',
-      datapoints: [
+      data_points: [
         { score_value: 0.5 },
         { score_value: 1.0 },
         { score_value: 1.5 }

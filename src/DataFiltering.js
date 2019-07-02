@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 
 import Button from '@material-ui/core/Button';
 import FormGroup from '@material-ui/core/FormGroup';
-import FormLabel from '@material-ui/core/FormLabel'
 import Grid from '@material-ui/core/Grid';
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -61,7 +60,7 @@ class DataFilteringComponent extends Component {
     });
   }
 
-  handleSubmit = (queryUrl) => (event) => {
+  handleSubmit = (queryUrl, permalinkUrl) => (event) => {
     event.preventDefault();
     fetch(queryUrl)
     .then(response => {
@@ -71,6 +70,7 @@ class DataFilteringComponent extends Component {
       this.props.updateCallback(jsondata);
     });
     this.setState({isDisabled: true});
+		this.props.permalinkCallback(permalinkUrl);
   }
 
   render() {
@@ -93,7 +93,7 @@ class DataFilteringComponent extends Component {
 		return (
 			<Article header="Data Filtering">
 				<Grid item xs={12}>
-					<form onSubmit={this.handleSubmit(queryUrl)}>
+					<form onSubmit={this.handleSubmit(queryUrl, permalinkUrl)}>
 						<Grid container spacing={24} className={classes.filteringFields}>
 							<Grid item xs={3}>
 								<FormGroup>
@@ -158,12 +158,6 @@ class DataFilteringComponent extends Component {
 										Smooth the data to avoid overly spiky results
 									</Typography>
 								</FormGroup>
-							</Grid>
-						</Grid>
-						<Grid container spacing={24} className={classes.filteringFields}>
-							<Grid item xs={12}>
-								<FormLabel>Permalink </FormLabel>
-								<FormLabel component="a" href={permalinkUrl}>{permalinkUrl}</FormLabel>
 							</Grid>
 						</Grid>
 						<FormFooter>

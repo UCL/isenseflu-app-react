@@ -26,8 +26,8 @@ it('gets max score value from datapoints array', () => {
     {
       "id": 1,
       "name": "Model 1",
-      "hasConfidenceInterval": true,
-      "datapoints": [
+      "has_confidence_interval": true,
+      "data_points": [
         {
           "score_date": "2018-10-13",
           "confidence_interval_upper": 20.38406,
