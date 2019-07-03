@@ -29,7 +29,7 @@ export const generateQueryUrl = (params) => {
 
 export const generatePermalinkUrl = (params) => {
 	const models = params.modelIds.map(m => `id=${m}`).join('&');
-	const dateParam = `start=${params.startDate}&end=${params.endDate}`;
+	const dateParam = `startDate=${params.startDate}&endDate=${params.endDate}`;
 	const resParam = `&resolution=${params.resolution}`;
 	const smoothParam = `&smoothing=${params.smoothing}`;
 	return `${window.location.origin}/?source=plink&${dateParam}${resParam}${smoothParam}&${models}`;
