@@ -72,9 +72,8 @@ export default class HomeComponent extends React.Component {
 				}
 			});
 		} else {
-			const filteredModel = this.state.modelData.slice().filter(
-				item => { return item.id !== parseInt(event.target.value) }
-			);
+			const modelIdToFilter = parseInt(event.target.value);
+			const filteredModel = this.state.modelData.slice().filter(m => m.id !== modelIdToFilter);
 			const filteredDates = filteredModel.map(
 				m => m.datapoints
 			).reduce(
@@ -83,7 +82,7 @@ export default class HomeComponent extends React.Component {
 			this.setState(prevState => ({
 				modelData: filteredModel,
 				allDates: filteredDates,
-				activeModels: prevState.activeModels.filter(id => id === event.target.value)
+				activeModels: prevState.activeModels.filter(id => id !== event.target.value)
 			}));
 		}
 	}
