@@ -34,7 +34,8 @@ export default class HomeComponent extends React.Component {
   }
 
   handleUpdateModel = (updatedata) => {
-    this.setState({modelData: updatedata.modeldata});
+		const updatedModelData = homeScoresData(updatedata);
+    this.setState({...updatedModelData});
   }
 
   handlePropsChange = (event) => {
