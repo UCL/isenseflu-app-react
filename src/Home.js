@@ -58,17 +58,17 @@ export default class HomeComponent extends React.Component {
 				if (!response.ok) { throw response };
 				return response.json();
 			}).then(jsondata => {
-				const addModel = homeScoresData(jsondata);
+				const newScoresData = homeScoresData(jsondata);
 				this.setState(prevState => ({
-					modelData: [...prevState.modelData, ...addModel.noModelDates],
-					allDates: [...new Set([...prevState.allDates, ...addModel.modelDates])],
-					activeModels: [...prevState.activeModels, addModel.id]
+					modelData: [...prevState.modelData, ...newScoresData.modelData],
+					allDates: [...new Set([...prevState.allDates, ...newScoresData.allDates])],
+					activeModels: [...prevState.activeModels, ...newScoresData.activeModels]
 				}));
-				if (this.state.modelData.startDate > addModel.startDate) {
-					this.setState({ startDate: addModel.startDate });
+				if (this.state.modelData.startDate > newScoresData.startDate) {
+					this.setState({ startDate: newScoresData.startDate });
 				};
-				if (this.state.modelData.endDate < addModel.endDate) {
-					this.setState({	endDate: addModel.endDate });
+				if (this.state.modelData.endDate < newScoresData.endDate) {
+					this.setState({	endDate: newScoresData.endDate });
 				}
 			});
 		} else {

@@ -225,53 +225,60 @@ it('converts JSON response from / into a state object for Home', () => {
 });
 
 it('converts JSON response from /scores into a state object for Home', () => {
-  const response = [
-    {
-      id: 1,
-      name: 'Model name',
-      has_confidence_interval: true,
-      display_model: true,
-      start_date: '2019-06-01',
-      end_date: '2019-06-02',
-      average_score: 1.5,
-      data_points: [
-        {
-          score_date: '2019-06-01',
-          score_value: 1.0,
-          confidence_interval_lower: 0.9,
-          confidence_interval_upper: 1.1
-        },
-        {
-          score_date: '2019-06-02',
-          score_value: 2.0,
-          confidence_interval_lower: 1.9,
-          confidence_interval_upper: 2.1
-        }
-      ]
-    }
-  ]
+  const response = {
+    model_data: [
+      {
+        id: 1,
+        name: 'Model name',
+        has_confidence_interval: true,
+        start_date: '2019-06-01',
+        end_date: '2019-06-02',
+        average_score: 1.5,
+        data_points: [
+          {
+            score_date: '2019-06-01',
+            score_value: 1.0,
+            confidence_interval_lower: 0.9,
+            confidence_interval_upper: 1.1
+          },
+          {
+            score_date: '2019-06-02',
+            score_value: 2.0,
+            confidence_interval_lower: 1.9,
+            confidence_interval_upper: 2.1
+          }
+        ]
+      }
+    ]
+  }
   const result = homeScoresData(response);
   const expected = {
-    id: 1,
-    name: 'Model name',
-    datapoints: [
+    modelData: [
       {
-        score_date: '2019-06-01',
-        score_value: 1,
-        confidence_interval_lower: 0.9,
-        confidence_interval_upper: 1.1
-      },
-      {
-        score_date: '2019-06-02',
-        score_value: 2,
-        confidence_interval_lower: 1.9,
-        confidence_interval_upper: 2.1
+        id: 1,
+        name: 'Model name',
+        hasConfidenceInterval: true,
+        averageScore: 1.5,
+        datapoints: [
+          {
+            score_date: '2019-06-01',
+            score_value: 1,
+            confidence_interval_lower: 0.9,
+            confidence_interval_upper: 1.1
+          },
+          {
+            score_date: '2019-06-02',
+            score_value: 2,
+            confidence_interval_lower: 1.9,
+            confidence_interval_upper: 2.1
+          }
+        ],
       }
     ],
-    hasConfidenceInterval: true,
+    activeModels: [ 1 ],
     startDate: '2019-06-01',
     endDate: '2019-06-02',
-    modelDates: [ '2019-06-01', '2019-06-02' ]
+    allDates: [ '2019-06-01', '2019-06-02' ]
   }
   expect(result).toEqual(expected);
 });
