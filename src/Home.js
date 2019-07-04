@@ -89,7 +89,7 @@ export default class HomeComponent extends React.Component {
 			this.setState(prevState => ({
 				modelData: filteredModel,
 				allDates: filteredDates,
-				activeModels: prevState.activeModels.filter(id => id !== event.target.value)
+				activeModels: prevState.activeModels.filter(id => id !== modelIdToFilter)
 			}), this.updatePermalinkStateCallback);
 		}
 	}

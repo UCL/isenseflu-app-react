@@ -67,6 +67,6 @@ export const About = (props) => {
 
 export const Docs = (props) => {
 	return (
-		<InlineFrame title="Docs" src="/muistatic/docs.html" height="2000px" width="100%" />
+		<InlineFrame title="Docs" src="/muistatic/docs.html" height="2050px" width="100%" />
 	);
 };
