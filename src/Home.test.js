@@ -4,6 +4,10 @@ import { shallow } from 'enzyme';
 
 import HomeComponent from './Home';
 
+beforeAll(() => {
+  process.env = Object.assign(process.env, { REACT_APP_API_HOST: '/apipath/' });
+});
+
 it('when event.target.checked is false the modelId is removed from activeModels', () => {
   const props = {
     location: { search: '' }
@@ -80,4 +84,84 @@ it('handleUpdateModel updates modelData, activeModels, startDate, endDate and al
   expect(wrapper.state('endDate')).toEqual('2019-06-28');
   expect(wrapper.state('allDates')).toHaveLength(30);
 
+});
+
+it('componentDidMount should set id of permalink if fetchUrl ends with a forward slash', (done) => {
+  const response = {
+    model_list: [
+      {id: 1, name: 'Model name'},
+      {id: 2, name: 'Model two name'}
+    ],
+    rate_thresholds: {
+      low_value: { label: 'Low epidemic rate', value: 0 },
+      medium_value: { label: 'Medium epidemic rate', value: 1 },
+      high_value: { label: 'High epidemic rate', value: 2 },
+      very_high_value: { label: ' Very high epidemic rate', value: 3}
+    },
+    model_data: [
+      {
+        id: 1,
+        name: 'Model name',
+        has_confidence_interval: true,
+        display_model: true,
+        start_date: '2019-06-01',
+        end_date: '2019-06-01',
+        average_score: 1.0,
+        data_points: [
+          {
+            score_date: '2019-06-01',
+            score_value: 1.0,
+            confidence_interval_lower: 0.9,
+            confidence_interval_upper: 1.1
+          }
+        ]
+      }
+    ]
+  };
+  const jsonPromise = Promise.resolve(response);
+  const fetchPromise = Promise.resolve({
+    ok: true,
+    json: () => jsonPromise
+  })
+  jest.spyOn(global, 'fetch').mockImplementation(() => fetchPromise);
+  const props = {
+    location: { search: '' }
+  };
+  const wrapper = shallow(<HomeComponent {...props}/>);
+  expect(global.fetch).toHaveBeenCalledTimes(1);
+  expect(global.fetch).toHaveBeenCalledWith('/apipath/');
+  process.nextTick(() => {
+    expect(wrapper.state('activeModels')).toEqual([1]);
+    expect(wrapper.state('allDates')).toEqual(['2019-06-01']);
+    expect(wrapper.state('modelList')).toEqual([
+      {id: 1, name: 'Model name'},
+      {id: 2, name: 'Model two name'}
+    ]);
+    expect(wrapper.state('startDate')).toEqual('2019-06-01');
+    expect(wrapper.state('endDate')).toEqual('2019-06-01');
+    expect(wrapper.state('permaLink')).toEqual(window.location.href);
+    expect(wrapper.state('modelData')).toEqual([
+      {
+        'averageScore': 1,
+        'datapoints': [
+          {
+            'confidence_interval_lower': 0.9,
+            'confidence_interval_upper': 1.1,
+            'score_date': '2019-06-01',
+            'score_value': 1
+          }
+        ],
+        'hasConfidenceInterval': true,
+        'id': 1,
+        'name': 'Model name'
+      }
+    ]);
+    expect(wrapper.state('rateThresholds')).toEqual(response.rate_thresholds);
+    global.fetch.mockClear();
+    done();
+  });
+});
+
+afterAll(() => {
+  delete process.env.REACT_APP_API_HOST;
 });

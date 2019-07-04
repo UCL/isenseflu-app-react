@@ -20,7 +20,7 @@ export default class HomeComponent extends React.Component {
 		modelList: [], 													// For toggle switches to select models being displayed
 		startDate: (new Date(0)).toISOString().substring(0,10), // For DataFiltering
 		endDate: (new Date()).toISOString().substring(0,10),		// For DataFiltering
-		permaLink: process.env.REACT_APP_API_HOST
+		permaLink: window.location.href
 	}
 
   componentDidMount() {
@@ -29,7 +29,8 @@ export default class HomeComponent extends React.Component {
 			if (!response.ok) { throw response };
 			return response.json();
 		}).then(jsondata => {
-			this.setState(homeModelData(jsondata));
+			const didMountData = homeModelData(jsondata);
+			this.setState(didMountData);
 		});
   }
 
