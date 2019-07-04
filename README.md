@@ -13,6 +13,6 @@ Pass the `REACT_APP_API_HOST` variable pointing to the backend component that se
 Frontend app.
 
 ```
-REACT_APP_API_HOST=[hostname_of_api_endpoint:port] npm run build
+REACT_APP_API_HOST=[relative_path_to_api_endpoint] npm run build
 serve -s build
 ```
