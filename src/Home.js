@@ -8,7 +8,7 @@ import ChartComponent from './Chart';
 import DataFilteringComponent from './DataFiltering';
 import AveragesComponent from './Averages';
 import { RawScores } from './RawScores';
-import { homeFetchUrl, homeFetchScoresUrl } from './Url';
+import { homeFetchUrl, homeFetchScoresUrl, homePermalinkInChangeCallback } from './Url';
 import { homeModelData, homeScoresData } from './JsonData';
 
 export default class HomeComponent extends React.Component {
@@ -20,7 +20,7 @@ export default class HomeComponent extends React.Component {
 		modelList: [], 													// For toggle switches to select models being displayed
 		startDate: (new Date(0)).toISOString().substring(0,10), // For DataFiltering
 		endDate: (new Date()).toISOString().substring(0,10),		// For DataFiltering
-		permaLink: process.env.REACT_APP_API_HOST
+		permaLink: location.href
 	}
 
   componentDidMount() {
@@ -29,12 +29,14 @@ export default class HomeComponent extends React.Component {
 			if (!response.ok) { throw response };
 			return response.json();
 		}).then(jsondata => {
-			this.setState(homeModelData(jsondata));
+			const didMountData = homeModelData(jsondata);
+			this.setState(didMountData);
 		});
   }
 
   handleUpdateModel = (updatedata) => {
-    this.setState({modelData: updatedata.modeldata});
+		const updatedModelData = homeScoresData(updatedata);
+    this.setState({...updatedModelData});
   }
 
   handlePropsChange = (event) => {
@@ -72,9 +74,8 @@ export default class HomeComponent extends React.Component {
 				}
 			});
 		} else {
-			const filteredModel = this.state.modelData.slice().filter(
-				item => { return item.id !== parseInt(event.target.value) }
-			);
+			const modelIdToFilter = parseInt(event.target.value);
+			const filteredModel = this.state.modelData.slice().filter(m => m.id !== modelIdToFilter);
 			const filteredDates = filteredModel.map(
 				m => m.datapoints
 			).reduce(
@@ -83,9 +84,14 @@ export default class HomeComponent extends React.Component {
 			this.setState(prevState => ({
 				modelData: filteredModel,
 				allDates: filteredDates,
-				activeModels: prevState.activeModels.filter(id => id === event.target.value)
+				activeModels: prevState.activeModels.filter(id => id !== event.target.value)
 			}));
 		}
+		const permaLinkUrl = homePermalinkInChangeCallback(
+			this.props.location.search,
+			this.state.activeModels
+		);
+		this.setState({permaLink: permaLinkUrl})
 	}
 
 	handleUpdatePermalink = (permalinkUrl) => {

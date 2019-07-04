@@ -43,6 +43,6 @@ it('generates permalink url', () => {
   const params = {...props, resolution, smoothing};
 
   const result = generatePermalinkUrl(params);
-  const expected = 'http://localhost/?source=plink&start=2018-10-01&end=2018-11-01&resolution=day&smoothing=0&id=1&id=2';
+  const expected = 'http://localhost/?source=plink&startDate=2018-10-01&endDate=2018-11-01&resolution=day&smoothing=0&id=1&id=2';
   expect(result).toEqual(expected);
 });
