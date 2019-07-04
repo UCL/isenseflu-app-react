@@ -8,7 +8,7 @@ import ChartComponent from './Chart';
 import DataFilteringComponent from './DataFiltering';
 import AveragesComponent from './Averages';
 import { RawScores } from './RawScores';
-import { homeFetchUrl, homeFetchScoresUrl } from './Url';
+import { homeFetchUrl, homeFetchScoresUrl, homePermalinkInChangeCallback } from './Url';
 import { homeModelData, homeScoresData } from './JsonData';
 
 export default class HomeComponent extends React.Component {
@@ -20,7 +20,7 @@ export default class HomeComponent extends React.Component {
 		modelList: [], 													// For toggle switches to select models being displayed
 		startDate: (new Date(0)).toISOString().substring(0,10), // For DataFiltering
 		endDate: (new Date()).toISOString().substring(0,10),		// For DataFiltering
-		permaLink: window.location.href
+		permaLink: location.href
 	}
 
   componentDidMount() {
@@ -87,6 +87,11 @@ export default class HomeComponent extends React.Component {
 				activeModels: prevState.activeModels.filter(id => id !== event.target.value)
 			}));
 		}
+		const permaLinkUrl = homePermalinkInChangeCallback(
+			this.props.location.search,
+			this.state.activeModels
+		);
+		this.setState({permaLink: permaLinkUrl})
 	}
 
 	handleUpdatePermalink = (permalinkUrl) => {

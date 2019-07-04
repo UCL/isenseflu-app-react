@@ -10,7 +10,7 @@ beforeAll(() => {
 
 it('when event.target.checked is false the modelId is removed from activeModels', () => {
   const props = {
-    location: { search: '' }
+    location: { search: 'source=plink&id=1&id=2' }
   }
   const wrapper = shallow(<HomeComponent {...props}/>);
   const instance = wrapper.instance();
@@ -21,6 +21,7 @@ it('when event.target.checked is false the modelId is removed from activeModels'
   const event = {target: { checked: false, value: 1 }};
   instance.handleChangeCallback(event, '2019-07-01', '2019-07-01');
   expect(wrapper.state('activeModels')).toEqual([2]);
+  expect(wrapper.state('permaLink')).toEqual(`${location.protocol}//${location.host}${location.pathname}?source=plink&id=2`);
 });
 
 it('handleUpdateModel updates modelData, activeModels, startDate, endDate and allDates', () => {
@@ -86,7 +87,7 @@ it('handleUpdateModel updates modelData, activeModels, startDate, endDate and al
 
 });
 
-it('componentDidMount should set id of permalink if fetchUrl ends with a forward slash', (done) => {
+it('componentDidMount set values for activeModels, allDates, modelList, startDate, endDate, rateThresholds and modelData', (done) => {
   const response = {
     model_list: [
       {id: 1, name: 'Model name'},
