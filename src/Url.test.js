@@ -1,4 +1,4 @@
-import { homeFetchUrl, homeFetchScoresUrl, homePermalinkInChangeCallback } from './Url';
+import { homeFetchUrl, homeFetchScoresUrl, homePermalinkUrl } from './Url';
 
 beforeAll(() => {
   process.env = Object.assign(process.env, { REACT_APP_API_HOST: '/apipath/' });
@@ -25,19 +25,19 @@ it('generates URL for home to call scores endpoint', () => {
 });
 
 it('generates URL for permaLink if location.search is empty', () => {
-  const result = homePermalinkInChangeCallback('', [1]);
+  const result = homePermalinkUrl('', [1]);
   const expected = `${location.protocol}//${location.host}${location.pathname}?source=plink&id=1`;
   expect(result).toEqual(expected);
 });
 
 it('generates URL for permalink if location.search comes from an existing permalink', () => {
-  const result = homePermalinkInChangeCallback('source=plink&id=1', [1,2]);
+  const result = homePermalinkUrl('source=plink&id=1', [1,2]);
   const expected = `${location.protocol}//${location.host}${location.pathname}?source=plink&id=1&id=2`;
   expect(result).toEqual(expected);
 });
 
 it('generates URL for permalink if location.search comes from a Twitter link', () => {
-  const result = homePermalinkInChangeCallback('source=twlink&id=1', [1,2]);
+  const result = homePermalinkUrl('source=twlink&id=1', [1,2]);
   const expected = `${location.protocol}//${location.host}${location.pathname}?source=plink&id=1&id=2`;
   expect(result).toEqual(expected);
 });

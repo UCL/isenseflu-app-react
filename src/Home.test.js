@@ -12,16 +12,70 @@ it('when event.target.checked is false the modelId is removed from activeModels'
   const props = {
     location: { search: 'source=plink&id=1&id=2' }
   }
-  const wrapper = shallow(<HomeComponent {...props}/>);
+  const wrapper = shallow(<HomeComponent {...props}/>, {disableLifecycleMethods: true});
   const instance = wrapper.instance();
   instance.setState({
-    activeModels: [1, 2]
+    activeModels: [1, 2],
+    startDate: '2019-06-30',
+    endDate: '2019-06-30'
   });
   expect(wrapper.state('activeModels')).toEqual([1, 2]);
   const event = {target: { checked: false, value: 1 }};
   instance.handleChangeCallback(event, '2019-07-01', '2019-07-01');
   expect(wrapper.state('activeModels')).toEqual([2]);
-  expect(wrapper.state('permaLink')).toEqual(`${location.protocol}//${location.host}${location.pathname}?source=plink&id=2`);
+  const expected = `${location.protocol}//${location.host}${location.pathname}?source=plink&id=2&startDate=2019-06-30&endDate=2019-06-30`;
+  expect(wrapper.state('permaLink')).toEqual(expected);
+});
+
+it('when event.target.checked is true the modelId is added to activeModels', (done) => {
+  const response = {
+    model_data: [
+      {
+        id: 2,
+        name: 'Model 2',
+        average_score: 3.8055417187683727,
+        has_confidence_interval: true,
+        start_date: '2019-06-26',
+        end_date: '2019-06-28',
+        data_points: [
+          {score_date: '2019-06-28', score_value: 3.49504958214849, confidence_interval_lower: 0.263175153943189, confidence_interval_upper: 6.72692401035379},
+          {score_date: '2019-06-27', score_value: 3.5872420985975, confidence_interval_lower: 0.237621760695548, confidence_interval_upper: 6.93686243649945},
+          {score_date: '2019-06-26', score_value: 4.39709536259043, confidence_interval_lower: 0.542736648153371, confidence_interval_upper: 8.25145407702749}
+        ]
+      }
+    ]
+  };
+  const jsonPromise = Promise.resolve(response);
+  const fetchPromise = Promise.resolve({
+    ok: true,
+    json: () => jsonPromise
+  })
+  jest.spyOn(global, 'fetch').mockImplementation(() => fetchPromise);
+  const props = {
+    location: { search: '' }
+  };
+  const wrapper = shallow(<HomeComponent {...props}/>, {disableLifecycleMethods: true});
+  const instance = wrapper.instance();
+  instance.setState({
+    allDates: [],
+    activeModels: [1],
+    startDate: '2019-06-27',
+    endDate: '2019-06-27'
+  });
+  expect(wrapper.state('activeModels')).toEqual([1]);
+  const event = {target: { checked: true, value: 2 }};
+  instance.handleChangeCallback(event, '2019-06-26', '2019-06-28');
+
+  process.nextTick(() => {
+    expect(wrapper.state('activeModels')).toEqual([1, 2]);
+    expect(wrapper.state('allDates')).toEqual(['2019-06-28', '2019-06-27', '2019-06-26']);
+    expect(wrapper.state('startDate')).toEqual('2019-06-26');
+    expect(wrapper.state('endDate')).toEqual('2019-06-28');
+    expect(wrapper.state('permaLink')).toEqual(`${location.protocol}//${location.host}${location.pathname}?source=plink&id=1&id=2&startDate=2019-06-26&endDate=2019-06-28`);
+    expect(wrapper.state('modelData')).toHaveLength(1);
+    global.fetch.mockReset();
+    done();
+  });
 });
 
 it('handleUpdateModel updates modelData, activeModels, startDate, endDate and allDates', () => {
@@ -72,7 +126,7 @@ it('handleUpdateModel updates modelData, activeModels, startDate, endDate and al
   const props = {
     location: { search: '' }
   };
-  const wrapper = shallow(<HomeComponent {...props}/>);
+  const wrapper = shallow(<HomeComponent {...props}/>, {disableLifecycleMethods: true});
   const instance = wrapper.instance();
   expect(wrapper.state('activeModels')).toEqual([]);
   expect(wrapper.state('modelData')).toHaveLength(0);
@@ -88,7 +142,7 @@ it('handleUpdateModel updates modelData, activeModels, startDate, endDate and al
 });
 
 it('componentDidMount set values for activeModels, allDates, modelList, startDate, endDate, rateThresholds and modelData', (done) => {
-  const response = {
+  const response1 = {
     model_list: [
       {id: 1, name: 'Model name'},
       {id: 2, name: 'Model two name'}
@@ -119,7 +173,7 @@ it('componentDidMount set values for activeModels, allDates, modelList, startDat
       }
     ]
   };
-  const jsonPromise = Promise.resolve(response);
+  const jsonPromise = Promise.resolve(response1);
   const fetchPromise = Promise.resolve({
     ok: true,
     json: () => jsonPromise
@@ -129,7 +183,6 @@ it('componentDidMount set values for activeModels, allDates, modelList, startDat
     location: { search: '' }
   };
   const wrapper = shallow(<HomeComponent {...props}/>);
-  expect(global.fetch).toHaveBeenCalledTimes(1);
   expect(global.fetch).toHaveBeenCalledWith('/apipath/');
   process.nextTick(() => {
     expect(wrapper.state('activeModels')).toEqual([1]);
@@ -157,8 +210,8 @@ it('componentDidMount set values for activeModels, allDates, modelList, startDat
         'name': 'Model name'
       }
     ]);
-    expect(wrapper.state('rateThresholds')).toEqual(response.rate_thresholds);
-    global.fetch.mockClear();
+    expect(wrapper.state('rateThresholds')).toEqual(response1.rate_thresholds);
+    global.fetch.mockReset();
     done();
   });
 });

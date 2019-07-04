@@ -8,7 +8,7 @@ import ChartComponent from './Chart';
 import DataFilteringComponent from './DataFiltering';
 import AveragesComponent from './Averages';
 import { RawScores } from './RawScores';
-import { homeFetchUrl, homeFetchScoresUrl, homePermalinkInChangeCallback } from './Url';
+import { homeFetchUrl, homeFetchScoresUrl, homePermalinkUrl } from './Url';
 import { homeModelData, homeScoresData } from './JsonData';
 
 export default class HomeComponent extends React.Component {
@@ -50,11 +50,20 @@ export default class HomeComponent extends React.Component {
 	  }
 	}
 
+	updatePermalinkStateCallback = () => {
+		const permaLinkUrl = homePermalinkUrl(
+			this.props.location.search,
+			this.state.activeModels,
+			this.state.startDate,
+			this.state.endDate
+		);
+		this.setState({permaLink: permaLinkUrl});
+	}
+
 	handleChangeCallback = (event, startDate, endDate) => {
 		if (event.target.checked) {
 			// Download data for that particular model
 			const fetchUrl = homeFetchScoresUrl(event.target.value, startDate, endDate);
-
 			fetch(fetchUrl)
 			.then(response => {
 				if (!response.ok) { throw response };
@@ -64,14 +73,10 @@ export default class HomeComponent extends React.Component {
 				this.setState(prevState => ({
 					modelData: [...prevState.modelData, ...newScoresData.modelData],
 					allDates: [...new Set([...prevState.allDates, ...newScoresData.allDates])],
-					activeModels: [...prevState.activeModels, ...newScoresData.activeModels]
-				}));
-				if (this.state.modelData.startDate > newScoresData.startDate) {
-					this.setState({ startDate: newScoresData.startDate });
-				};
-				if (this.state.modelData.endDate < newScoresData.endDate) {
-					this.setState({	endDate: newScoresData.endDate });
-				}
+					activeModels: [...prevState.activeModels, ...newScoresData.activeModels],
+					startDate: (prevState.startDate > newScoresData.startDate) ? newScoresData.startDate : prevState.startDate,
+					endDate: (prevState.endDate < newScoresData.endDate) ? newScoresData.endDate : prevState.endDate
+				}), this.updatePermalinkStateCallback);
 			});
 		} else {
 			const modelIdToFilter = parseInt(event.target.value);
@@ -85,13 +90,8 @@ export default class HomeComponent extends React.Component {
 				modelData: filteredModel,
 				allDates: filteredDates,
 				activeModels: prevState.activeModels.filter(id => id !== event.target.value)
-			}));
+			}), this.updatePermalinkStateCallback);
 		}
-		const permaLinkUrl = homePermalinkInChangeCallback(
-			this.props.location.search,
-			this.state.activeModels
-		);
-		this.setState({permaLink: permaLinkUrl})
 	}
 
 	handleUpdatePermalink = (permalinkUrl) => {
