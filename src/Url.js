@@ -34,3 +34,21 @@ export const homeFetchScoresUrl = (id, startDate, endDate) => {
   fetchUrl += fetchUrl.endsWith('/') ? '' : '/';
   return `${fetchUrl}scores?id=${id}&startDate=${startDate}&endDate=${endDate}`;
 };
+
+/**
+ * Updates the URL used to set the permaLink state variable in the Home component as done by the
+ * callback function handleChangeCallback() which is called by the modelcontrols prop in the Chart
+ * component.
+ * @param  {String} locationSearch String containing the value of location.search in the component
+ * @param  {Array}  id             Array containing the ids of the models to be present in the URL
+ * @return {String}                The URL to be used in the permaLink
+ */
+export const homePermalinkInChangeCallback = (locationSearch, ids) => {
+  let searchParams = new URLSearchParams(locationSearch);
+  searchParams.set('source', 'plink');
+  searchParams.delete('id');
+  ids.forEach(id => {
+    searchParams.append('id', id);
+  });
+  return `${window.location.toString()}?${searchParams.toString()}`;
+};
