@@ -50,5 +50,5 @@ export const homePermalinkInChangeCallback = (locationSearch, ids) => {
   ids.forEach(id => {
     searchParams.append('id', id);
   });
-  return `${location.protocol}//${location.host}${location.pathname}?${searchParams.toString()}`;
+  return `${window.location.protocol}//${window.location.host}${window.location.pathname}?${searchParams.toString()}`;
 };

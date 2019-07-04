@@ -20,7 +20,7 @@ export default class HomeComponent extends React.Component {
 		modelList: [], 													// For toggle switches to select models being displayed
 		startDate: (new Date(0)).toISOString().substring(0,10), // For DataFiltering
 		endDate: (new Date()).toISOString().substring(0,10),		// For DataFiltering
-		permaLink: location.href
+		permaLink: window.location.href
 	}
 
   componentDidMount() {
