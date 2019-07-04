@@ -19,13 +19,16 @@
     "react-router-dom": "^5.0.1",
     "react-scripts": "^3.0.1",
     "typeface-clear-sans": "0.0.44",
-    "typescript": "^3.5.2"
+    "typescript": "^3.5.2",
+    "snyk": "^1.192.0"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "snyk-protect": "snyk protect",
+    "prepublish": "npm run snyk-protect"
   },
   "devDependencies": {
     "enzyme": "^3.10.0",
@@ -37,5 +40,6 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "snyk": true
 }
