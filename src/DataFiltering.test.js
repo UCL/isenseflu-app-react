@@ -1,6 +1,8 @@
 import React from 'react';
 
 import { createShallow } from '@material-ui/core/test-utils';
+import Button from '@material-ui/core/Button';
+import Select from '@material-ui/core/Select';
 
 import DataFilteringComponent, { generateQueryUrl, generatePermalinkUrl } from './DataFiltering';
 import { Article } from './PublicTemplates';
@@ -45,4 +47,22 @@ it('generates permalink url', () => {
   const result = generatePermalinkUrl(params);
   const expected = 'http://localhost/?source=plink&startDate=2018-10-01&endDate=2018-11-01&resolution=day&smoothing=0&id=1&id=2';
   expect(result).toEqual(expected);
+});
+
+it('passes isWeekly to chartTitleCallback', () => {
+  const props = {
+    modelIds: [1]
+  }
+  const shallow = createShallow();
+  const wrapper = shallow(<DataFilteringComponent {...props} />).dive();
+  const instance = wrapper.instance();
+  jest.spyOn(instance, 'handleSubmit');
+  const selectResolution = wrapper.find(Select).first().dive();
+  const submitButton = wrapper.find(Button).dive();
+  selectResolution.prop('onChange')({target: {type: 'select-one', value: 'week', name: 'resolution'}});
+  submitButton.simulate('submit');
+  expect(instance.handleSubmit).toHaveBeenCalledWith(expect.anything(), expect.anything(), true);
+  selectResolution.prop('onChange')({target: {type: 'select-one', value: 'day', name: 'resolution'}});
+  submitButton.simulate('submit');
+  expect(instance.handleSubmit).toHaveBeenCalledWith(expect.anything(), expect.anything(), false);
 });

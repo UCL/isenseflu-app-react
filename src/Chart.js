@@ -143,7 +143,8 @@ const options = (annotationArr) => {
 					time: {
 						displayFormats: {
 							day: 'D MMM'
-						}
+						},
+						tooltipFormat: 'Do of MMM, YYYY'
 					},
 					ticks: {
 						fontSize: 14
@@ -232,6 +233,7 @@ class ChartComponent extends React.Component {
 
 		const {
 			classes,
+			charttitle,
 			modelannotations,
 			modeldata,
 			permalink
@@ -241,7 +243,7 @@ class ChartComponent extends React.Component {
 		const annotations = generateAnnotations(modelannotations, maxscorevalue);
 
 		return (
-			<Article header="Influenza-like illness rate per day">
+			<Article header={charttitle}>
 				<Grid item xs={12} className={classes.lineChart}>
 					<Line data={data(modeldata)} options={options(annotations)}/>
 				</Grid>
