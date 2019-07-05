@@ -143,7 +143,8 @@ const options = (annotationArr) => {
 					time: {
 						displayFormats: {
 							day: 'D MMM'
-						}
+						},
+						tooltipFormat: 'Do of MMM, YYYY'
 					},
 					ticks: {
 						fontSize: 14
