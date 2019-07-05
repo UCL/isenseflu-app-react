@@ -60,7 +60,7 @@ class DataFilteringComponent extends Component {
     });
   }
 
-  handleSubmit = (queryUrl, permalinkUrl) => (event) => {
+  handleSubmit = (queryUrl, permalinkUrl, isWeekly) => (event) => {
     event.preventDefault();
     fetch(queryUrl)
     .then(response => {
@@ -68,6 +68,7 @@ class DataFilteringComponent extends Component {
 			return response.json();
     }).then(jsondata => {
       this.props.updateCallback(jsondata);
+			this.props.chartTitleCallback(isWeekly);
     });
     this.setState({isDisabled: true});
 		this.props.permalinkCallback(permalinkUrl);
@@ -90,10 +91,12 @@ class DataFilteringComponent extends Component {
 
 		const permalinkUrl = generatePermalinkUrl(queryUrlParams);
 
+		const isWeekly = resolution === 'week';
+
 		return (
 			<Article header="Data Filtering">
 				<Grid item xs={12}>
-					<form onSubmit={this.handleSubmit(queryUrl, permalinkUrl)}>
+					<form onSubmit={this.handleSubmit(queryUrl, permalinkUrl, isWeekly)}>
 						<Grid container spacing={24} className={classes.filteringFields}>
 							<Grid item xs={3}>
 								<FormGroup>

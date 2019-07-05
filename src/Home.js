@@ -20,7 +20,8 @@ export default class HomeComponent extends React.Component {
 		modelList: [], 													// For toggle switches to select models being displayed
 		startDate: (new Date(0)).toISOString().substring(0,10), // For DataFiltering
 		endDate: (new Date()).toISOString().substring(0,10),		// For DataFiltering
-		permaLink: window.location.href
+		permaLink: window.location.href,
+		chartTitlePrefix: 'Daily'
 	}
 
   componentDidMount() {
@@ -98,11 +99,18 @@ export default class HomeComponent extends React.Component {
 		this.setState({permaLink: permalinkUrl})
 	}
 
+	handleChartTitleUpdate = (value) => {
+		if (value) {
+			this.setState({chartTitlePrefix: 'Weekly'});
+		}
+	}
+
 	render() {
 
 		const {
 			activeModels,
 			allDates,
+			chartTitlePrefix,
 			endDate,
 			modelData,
 			modelList,
@@ -131,6 +139,7 @@ export default class HomeComponent extends React.Component {
 		return (
 			<React.Fragment>
 				<ChartComponent
+					charttitle={`${chartTitlePrefix} influenza-like illness rates`}
 					modeldata={modelData}
 					modelcontrols={modelToggleControls}
 					modelannotations={rateThresholds}
@@ -143,6 +152,7 @@ export default class HomeComponent extends React.Component {
 					updateCallback={this.handleUpdateModel}
 					onChangeCallback={this.handlePropsChange}
 					permalinkCallback={this.handleUpdatePermalink}
+					chartTitleCallback={this.handleChartTitleUpdate}
 					/>
 				<AveragesComponent modeldata={modelData}/>
 				<RawScores

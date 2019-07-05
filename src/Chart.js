@@ -233,6 +233,7 @@ class ChartComponent extends React.Component {
 
 		const {
 			classes,
+			charttitle,
 			modelannotations,
 			modeldata,
 			permalink
@@ -242,7 +243,7 @@ class ChartComponent extends React.Component {
 		const annotations = generateAnnotations(modelannotations, maxscorevalue);
 
 		return (
-			<Article header="Influenza-like illness rate per day">
+			<Article header={charttitle}>
 				<Grid item xs={12} className={classes.lineChart}>
 					<Line data={data(modeldata)} options={options(annotations)}/>
 				</Grid>

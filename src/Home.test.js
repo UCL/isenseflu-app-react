@@ -3,6 +3,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 
 import HomeComponent from './Home';
+import ChartComponent from './Chart';
 
 beforeAll(() => {
   process.env = Object.assign(process.env, { REACT_APP_API_HOST: '/apipath/' });
@@ -214,6 +215,18 @@ it('componentDidMount set values for activeModels, allDates, modelList, startDat
     global.fetch.mockReset();
     done();
   });
+});
+
+it('handleChartTitleUpdate sets state value for chartTitlePrefix to Weekly', () => {
+  const defaultTitle = 'Daily influenza-like illness rates';
+  const updatedTitle = 'Weekly influenza-like illness rates';
+  const wrapper = shallow(<HomeComponent />, {disableLifecycleMethods: true});
+  expect(wrapper.state('chartTitlePrefix')).toEqual('Daily');
+  expect(wrapper.find(ChartComponent).dive().prop('charttitle')).toEqual(defaultTitle);
+  const instance = wrapper.instance();
+  instance.handleChartTitleUpdate(true);
+  expect(wrapper.state('chartTitlePrefix')).toEqual('Weekly');
+  expect(wrapper.find(ChartComponent).dive().prop('charttitle')).toEqual(updatedTitle);
 });
 
 afterAll(() => {
