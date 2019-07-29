@@ -20,6 +20,8 @@ export default class HomeComponent extends React.Component {
 		modelList: [], 													// For toggle switches to select models being displayed
 		startDate: (new Date(0)).toISOString().substring(0,10), // For DataFiltering
 		endDate: (new Date()).toISOString().substring(0,10),		// For DataFiltering
+    resolution: 'day',                                      // For DataFiltering
+		smoothing: 0,                                           // for DataFiltering
 		permaLink: window.location.href,
 		chartTitlePrefix: 'Daily'
 	}
@@ -56,15 +58,19 @@ export default class HomeComponent extends React.Component {
 			this.props.location.search,
 			this.state.activeModels,
 			this.state.startDate,
-			this.state.endDate
+			this.state.endDate,
+			this.state.resolution,
+			this.state.smoothing
 		);
 		this.setState({permaLink: permaLinkUrl});
 	}
 
-	handleChangeCallback = (event, startDate, endDate) => {
+	handleChangeCallback = (event, startDate, endDate, resolution, smoothing) => {
 		if (event.target.checked) {
 			// Download data for that particular model
-			const fetchUrl = homeFetchScoresUrl(event.target.value, startDate, endDate);
+			const fetchUrl = homeFetchScoresUrl(
+				event.target.value, startDate, endDate, resolution, smoothing
+			);
 			fetch(fetchUrl)
 			.then(response => {
 				if (!response.ok) { throw response };
@@ -116,6 +122,8 @@ export default class HomeComponent extends React.Component {
 			modelList,
 			permaLink,
 			rateThresholds,
+			resolution,
+      smoothing,
 			startDate
 		} = this.state;
 
@@ -127,7 +135,7 @@ export default class HomeComponent extends React.Component {
 							<Switch
 								value={String(model.id)}
 								checked={activeModels.includes(model.id)}
-								onChange={(e) => this.handleChangeCallback(e, startDate, endDate)}
+								onChange={(e) => this.handleChangeCallback(e, startDate, endDate, resolution, smoothing)}
 								color="primary"/>
 						}
 						label={model.name}
@@ -149,6 +157,8 @@ export default class HomeComponent extends React.Component {
 					modelIds={modelData.map(m => m.id)}
 					startDate={startDate}
 					endDate={endDate}
+          resolution={resolution}
+					smoothing={smoothing}
 					updateCallback={this.handleUpdateModel}
 					onChangeCallback={this.handlePropsChange}
 					permalinkCallback={this.handleUpdatePermalink}

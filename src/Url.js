@@ -24,15 +24,17 @@ export const homeFetchUrl = (locationSearch) => {
 /**
  * Builds the URL used to fetch the model scores for the Home component on the callback function
  * handleChangeCallback() called by the modelcontrols prop in the Chart component.
- * @param  {Number} id        The id of the model to retrieve the scores for
- * @param  {String} startDate Start date of requested time period. In ISO format YYYY-MM-DD
- * @param  {String} endDate   End date of requested time period. In ISO format YYYY-MM-DD
- * @return {String}           The URL to call the API
+ * @param  {Number} id         The id of the model to retrieve the scores for
+ * @param  {String} startDate  Start date of requested time period. In ISO format YYYY-MM-DD
+ * @param  {String} endDate    End date of requested time period. In ISO format YYYY-MM-DD
+ * @param  {Number} resolution The density of the data points returned, either day or week
+ * @param  {String} smoothing  Number of days to smooth data over using a moving average filter
+ * @return {String}            The URL to call the API
  */
-export const homeFetchScoresUrl = (id, startDate, endDate) => {
+export const homeFetchScoresUrl = (id, startDate, endDate, resolution, smoothing) => {
   let fetchUrl = process.env.REACT_APP_API_HOST;
   fetchUrl += fetchUrl.endsWith('/') ? '' : '/';
-  return `${fetchUrl}scores?id=${id}&startDate=${startDate}&endDate=${endDate}`;
+  return `${fetchUrl}scores?id=${id}&startDate=${startDate}&endDate=${endDate}&resolution=${resolution}&smoothing=${smoothing}`;
 };
 
 /**
@@ -41,11 +43,13 @@ export const homeFetchScoresUrl = (id, startDate, endDate) => {
  * component.
  * @param  {String} locationSearch String containing the value of location.search in the component
  * @param  {Array}  id             Array containing the ids of the models to be present in the URL
- * @param  {String} startDate
- * @param  {String} endDate
+ * @param  {String} startDate      Start date of requested time period. In ISO format YYYY-MM-DD
+ * @param  {String} endDate        End date of requested time period. In ISO format YYYY-MM-DD
+ * @param  {Number} resolution The density of the data points returned, either day or week
+ * @param  {String} smoothing  Number of days to smooth data over using a moving average filter
  * @return {String}                The URL to be used in the permaLink
  */
-export const homePermalinkUrl = (locationSearch, ids, startDate, endDate) => {
+export const homePermalinkUrl = (locationSearch, ids, startDate, endDate, resolution, smoothing) => {
   let searchParams = new URLSearchParams(locationSearch);
   searchParams.set('source', 'plink');
   searchParams.delete('id');
@@ -54,5 +58,7 @@ export const homePermalinkUrl = (locationSearch, ids, startDate, endDate) => {
   });
   searchParams.set('startDate', startDate);
   searchParams.set('endDate', endDate);
+  searchParams.set('resolution', resolution);
+  searchParams.set('smoothing', smoothing);
   return `${window.location.protocol}//${window.location.host}${window.location.pathname}?${searchParams.toString()}`;
 };

@@ -50,8 +50,10 @@ it('generates permalink url', () => {
 });
 
 it('passes isWeekly to chartTitleCallback', () => {
+  const handlePropsChange = (event) => {}
   const props = {
-    modelIds: [1]
+    modelIds: [1],
+    onChangeCallback: handlePropsChange
   }
   const shallow = createShallow();
   const wrapper = shallow(<DataFilteringComponent {...props} />).dive();

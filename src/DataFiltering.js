@@ -38,9 +38,8 @@ export const generatePermalinkUrl = (params) => {
 class DataFilteringComponent extends Component {
 
 	state = {
-		resolution: "day",
-		smoothing: 0,
-		isDisabled: true
+		isDisabled: true,
+		isWeekly: false
 	}
 
   handlePropsChange = (event) => {
@@ -50,15 +49,14 @@ class DataFilteringComponent extends Component {
     });
   }
 
-  handleLocalChange = (event) => {
-    const target = event.target;
-    const value = target.type === 'checkbox' ? target.checked : target.value;
-    const name = target.name;
-    this.setState({
-      [name]: value,
-      isDisabled: false
-    });
-  }
+	handleResolutionChange = (event) => {
+		this.props.onChangeCallback(event);
+		const value = event.target.value;
+		this.setState({
+			isWeekly: value === 'week',
+			isDisabled: false
+		});
+	}
 
   handleSubmit = (queryUrl, permalinkUrl, isWeekly) => (event) => {
     event.preventDefault();
@@ -76,22 +74,18 @@ class DataFilteringComponent extends Component {
 
   render() {
 
-		const { classes, endDate, startDate } = this.props;
+		const { classes, endDate, startDate, resolution, smoothing } = this.props;
 
-		const { isDisabled, resolution, smoothing } = this.state;
+		const { isDisabled, isWeekly } = this.state;
 
 		const queryUrlParams = {
 			...this.props,
-			resolution,
-			smoothing,
 			apiHost: process.env.REACT_APP_API_HOST
 		}
 
 		const queryUrl = generateQueryUrl(queryUrlParams);
 
 		const permalinkUrl = generatePermalinkUrl(queryUrlParams);
-
-		const isWeekly = resolution === 'week';
 
 		return (
 			<Article header="Data Filtering">
@@ -133,7 +127,7 @@ class DataFilteringComponent extends Component {
 									<InputLabel htmlFor="resolution">Resolution</InputLabel>
 									<Select
 										value={resolution}
-										onChange={this.handleLocalChange}
+										onChange={this.handleResolutionChange}
 										inputProps={{name: "resolution", id: "resolution"}}
 										>
 										<MenuItem value="day">Day</MenuItem>
@@ -149,7 +143,7 @@ class DataFilteringComponent extends Component {
 									<InputLabel htmlFor="smoothing">Smoothing</InputLabel>
 									<Select
 										value={smoothing}
-										onChange={this.handleLocalChange}
+										onChange={this.handlePropsChange}
 										inputProps={{name: "smoothing", id: "smoothing"}}
 										>
 										<MenuItem value={0}>No smoothing</MenuItem>
@@ -168,12 +162,12 @@ class DataFilteringComponent extends Component {
 								isDisabled
 								? <Button type="submit" variant="contained" disabled>Show data</Button>
 								: <Button type="submit" variant="contained">Show data</Button>
-						}
-					</FormFooter>
-				</form>
-			</Grid>
-		</Article>
-	);
+						  }
+						</FormFooter>
+					</form>
+				</Grid>
+			</Article>
+		);
   }
 }
 

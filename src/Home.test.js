@@ -18,13 +18,15 @@ it('when event.target.checked is false the modelId is removed from activeModels'
   instance.setState({
     activeModels: [1, 2],
     startDate: '2019-06-30',
-    endDate: '2019-06-30'
+    endDate: '2019-06-30',
+    resolution: 'day',
+    smoothing: 0
   });
   expect(wrapper.state('activeModels')).toEqual([1, 2]);
   const event = {target: { checked: false, value: 1 }};
-  instance.handleChangeCallback(event, '2019-07-01', '2019-07-01');
+  instance.handleChangeCallback(event, '2019-07-01', '2019-07-01', 'day', 0);
   expect(wrapper.state('activeModels')).toEqual([2]);
-  const expected = `${location.protocol}//${location.host}${location.pathname}?source=plink&id=2&startDate=2019-06-30&endDate=2019-06-30`;
+  const expected = `${location.protocol}//${location.host}${location.pathname}?source=plink&id=2&startDate=2019-06-30&endDate=2019-06-30&resolution=day&smoothing=0`;
   expect(wrapper.state('permaLink')).toEqual(expected);
 });
 
@@ -61,7 +63,9 @@ it('when event.target.checked is true the modelId is added to activeModels', (do
     allDates: [],
     activeModels: [1],
     startDate: '2019-06-27',
-    endDate: '2019-06-27'
+    endDate: '2019-06-27',
+    resolution: 'day',
+    smoothing: 0
   });
   expect(wrapper.state('activeModels')).toEqual([1]);
   const event = {target: { checked: true, value: 2 }};
@@ -72,7 +76,7 @@ it('when event.target.checked is true the modelId is added to activeModels', (do
     expect(wrapper.state('allDates')).toEqual(['2019-06-28', '2019-06-27', '2019-06-26']);
     expect(wrapper.state('startDate')).toEqual('2019-06-26');
     expect(wrapper.state('endDate')).toEqual('2019-06-28');
-    expect(wrapper.state('permaLink')).toEqual(`${location.protocol}//${location.host}${location.pathname}?source=plink&id=1&id=2&startDate=2019-06-26&endDate=2019-06-28`);
+    expect(wrapper.state('permaLink')).toEqual(`${location.protocol}//${location.host}${location.pathname}?source=plink&id=1&id=2&startDate=2019-06-26&endDate=2019-06-28&resolution=day&smoothing=0`);
     expect(wrapper.state('modelData')).toHaveLength(1);
     global.fetch.mockReset();
     done();
