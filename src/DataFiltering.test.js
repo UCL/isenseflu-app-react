@@ -9,7 +9,15 @@ import { Article } from './PublicTemplates';
 
 it('renders DataFilteringComponent wihout crashing', () => {
   const props = {
-    modelIds: [1, 2]
+    chartTitleCallback: jest.fn(),
+    endDate: '',
+    modelIds: [1, 2],
+    onChangeCallback: jest.fn(),
+    permalinkCallback: jest.fn(),
+    resolution: '',
+    smoothing: 0,
+    startDate: '',
+    updateCallback: jest.fn(),
   }
   const shallow = createShallow();
   const wrapper = shallow(<DataFilteringComponent {...props} />);
@@ -18,10 +26,13 @@ it('renders DataFilteringComponent wihout crashing', () => {
 
 it('generates query url', () => {
   const props = {
+    chartTitleCallback: jest.fn(),
     endDate: '2018-11-01',
+    onChangeCallback: jest.fn(),
+    permalinkCallback: jest.fn(),
     startDate: '2018-10-01',
     modelIds: [1],
-    apiHost: 'h'
+    apiHost: 'h',
   };
   const resolution = 7;
   const smoothing = 0;
@@ -35,9 +46,15 @@ it('generates query url', () => {
 
 it('generates permalink url', () => {
   const props = {
+    chartTitleCallback: jest.fn(),
     endDate: '2018-11-01',
+    onChangeCallback: jest.fn(),
+    permalinkCallback: jest.fn(),
+    resolution: '',
+    smoothing: 0,
     startDate: '2018-10-01',
-    modelIds: [1, 2]
+    modelIds: [1, 2],
+    updateCallback: jest.fn(),
   };
   const resolution = 'day';
   const smoothing = 0;
@@ -50,10 +67,16 @@ it('generates permalink url', () => {
 });
 
 it('passes isWeekly to chartTitleCallback', () => {
-  const handlePropsChange = (event) => {}
   const props = {
+    chartTitleCallback: jest.fn(),
+    endDate: '',
     modelIds: [1],
-    onChangeCallback: handlePropsChange
+    onChangeCallback: jest.fn(),
+    permalinkCallback: jest.fn(),
+    resolution: '',
+    smoothing: 0,
+    startDate: '',
+    updateCallback: jest.fn(),
   }
   const shallow = createShallow();
   const wrapper = shallow(<DataFilteringComponent {...props} />).dive();
