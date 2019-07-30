@@ -8,7 +8,7 @@ export const homeFetchUrl = (locationSearch) => {
   let fetchUrl = process.env.REACT_APP_API_HOST;
   fetchUrl += fetchUrl.endsWith('/') ? '' : '/';
   if (locationSearch) {
-    let searchParams = new URLSearchParams(locationSearch);
+    const searchParams = new URLSearchParams(locationSearch);
     if (searchParams.get('source') === 'plink') {
       searchParams.delete('source');
       fetchUrl = `${fetchUrl}plink?${searchParams.toString()}`;
@@ -34,7 +34,7 @@ export const homeFetchUrl = (locationSearch) => {
 export const homeFetchScoresUrl = (id, startDate, endDate, resolution, smoothing) => {
   let fetchUrl = process.env.REACT_APP_API_HOST;
   fetchUrl += fetchUrl.endsWith('/') ? '' : '/';
-  let searchParams = new URLSearchParams();
+  const searchParams = new URLSearchParams();
   searchParams.set('id', id);
   searchParams.set('startDate', startDate);
   searchParams.set('endDate', endDate);
@@ -56,12 +56,12 @@ export const homeFetchScoresUrl = (id, startDate, endDate, resolution, smoothing
  * @return {String}                The URL to be used in the permaLink
  */
 export const homePermalinkUrl = (
-  locationSearch, ids, startDate, endDate, resolution, smoothing
+  locationSearch, ids, startDate, endDate, resolution, smoothing,
 ) => {
-  let searchParams = new URLSearchParams(locationSearch);
+  const searchParams = new URLSearchParams(locationSearch);
   searchParams.set('source', 'plink');
   searchParams.delete('id');
-  ids.forEach(id => {
+  ids.forEach((id) => {
     searchParams.append('id', id);
   });
   searchParams.set('startDate', startDate);
