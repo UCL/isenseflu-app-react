@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -8,44 +9,44 @@ import TableRow from '@material-ui/core/TableRow';
 
 import { Article } from './PublicTemplates';
 
-export default class AveragesComponent extends React.Component {
+const AveragesComponent = (props) => {
+  const { modeldata } = props;
 
-  render() {
+  return (
+    <Article header="Averages">
+      <Table>
+        <TableHead>
+          <TableRow>
+            <TableCell>Model</TableCell>
+            <TableCell>Region</TableCell>
+            <TableCell>Average score</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {
+            modeldata.map((item) => {
+              const avg = item.datapoints.map(
+                x => x.score_value,
+              ).reduce(
+                (sum, score) => sum + score,
+              ) / item.datapoints.length;
+              return (
+                <TableRow key={item.id}>
+                  <TableCell>{item.name}</TableCell>
+                  <TableCell>England</TableCell>
+                  <TableCell>{avg}</TableCell>
+                </TableRow>
+              );
+            })
+          }
+        </TableBody>
+      </Table>
+    </Article>
+  );
+};
 
-    const { modeldata } = this.props;
+AveragesComponent.propTypes = {
+  modeldata: PropTypes.array.isRequired,
+};
 
-    return (
-      <Article header="Averages">
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>Model</TableCell>
-              <TableCell>Region</TableCell>
-              <TableCell>Average score</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {
-              modeldata.map(item => {
-                  const avg = item.datapoints.map(
-                    x => x.score_value
-                  ).reduce(
-                    (sum, score) => sum + score
-                  ) / item.datapoints.length;
-                  return (
-                    <TableRow key={item.id}>
-                      <TableCell>{item.name}</TableCell>
-                      <TableCell>England</TableCell>
-                      <TableCell>{avg}</TableCell>
-                    </TableRow>
-                  );
-                }
-              )
-            }
-          </TableBody>
-        </Table>
-      </Article>
-    );
-  }
-
-}
+export { AveragesComponent as default };

@@ -16,7 +16,7 @@ export default class HomeComponent extends React.Component {
 	state = {
 		activeModels: [],
 		modelData: [],													// For all components
-		rateThresholds: undefined,
+		rateThresholds: {},
 		modelList: [], 													// For toggle switches to select models being displayed
 		startDate: (new Date(0)).toISOString().substring(0,10), // For DataFiltering
 		endDate: (new Date()).toISOString().substring(0,10),		// For DataFiltering

@@ -8,7 +8,11 @@ import {Article} from './PublicTemplates';
 
 it('renders ChartComponent without crashing', () => {
   const props = {
-    modeldata : []
+    charttitle: '',
+    modelcontrols: React.createElement('span'),
+    modeldata: [],
+    modelannotations: {},
+    permalink: '',
   }
   const wrapper = shallow(<ChartComponent {...props}/>);
   expect(wrapper.dive().find(Article)).toHaveLength(1);
