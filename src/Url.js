@@ -34,7 +34,13 @@ export const homeFetchUrl = (locationSearch) => {
 export const homeFetchScoresUrl = (id, startDate, endDate, resolution, smoothing) => {
   let fetchUrl = process.env.REACT_APP_API_HOST;
   fetchUrl += fetchUrl.endsWith('/') ? '' : '/';
-  return `${fetchUrl}scores?id=${id}&startDate=${startDate}&endDate=${endDate}&resolution=${resolution}&smoothing=${smoothing}`;
+  let searchParams = new URLSearchParams();
+  searchParams.set('id', id);
+  searchParams.set('startDate', startDate);
+  searchParams.set('endDate', endDate);
+  searchParams.set('resolution', resolution);
+  searchParams.set('smoothing', smoothing);
+  return `${fetchUrl}scores?${searchParams.toString()}`;
 };
 
 /**
@@ -49,7 +55,9 @@ export const homeFetchScoresUrl = (id, startDate, endDate, resolution, smoothing
  * @param  {String} smoothing  Number of days to smooth data over using a moving average filter
  * @return {String}                The URL to be used in the permaLink
  */
-export const homePermalinkUrl = (locationSearch, ids, startDate, endDate, resolution, smoothing) => {
+export const homePermalinkUrl = (
+  locationSearch, ids, startDate, endDate, resolution, smoothing
+) => {
   let searchParams = new URLSearchParams(locationSearch);
   searchParams.set('source', 'plink');
   searchParams.delete('id');
@@ -60,5 +68,6 @@ export const homePermalinkUrl = (locationSearch, ids, startDate, endDate, resolu
   searchParams.set('endDate', endDate);
   searchParams.set('resolution', resolution);
   searchParams.set('smoothing', smoothing);
-  return `${window.location.protocol}//${window.location.host}${window.location.pathname}?${searchParams.toString()}`;
+  const pUrl = `${window.location.protocol}//${window.location.host}${window.location.pathname}`;
+  return `${pUrl}?${searchParams.toString()}`;
 };
