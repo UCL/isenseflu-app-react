@@ -12,29 +12,13 @@ import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 
 import { Article, FormFooter } from './PublicTemplates';
+import { dataFilteringPermalinkUrl, dataFilteringQueryUrl } from './Url';
 
 const styles = theme => ({
   filteringFields: {
     padding: theme.spacing.unit * 2,
   },
 });
-
-export const generateQueryUrl = (params) => {
-  const models = params.modelIds.map(m => `id=${m}`).join('&');
-  const endpointUrl = `${params.apiHost}/scores?`;
-  const dateParam = `startDate=${params.startDate}&endDate=${params.endDate}`;
-  const resParam = `&resolution=${params.resolution}`;
-  const smoothParam = `&smoothing=${params.smoothing}`;
-  return `${endpointUrl}${models}&${dateParam}${resParam}${smoothParam}`;
-};
-
-export const generatePermalinkUrl = (params) => {
-  const models = params.modelIds.map(m => `id=${m}`).join('&');
-  const dateParam = `startDate=${params.startDate}&endDate=${params.endDate}`;
-  const resParam = `&resolution=${params.resolution}`;
-  const smoothParam = `&smoothing=${params.smoothing}`;
-  return `${window.location.origin}/?source=plink&${dateParam}${resParam}${smoothParam}&${models}`;
-};
 
 class DataFilteringComponent extends Component {
   state = {
@@ -76,19 +60,16 @@ class DataFilteringComponent extends Component {
 
   render() {
     const {
-      classes, endDate, startDate, resolution, smoothing,
+      classes, endDate, modelIds, startDate, resolution, smoothing,
     } = this.props;
 
     const { isDisabled, isWeekly } = this.state;
 
-    const queryUrlParams = {
-      ...this.props,
-      apiHost: process.env.REACT_APP_API_HOST,
-    };
+    const queryUrl = dataFilteringQueryUrl(modelIds, startDate, endDate, resolution, smoothing);
 
-    const queryUrl = generateQueryUrl(queryUrlParams);
-
-    const permalinkUrl = generatePermalinkUrl(queryUrlParams);
+    const permalinkUrl = dataFilteringPermalinkUrl(
+      modelIds, startDate, endDate, resolution, smoothing,
+    );
 
     return (
       <Article header="Data Filtering">
@@ -178,6 +159,7 @@ DataFilteringComponent.propTypes = {
   classes: PropTypes.object.isRequired,
   chartTitleCallback: PropTypes.func.isRequired,
   endDate: PropTypes.string.isRequired,
+  modelIds: PropTypes.array.isRequired,
   onChangeCallback: PropTypes.func.isRequired,
   permalinkCallback: PropTypes.func.isRequired,
   resolution: PropTypes.string.isRequired,

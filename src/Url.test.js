@@ -1,4 +1,10 @@
-import { homeFetchUrl, homeFetchScoresUrl, homePermalinkUrl } from './Url';
+import {
+  dataFilteringPermalinkUrl,
+  dataFilteringQueryUrl,
+  homeFetchUrl,
+  homeFetchScoresUrl,
+  homePermalinkUrl,
+} from './Url';
 
 beforeAll(() => {
   process.env = Object.assign(process.env, { REACT_APP_API_HOST: '/apipath/' });
@@ -38,6 +44,18 @@ it('generates URL for permalink if location.search comes from an existing permal
 
 it('generates URL for permalink if location.search comes from a Twitter link', () => {
   const result = homePermalinkUrl('source=twlink&id=1', [1,2], '2019-06-01', '2019-06-02', 'day', 0);
+  const expected = `${location.protocol}//${location.host}${location.pathname}?source=plink&id=1&id=2&startDate=2019-06-01&endDate=2019-06-02&resolution=day&smoothing=0`;
+  expect(result).toEqual(expected);
+});
+
+it('generates URL for datafiltering to fetch the model scores', () => {
+  const result = dataFilteringQueryUrl([1,2], '2019-06-01', '2019-06-02', 'day', 0);
+  const expected = '/apipath/scores?id=1&id=2&startDate=2019-06-01&endDate=2019-06-02&resolution=day&smoothing=0';
+  expect(result).toEqual(expected);
+});
+
+it('generates URL for permalink to be used in datafiltering component', () => {
+  const result = dataFilteringPermalinkUrl([1,2], '2019-06-01', '2019-06-02', 'day', 0);
   const expected = `${location.protocol}//${location.host}${location.pathname}?source=plink&id=1&id=2&startDate=2019-06-01&endDate=2019-06-02&resolution=day&smoothing=0`;
   expect(result).toEqual(expected);
 });
