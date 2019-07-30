@@ -9,7 +9,8 @@ it('renders About without crashing', () => {
 
 it('renders Article without crashing', () => {
   const div = document.createElement('div');
-  ReactDOM.render(<Article header="header" />, div);
+  const span = React.createElement('span');
+  ReactDOM.render(<Article header="header" children={span} />, div);
 });
 
 it('renders Docs without crashing', () => {
@@ -19,5 +20,6 @@ it('renders Docs without crashing', () => {
 
 it('renders FormFooter without crashing', () => {
   const div = document.createElement('div');
-  ReactDOM.render(<FormFooter />, div);
+  const span = React.createElement('span');
+  ReactDOM.render(<FormFooter children={span} />, div);
 });

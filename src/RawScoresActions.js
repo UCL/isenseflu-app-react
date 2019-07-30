@@ -16,27 +16,30 @@ const actionsStyles = theme => ({
 });
 
 class TablePaginationActions extends React.Component {
-
-  handleFirstPageButtonClick = event => {
-    this.props.onChangePage(0)(event);
+  handleFirstPageButtonClick = (event) => {
+    const { onChangePage } = this.props;
+    onChangePage(0)(event);
   };
 
-  handleBackButtonClick = event => {
-    this.props.onChangePage(this.props.page - 1)(event);
+  handleBackButtonClick = (event) => {
+    const { onChangePage, page } = this.props;
+    onChangePage(page - 1)(event);
   };
 
-  handleNextButtonClick = event => {
-    this.props.onChangePage(this.props.page + 1)(event);
+  handleNextButtonClick = (event) => {
+    const { onChangePage, page } = this.props;
+    onChangePage(page + 1)(event);
   };
 
-  handleLastPageButtonClick = event => {
-    this.props.onChangePage(
-      Math.max(0, Math.ceil(this.props.count / this.props.rowsPerPage) - 1),
-    )(event);
+  handleLastPageButtonClick = (event) => {
+    const { count, onChangePage, rowsPerPage } = this.props;
+    onChangePage(Math.max(0, Math.ceil(count / rowsPerPage) - 1))(event);
   };
 
   render() {
-    const { classes, count, page, rowsPerPage, theme } = this.props;
+    const {
+      classes, count, page, rowsPerPage, theme,
+    } = this.props;
 
     return (
       <div className={classes.root}>
@@ -71,7 +74,6 @@ class TablePaginationActions extends React.Component {
       </div>
     );
   }
-
 }
 
 TablePaginationActions.propTypes = {
@@ -83,6 +85,8 @@ TablePaginationActions.propTypes = {
   theme: PropTypes.object.isRequired,
 };
 
-export const RawScoresActions = withStyles(actionsStyles, { withTheme: true })(
+const RawScoresActions = withStyles(actionsStyles, { withTheme: true })(
   TablePaginationActions,
 );
+
+export { RawScoresActions as default };

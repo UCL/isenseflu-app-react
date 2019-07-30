@@ -2,7 +2,7 @@ import React from 'react';
 
 import { createShallow } from '@material-ui/core/test-utils';
 
-import { RawScoresActions } from './RawScoresActions';
+import RawScoresActions from './RawScoresActions';
 
 it('renders RawScoresActions wihout crashing', () => {
   const props = {

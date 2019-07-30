@@ -12,7 +12,7 @@ import TableRow from '@material-ui/core/TableRow';
 import withStyles from '@material-ui/core/styles/withStyles';
 
 import { Article, FormFooter } from './PublicTemplates';
-import { RawScoresActions } from './RawScoresActions';
+import RawScoresActions from './RawScoresActions';
 
 const styles = theme => ({
 

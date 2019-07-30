@@ -11,62 +11,66 @@ import { withStyles } from '@material-ui/core/styles';
 import { InlineFrame } from './InlineFrame';
 
 const styles = theme => ({
-	paper: {
-    //...theme.mixins.gutters(),
+  paper: {
     marginBottom: theme.spacing.unit * 3,
   },
-	header: {
-		padding: theme.spacing.unit,
-		backgroundColor: grey[50],
-	},
-	formToolbar: {
-		backgroundColor: grey[100],
-		padding: theme.spacing.unit,
-	}
+  header: {
+    padding: theme.spacing.unit,
+    backgroundColor: grey[50],
+  },
+  formToolbar: {
+    backgroundColor: grey[100],
+    padding: theme.spacing.unit,
+  },
 });
 
 export const ArticleComponent = (props) => {
-	return (
-		<Paper className={props.classes.paper}>
-			<Grid container spacing={0}>
-				<Grid item xs={12} className={props.classes.header}>
-					<Typography variant="h5" component="h2">
-						{props.header}
-					</Typography>
-				</Grid>
-				<Grid container item xs={12}>
-					{props.children}
-				</Grid>
-			</Grid>
-		</Paper>
-	)
+  const { classes, children, header } = props;
+  return (
+    <Paper className={classes.paper}>
+      <Grid container spacing={0}>
+        <Grid item xs={12} className={classes.header}>
+          <Typography variant="h5" component="h2">
+            {header}
+          </Typography>
+        </Grid>
+        <Grid container item xs={12}>
+          {children}
+        </Grid>
+      </Grid>
+    </Paper>
+  );
 };
 
 ArticleComponent.propTypes = {
-  header: PropTypes.string.isRequired
+  children: PropTypes.node.isRequired,
+  classes: PropTypes.object.isRequired,
+  header: PropTypes.string.isRequired,
 };
 
-export const Article = withStyles(styles, { withTheme: true })(
-  ArticleComponent
-);
+export const Article = withStyles(styles, { withTheme: true })(ArticleComponent);
 
 
-const FormFooterComponent = (props) => (
-  <Toolbar variant="dense" className={props.classes.formToolbar} disableGutters>
-    {props.children}
-  </Toolbar>
-);
+const FormFooterComponent = (props) => {
+  const { classes, children } = props;
+  return (
+    <Toolbar variant="dense" className={classes.formToolbar} disableGutters>
+      {children}
+    </Toolbar>
+  );
+};
+
+FormFooterComponent.propTypes = {
+  children: PropTypes.node.isRequired,
+  classes: PropTypes.object.isRequired,
+};
 
 export const FormFooter = withStyles(styles)(FormFooterComponent);
 
-export const About = (props) => {
-	return (
-		<InlineFrame title="About" src="/muistatic/about.html" height="1500px" width="100%" />
-	);
-};
+export const About = () => (
+  <InlineFrame title="About" src="/muistatic/about.html" height="1500px" width="100%" />
+);
 
-export const Docs = (props) => {
-	return (
-		<InlineFrame title="Docs" src="/muistatic/docs.html" height="2050px" width="100%" />
-	);
-};
+export const Docs = () => (
+  <InlineFrame title="Docs" src="/muistatic/docs.html" height="2050px" width="100%" />
+);
