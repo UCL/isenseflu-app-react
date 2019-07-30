@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
@@ -14,77 +15,79 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import { Article, FormFooter } from './PublicTemplates';
 import RawScoresActions from './RawScoresActions';
 
-const styles = theme => ({
+const styles = () => ({
 
 });
 
 const ScoreRow = (props) => {
+  const { modelScores, scoreDate } = props;
   return (
     <TableRow hover>
-      <TableCell>{props.score_date}</TableCell>
-      {
-        props.model_scores.map(s => {
-          return (
-            <TableCell key={s.model_id}>{s.score_value}</TableCell>
-          );
-        })
-      }
+      <TableCell>{scoreDate}</TableCell>
+      { modelScores.map(s => (<TableCell key={s.model_id}>{s.score_value}</TableCell>)) }
     </TableRow>
   );
-}
+};
 
-export const generateQueryUrl = (modeldata, start_date, end_date) => {
+ScoreRow.propTypes = {
+  modelScores: PropTypes.array.isRequired,
+  scoreDate: PropTypes.string.isRequired,
+};
+
+export const generateQueryUrl = (modeldata, startDate, endDate) => {
   const modelids = modeldata.map(m => m.id).map(m => `id=${m}`).join('&');
   let apihost = `${process.env.REACT_APP_API_HOST}`;
-  apihost += apihost.endsWith("/") ? "" : "/";
-  return `${apihost}csv?${modelids}&startDate=${start_date}&endDate=${end_date}&ctype=.csv`;
-}
+  apihost += apihost.endsWith('/') ? '' : '/';
+  return `${apihost}csv?${modelids}&startDate=${startDate}&endDate=${endDate}&ctype=.csv`;
+};
 
 export const generateTableMatrix = (allDates, modeldata) => {
-  let matrix = []
-  allDates !== undefined && allDates.forEach(ad => {
-
-    const score_values = modeldata.map(m => {
-      const id = m.id;
+  const matrix = [];
+  if (allDates === undefined) {
+    return matrix;
+  }
+  allDates.forEach((ad) => {
+    const scoreValues = modeldata.map((m) => {
+      const { id } = m;
       const val = m.datapoints.filter(
-        p => {return p.score_date === ad}
+        p => p.score_date === ad,
       ).map(
-        p => p.score_value
+        p => p.score_value,
       );
       return {
         model_id: id,
-        score_value: val[0]
+        score_value: val[0],
       };
     });
 
     const row = {
-      score_date: ad,
-      model_scores: score_values
-    }
+      scoreDate: ad,
+      modelScores: scoreValues,
+    };
 
     matrix.push(row);
   });
   return matrix;
-}
+};
 
 class RawScoresComponent extends React.Component {
-
   state = {
     page: 0,
-    rowsPerPage: 10
+    rowsPerPage: 10,
   }
 
-  handleChangePage = (page) => (event) => {
+  handleChangePage = (page) => {
     this.setState({ page });
   };
 
-  handleChangeRowsPerPage = event => {
+  handleChangeRowsPerPage = (event) => {
     this.setState({ rowsPerPage: event.target.value });
   };
 
   render() {
-
-    const { allDates, endDate, modeldata, startDate } = this.props;
+    const {
+      allDates, endDate, modeldata, startDate,
+    } = this.props;
 
     const { page, rowsPerPage } = this.state;
 
@@ -98,21 +101,15 @@ class RawScoresComponent extends React.Component {
               <TableRow>
                 <TableCell>Date</TableCell>
                 {
-                  modeldata.map(m => {
-                    return (
-                      <TableCell key={m.id}>{m.name} (England)</TableCell>
-                    );
-                  })
+                  modeldata.map(m => (<TableCell key={m.id}>{`${m.name} (England)`}</TableCell>))
                 }
               </TableRow>
             </TableHead>
             <TableBody>
               {
                 generateTableMatrix(allDates, modeldata)
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map(row => {
-                  return <ScoreRow key={row.score_date} {...row} />
-                })
+                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  .map(row => (<ScoreRow key={row.scoreDate} {...row} />))
               }
             </TableBody>
             <TableFooter>
@@ -131,7 +128,7 @@ class RawScoresComponent extends React.Component {
                     'aria-label': 'Next Page',
                   }}
                   ActionsComponent={RawScoresActions}
-                  />
+                />
               </TableRow>
             </TableFooter>
           </Table>
@@ -139,7 +136,8 @@ class RawScoresComponent extends React.Component {
             <Button
               href={generateQueryUrl(modeldata, startDate, endDate)}
               variant="contained"
-              download>
+              download
+            >
               Export to CSV
             </Button>
           </FormFooter>
@@ -148,5 +146,12 @@ class RawScoresComponent extends React.Component {
     );
   }
 }
+
+RawScoresComponent.propTypes = {
+  allDates: PropTypes.array.isRequired,
+  endDate: PropTypes.string.isRequired,
+  modeldata: PropTypes.array.isRequired,
+  startDate: PropTypes.string.isRequired,
+};
 
 export const RawScores = withStyles(styles)(RawScoresComponent);

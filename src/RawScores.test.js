@@ -12,7 +12,10 @@ import { Article, FormFooter } from './PublicTemplates';
 
 it('renders RawScoresComponent wihout crashing', () => {
   const props = {
-    modeldata: []
+    allDates: [],
+    endDate: '',
+    modeldata: [],
+    startDate: '',
   }
   const shallow = createShallow();
   const wrapper = shallow(<RawScores {...props} />);
@@ -63,22 +66,22 @@ it('generates table matrix', () => {
   const result = generateTableMatrix(allDates, modeldata);
   const expected = [
     {
-      score_date: '2018-10-01',
-      model_scores: [
+      scoreDate: '2018-10-01',
+      modelScores: [
         { model_id: 1, score_value: 0.1 },
         { model_id: 2, score_value: undefined }
       ]
     },
     {
-      score_date: '2018-10-02',
-      model_scores: [
+      scoreDate: '2018-10-02',
+      modelScores: [
         { model_id: 1, score_value: 0.2 },
         { model_id: 2, score_value: 0.3 }
       ]
     },
     {
-      score_date: '2018-10-03',
-      model_scores: [
+      scoreDate: '2018-10-03',
+      modelScores: [
         { model_id: 1, score_value: undefined },
         { model_id: 2, score_value: 0.4 }
       ]
@@ -89,18 +92,24 @@ it('generates table matrix', () => {
 
 it('changes page variable in state', () => {
   const props = {
-    modeldata: []
+    allDates: [],
+    endDate: '',
+    modeldata: [],
+    startDate: '',
   }
   const shallow = createShallow({dive: true});
   const wrapper = shallow(<RawScores {...props} />);
   expect(wrapper.state('page')).toEqual(0);
-  wrapper.instance().handleChangePage(1)(undefined);
+  wrapper.instance().handleChangePage(1);
   expect(wrapper.state('page')).toEqual(1);
 });
 
 it('changes rowsPerPage variable in state', () => {
   const props = {
-    modeldata: []
+    allDates: [],
+    endDate: '',
+    modeldata: [],
+    startDate: '',
   }
   const shallow = createShallow({dive: true});
   const wrapper = shallow(<RawScores {...props} />);
@@ -116,18 +125,21 @@ it('changes rowsPerPage variable in state', () => {
 
 it('renders a table header with 3 columns', () => {
   const props = {
+    allDates: [],
+    endDate: '',
     modeldata: [
       {id: 1, name: 'Model 1'},
       {id: 2, name: 'Model 2'}
-    ]
+    ],
+    startDate: '',
   }
   const shallow = createShallow({dive: true});
   const wrapper = shallow(<RawScores {...props} />);
   const cells = wrapper.find(TableHead).find(TableRow).find(TableCell);
   expect(cells).toHaveLength(3);
   expect(cells.at(0).dive().childAt(0).text()).toEqual('Date');
-  expect(cells.at(1).dive().childAt(0).text()).toEqual(props.modeldata[0].name);
-  expect(cells.at(2).dive().childAt(0).text()).toEqual(props.modeldata[1].name);
+  expect(cells.at(1).dive().childAt(0).text()).toEqual(`${props.modeldata[0].name} (England)`);
+  expect(cells.at(2).dive().childAt(0).text()).toEqual(`${props.modeldata[1].name} (England)`);
 });
 
 it('renders a table body with 3 rows', () => {
