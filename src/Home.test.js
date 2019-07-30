@@ -224,7 +224,10 @@ it('componentDidMount set values for activeModels, allDates, modelList, startDat
 it('handleChartTitleUpdate sets state value for chartTitlePrefix to Weekly', () => {
   const defaultTitle = 'Daily influenza-like illness rates';
   const updatedTitle = 'Weekly influenza-like illness rates';
-  const wrapper = shallow(<HomeComponent />, {disableLifecycleMethods: true});
+  const props = {
+    location: { search: 'source=plink&id=1&id=2' }
+  };
+  const wrapper = shallow(<HomeComponent {...props} />, {disableLifecycleMethods: true});
   expect(wrapper.state('chartTitlePrefix')).toEqual('Daily');
   expect(wrapper.find(ChartComponent).dive().prop('charttitle')).toEqual(defaultTitle);
   const instance = wrapper.instance();
