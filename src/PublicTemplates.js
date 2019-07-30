@@ -8,7 +8,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 
-import { InlineFrame } from './InlineFrame';
+import InlineFrame from './InlineFrame';
 
 const styles = theme => ({
   paper: {
