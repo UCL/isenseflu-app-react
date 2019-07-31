@@ -148,9 +148,16 @@ class RawScoresComponent extends React.Component {
 }
 
 RawScoresComponent.propTypes = {
+  /** Array with all the dates in the time series */
   allDates: PropTypes.array.isRequired,
+
+  /** End date of requested time period, inclusive. In the format YYYY-MM-DD */
   endDate: PropTypes.string.isRequired,
+
+  /** Array containing the model metadata and scores */
   modeldata: PropTypes.array.isRequired,
+
+  /** Start date of requested time period, inclusive. In the format YYYY-MM-DD */
   startDate: PropTypes.string.isRequired,
 };
 

@@ -61,7 +61,10 @@ const FormFooterComponent = (props) => {
 };
 
 FormFooterComponent.propTypes = {
+  /** React node with the content to display within the grid */
   children: PropTypes.node.isRequired,
+
+  /** CSS classes used for styling the MUI component */
   classes: PropTypes.object.isRequired,
 };
 

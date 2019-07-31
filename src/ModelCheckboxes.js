@@ -40,8 +40,13 @@ class ModelCheckboxesComponent extends React.Component {
 }
 
 ModelCheckboxesComponent.propTypes = {
+  /** Id of the model to toggle as active */
   flagid: PropTypes.number.isRequired,
+
+  /** Callback function to pass value of switches */
   handleChangeCallback: PropTypes.func.isRequired,
+
+  /** Complete list of public models available */
   modellist: PropTypes.object.isRequired,
 };
 

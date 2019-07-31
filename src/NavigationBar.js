@@ -52,6 +52,7 @@ const NavigationBar = (props) => {
 };
 
 NavigationBar.propTypes = {
+  /** CSS classes used for styling the MUI component */
   classes: PropTypes.object.isRequired,
 };
 
