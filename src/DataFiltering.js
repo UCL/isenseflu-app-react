@@ -156,15 +156,34 @@ class DataFilteringComponent extends Component {
 }
 
 DataFilteringComponent.propTypes = {
+  /** CSS classes used for styling the MUI component */
   classes: PropTypes.object.isRequired,
+
+  /** Callback function to update the title of the chart based on the resolution of the data */
   chartTitleCallback: PropTypes.func.isRequired,
+
+  /** End date of requested time period, inclusive. In the format YYYY-MM-DD */
   endDate: PropTypes.string.isRequired,
+
+  /** Array containing the ids of the models being displayed */
   modelIds: PropTypes.array.isRequired,
+
+  /** Callback function used to pass the values of each field target to the parent */
   onChangeCallback: PropTypes.func.isRequired,
+
+  /** Callback function to update the query parameters in the permalink URL */
   permalinkCallback: PropTypes.func.isRequired,
+
+  /** The density of the data points returned, either day or week */
   resolution: PropTypes.string.isRequired,
+
+  /** Number of days to smooth data over using a moving average filter */
   smoothing: PropTypes.number.isRequired,
+
+  /** Start date of requested time period, inclusive. In the format YYYY-MM-DD */
   startDate: PropTypes.string.isRequired,
+
+  /** Callback function to update the scores with the values queried with the form */
   updateCallback: PropTypes.func.isRequired,
 };
 

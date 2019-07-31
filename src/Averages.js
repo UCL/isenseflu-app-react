@@ -9,6 +9,7 @@ import TableRow from '@material-ui/core/TableRow';
 
 import { Article } from './PublicTemplates';
 
+/** Calculates the average score for a model and displays the data in a table */
 const AveragesComponent = (props) => {
   const { modeldata } = props;
 
@@ -46,6 +47,7 @@ const AveragesComponent = (props) => {
 };
 
 AveragesComponent.propTypes = {
+  /** Array containing the model metadata and scores */
   modeldata: PropTypes.array.isRequired,
 };
 

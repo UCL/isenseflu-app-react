@@ -35,10 +35,19 @@ const InlineFrameComponent = (props) => {
 };
 
 InlineFrameComponent.propTypes = {
+  /** CSS classes used for styling the MUI component */
   classes: PropTypes.object.isRequired,
+
+  /** Height of the frame in pixels, with px suffix */
   height: PropTypes.string.isRequired,
+
+  /** Width of the frame in pixels, with px suffix */
   width: PropTypes.string.isRequired,
+
+  /** The URL of the page to display in the iframe */
   src: PropTypes.string.isRequired,
+
+  /** The title for the iframe */
   title: PropTypes.string.isRequired,
 };
 
