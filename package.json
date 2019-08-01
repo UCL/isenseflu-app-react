@@ -37,5 +37,21 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "eslintConfig": {
+    "extends": "airbnb",
+    "parser": "babel-eslint",
+    "env":
+    {
+      "node": true,
+      "es6": true,
+      "browser": true
+    },
+    "rules":
+    {
+      "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
+      "react/forbid-prop-types": "off",
+      "import/no-extraneous-dependencies": "off"
+    }
+  }
 }
