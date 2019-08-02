@@ -1,0 +1,8 @@
+language: node_js
+env:
+  - REACT_APP_API_HOST='/api/'
+branches:
+  only:
+  - master
+  - develop
+  

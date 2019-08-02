@@ -4,6 +4,7 @@
 
 Frontend component of i-sense flu application. Displays model scores produced by the i-sense flu api component [https://github.com/UCL/isenseflu-api-flask](https://github.com/UCL/isenseflu-api-flask)
 
+[![Build Status](https://travis-ci.org/UCL/isenseflu-app-react.svg?branch=master)](https://travis-ci.org/UCL/isenseflu-app-react)
 ![GitHub release](https://img.shields.io/github/release/UCL/isenseflu-app-react.svg)
 
 
