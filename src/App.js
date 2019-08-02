@@ -1,5 +1,27 @@
+/*
+ * i-sense flu app: Frontend module of the i-sense flu application
+ *
+ * Copyright (c) 2019, UCL <https://www.ucl.ac.uk/>
+ *
+ * This file is part of i-sense flu app
+ *
+ * i-sense flu app is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * i-sense flu app is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with i-sense flu app.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 import React from 'react';
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import PropTypes from 'prop-types';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
@@ -27,18 +49,18 @@ const theme = createMuiTheme({
     MuiTablePagination: {
       caption: {
         fontSize: 14,
-      }
-    }
-  }
+      },
+    },
+  },
 });
 
-const styles = (theme) => ({
+const styles = aTheme => ({
   layout: {
     width: 'auto',
     display: 'block', // Fix IE11 issue.
-    marginTop: theme.spacing.unit * 4,
-    marginBottom: theme.spacing.unit * 4,
-    [theme.breakpoints.up(1024 + theme.spacing.unit * 3 * 2)]: {
+    marginTop: aTheme.spacing.unit * 4,
+    marginBottom: aTheme.spacing.unit * 4,
+    [aTheme.breakpoints.up(1024 + aTheme.spacing.unit * 3 * 2)]: {
       width: 1024,
       marginLeft: 'auto',
       marginRight: 'auto',
@@ -46,31 +68,32 @@ const styles = (theme) => ({
   },
 });
 
-class App extends React.Component {
+const App = (props) => {
+  const { classes } = props;
 
-  render() {
-    const { classes } = this.props;
+  return (
+    <React.Fragment>
+      <CssBaseline />
+      <MuiThemeProvider theme={theme}>
+        <header>
+          <NavigationBar />
+        </header>
+        <main className={classes.layout}>
+          <Router>
+            <section>
+              <Route exact path="/" component={HomeComponent} />
+              <Route exact path="/about" component={About} />
+              <Route exact path="/docs" component={Docs} />
+            </section>
+          </Router>
+        </main>
+      </MuiThemeProvider>
+    </React.Fragment>
+  );
+};
 
-    return (
-      <React.Fragment>
-        <CssBaseline />
-        <MuiThemeProvider theme={theme}>
-          <header>
-            <NavigationBar/>
-          </header>
-          <main className={classes.layout}>
-            <Router>
-              <section>
-                <Route exact path="/" component={HomeComponent}/>
-                <Route exact path="/about" component={About}/>
-                <Route exact path="/docs" component={Docs}/>
-              </section>
-            </Router>
-          </main>
-        </MuiThemeProvider>
-      </React.Fragment>
-    );
-  }
-}
+App.propTypes = {
+  classes: PropTypes.object.isRequired,
+};
 
 export default withStyles(styles)(App);

@@ -1,13 +1,13 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import { Route } from "react-router-dom";
+import { Route } from 'react-router-dom';
 
 import { createShallow } from '@material-ui/core/test-utils';
 
 import App from './App';
 import NavigationBar from './NavigationBar';
 
-it('renders App without crashing', () => {
+test('renders App without crashing', () => {
+  expect.assertions(2);
   const shallow = createShallow();
   const wrapper = shallow(<App />);
   // it should render 3 routes

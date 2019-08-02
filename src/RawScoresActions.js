@@ -1,3 +1,24 @@
+/*
+ * i-sense flu app: Frontend module of the i-sense flu application
+ *
+ * Copyright (c) 2019, UCL <https://www.ucl.ac.uk/>
+ *
+ * This file is part of i-sense flu app
+ *
+ * i-sense flu app is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * i-sense flu app is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with i-sense flu app.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 import React from 'react';
 import PropTypes from 'prop-types';
 import IconButton from '@material-ui/core/IconButton';
@@ -16,27 +37,30 @@ const actionsStyles = theme => ({
 });
 
 class TablePaginationActions extends React.Component {
-
-  handleFirstPageButtonClick = event => {
-    this.props.onChangePage(0)(event);
+  handleFirstPageButtonClick = (event) => {
+    const { onChangePage } = this.props;
+    onChangePage(0)(event);
   };
 
-  handleBackButtonClick = event => {
-    this.props.onChangePage(this.props.page - 1)(event);
+  handleBackButtonClick = (event) => {
+    const { onChangePage, page } = this.props;
+    onChangePage(page - 1)(event);
   };
 
-  handleNextButtonClick = event => {
-    this.props.onChangePage(this.props.page + 1)(event);
+  handleNextButtonClick = (event) => {
+    const { onChangePage, page } = this.props;
+    onChangePage(page + 1)(event);
   };
 
-  handleLastPageButtonClick = event => {
-    this.props.onChangePage(
-      Math.max(0, Math.ceil(this.props.count / this.props.rowsPerPage) - 1),
-    )(event);
+  handleLastPageButtonClick = (event) => {
+    const { count, onChangePage, rowsPerPage } = this.props;
+    onChangePage(Math.max(0, Math.ceil(count / rowsPerPage) - 1))(event);
   };
 
   render() {
-    const { classes, count, page, rowsPerPage, theme } = this.props;
+    const {
+      classes, count, page, rowsPerPage, theme,
+    } = this.props;
 
     return (
       <div className={classes.root}>
@@ -71,18 +95,30 @@ class TablePaginationActions extends React.Component {
       </div>
     );
   }
-
 }
 
 TablePaginationActions.propTypes = {
+  /** CSS classes used for styling the MUI component */
   classes: PropTypes.object.isRequired,
+
+  /** Total number of rows */
   count: PropTypes.number.isRequired,
+
+  /** Callback function to pass the new page number */
   onChangePage: PropTypes.func.isRequired,
+
+  /** Page number */
   page: PropTypes.number.isRequired,
+
+  /** Number of rows per page */
   rowsPerPage: PropTypes.number.isRequired,
+
+  /** MUI theme, used to obtain direction of text */
   theme: PropTypes.object.isRequired,
 };
 
-export const RawScoresActions = withStyles(actionsStyles, { withTheme: true })(
+const RawScoresActions = withStyles(actionsStyles, { withTheme: true })(
   TablePaginationActions,
 );
+
+export { RawScoresActions as default };
