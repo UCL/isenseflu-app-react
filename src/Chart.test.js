@@ -1,19 +1,19 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 
 import { shallow } from 'enzyme';
 
-import ChartComponent, {formatModelname, generateAnnotations, getMaxScoreValue} from './Chart';
-import {Article} from './PublicTemplates';
+import ChartComponent from './Chart';
+import { Article } from './PublicTemplates';
 
-it('renders ChartComponent without crashing', () => {
+test('renders ChartComponent without crashing', () => {
+  expect.assertions(1);
   const props = {
     charttitle: '',
     modelcontrols: React.createElement('span'),
     modeldata: [],
     modelannotations: {},
     permalink: '',
-  }
-  const wrapper = shallow(<ChartComponent {...props}/>);
+  };
+  const wrapper = shallow(<ChartComponent {...props} />);
   expect(wrapper.dive().find(Article)).toHaveLength(1);
 });

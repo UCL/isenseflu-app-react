@@ -1,3 +1,4 @@
+/* eslint jest/no-hooks: [ "error", { "allow": [ "afterAll", "beforeAll" ] } ] */
 import React from 'react';
 
 import { createShallow } from '@material-ui/core/test-utils';
@@ -11,7 +12,8 @@ beforeAll(() => {
   process.env = Object.assign(process.env, { REACT_APP_API_HOST: '/apipath/' });
 });
 
-it('renders DataFilteringComponent wihout crashing', () => {
+test('renders DataFilteringComponent wihout crashing', () => {
+  expect.assertions(1);
   const props = {
     chartTitleCallback: jest.fn(),
     endDate: '',
@@ -22,13 +24,14 @@ it('renders DataFilteringComponent wihout crashing', () => {
     smoothing: 0,
     startDate: '',
     updateCallback: jest.fn(),
-  }
+  };
   const shallow = createShallow();
   const wrapper = shallow(<DataFilteringComponent {...props} />);
   expect(wrapper.dive().find(Article)).toHaveLength(1);
 });
 
-it('passes isWeekly to chartTitleCallback', () => {
+test('passes isWeekly to chartTitleCallback', () => {
+  expect.assertions(2);
   const props = {
     chartTitleCallback: jest.fn(),
     endDate: '',
@@ -39,17 +42,17 @@ it('passes isWeekly to chartTitleCallback', () => {
     smoothing: 0,
     startDate: '',
     updateCallback: jest.fn(),
-  }
+  };
   const shallow = createShallow();
   const wrapper = shallow(<DataFilteringComponent {...props} />).dive();
   const instance = wrapper.instance();
   jest.spyOn(instance, 'handleSubmit');
   const selectResolution = wrapper.find(Select).first().dive();
   const submitButton = wrapper.find(Button).dive();
-  selectResolution.prop('onChange')({target: {type: 'select-one', value: 'week', name: 'resolution'}});
+  selectResolution.prop('onChange')({ target: { type: 'select-one', value: 'week', name: 'resolution' } });
   submitButton.simulate('submit');
   expect(instance.handleSubmit).toHaveBeenCalledWith(expect.anything(), expect.anything(), true);
-  selectResolution.prop('onChange')({target: {type: 'select-one', value: 'day', name: 'resolution'}});
+  selectResolution.prop('onChange')({ target: { type: 'select-one', value: 'day', name: 'resolution' } });
   submitButton.simulate('submit');
   expect(instance.handleSubmit).toHaveBeenCalledWith(expect.anything(), expect.anything(), false);
 });

@@ -1,25 +1,43 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import {About, Article, Docs, FormFooter} from './PublicTemplates';
+import { createMount } from '@material-ui/core/test-utils';
 
-it('renders About without crashing', () => {
-  const div = document.createElement('div');
-  ReactDOM.render(<About />, div);
+import {
+  About,
+  Article,
+  Docs,
+  FormFooter,
+} from './PublicTemplates';
+
+test('renders About without crashing', () => {
+  expect.assertions(1);
+  const mount = createMount();
+  const wrapper = mount(<About />);
+  expect(wrapper.exists()).toBe(true);
+  mount.cleanUp();
 });
 
-it('renders Article without crashing', () => {
-  const div = document.createElement('div');
+test('renders Article without crashing', () => {
+  expect.assertions(1);
+  const mount = createMount();
   const span = React.createElement('span');
-  ReactDOM.render(<Article header="header" children={span} />, div);
+  const wrapper = mount(<Article header="header">{span}</Article>);
+  expect(wrapper.exists()).toBe(true);
+  mount.cleanUp();
 });
 
-it('renders Docs without crashing', () => {
-  const div = document.createElement('div');
-  ReactDOM.render(<Docs />, div);
+test('renders Docs without crashing', () => {
+  expect.assertions(1);
+  const mount = createMount();
+  const wrapper = mount(<Docs />);
+  expect(wrapper.exists()).toBe(true);
+  mount.cleanUp();
 });
 
-it('renders FormFooter without crashing', () => {
-  const div = document.createElement('div');
+test('renders FormFooter without crashing', () => {
+  expect.assertions(1);
+  const mount = createMount();
   const span = React.createElement('span');
-  ReactDOM.render(<FormFooter children={span} />, div);
+  const wrapper = mount(<FormFooter>{span}</FormFooter>);
+  expect(wrapper.exists()).toBe(true);
+  mount.cleanUp();
 });
