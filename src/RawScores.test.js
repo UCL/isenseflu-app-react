@@ -232,5 +232,5 @@ test('renders a form footer with a download button', () => {
   const button = wrapper.find(FormFooter).find(Button);
   expect(button.prop('download')).toBe(true);
   expect(button.prop('href'))
-    .toBe('undefined/csv?id=1&id=2&startDate=2018-10-01&endDate=2018-10-03&ctype=.csv');
+    .toMatch(/csv\?id=1&id=2&startDate=2018-10-01&endDate=2018-10-03&ctype=\.csv$/);
 });
