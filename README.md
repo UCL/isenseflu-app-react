@@ -34,8 +34,8 @@ i-sense flu is a multi-module application that uses Google search data to estima
 
 ### Requirements
 
-- Node >= 6
-- npm >= 5.2
+- Node >= 12.4
+- npm >= 6.9
 - serve (optional)
 
 
