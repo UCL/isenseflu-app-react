@@ -26,49 +26,61 @@ import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 
-class ModelCheckboxesComponent extends React.Component {
-  state = {
-    activeIds: [],
-  }
+const ModelCheckboxes = (props) => {
+  const {
+    activeIds,
+    endDate,
+    modellist,
+    handleChangeCallback,
+    resolution,
+    smoothing,
+    startDate,
+  } = props;
 
-  render() {
-    const { flagid, modellist, handleChangeCallback } = this.props;
+  const models = modellist.map(model => (
+    <FormGroup key={model.id}>
+      <FormControlLabel
+        control={(
+          <Switch
+            value={String(model.id)}
+            checked={activeIds.includes(model.id)}
+            onChange={e => handleChangeCallback(e, startDate, endDate, resolution, smoothing)}
+            color="primary"
+          />
+        )}
+        label={model.name}
+      />
+    </FormGroup>
+  ));
 
-    const { activeIds } = this.state;
+  return (
+    <React.Fragment>
+      {models}
+    </React.Fragment>
+  );
+};
 
-    const models = modellist.map(model => (
-      <FormGroup key={model.id}>
-        <FormControlLabel
-          control={(
-            <Switch
-              value={String(model.id)}
-              checked={model.id === flagid || activeIds.includes(model.id)}
-              onChange={handleChangeCallback(model.id)}
-              color="primary"
-            />
-          )}
-          label={model.name}
-        />
-      </FormGroup>
-    ));
+ModelCheckboxes.propTypes = {
+  /** Array of model ids that are active */
+  activeIds: PropTypes.array.isRequired,
 
-    return (
-      <React.Fragment>
-        {models}
-      </React.Fragment>
-    );
-  }
-}
-
-ModelCheckboxesComponent.propTypes = {
-  /** Id of the model to toggle as active */
-  flagid: PropTypes.number.isRequired,
+  /** End date of requested time period, inclusive. In the format YYYY-MM-DD */
+  endDate: PropTypes.string.isRequired,
 
   /** Callback function to pass value of switches */
   handleChangeCallback: PropTypes.func.isRequired,
 
   /** Complete list of public models available */
   modellist: PropTypes.object.isRequired,
+
+  /** The density of the data points returned, either day or week */
+  resolution: PropTypes.string.isRequired,
+
+  /** Number of days to smooth data over using a moving average filter */
+  smoothing: PropTypes.number.isRequired,
+
+  /** Start date of requested time period, inclusive. In the format YYYY-MM-DD */
+  startDate: PropTypes.string.isRequired,
 };
 
-export default ModelCheckboxesComponent;
+export { ModelCheckboxes as default };
