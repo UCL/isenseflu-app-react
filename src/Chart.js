@@ -38,11 +38,11 @@ import { generateChartData, generateChartOptions, getMaxScoreValue } from './Cha
 
 const styles = theme => ({
   lineChart: {
-    padding: theme.spacing.unit * 2,
+    padding: theme.spacing(2),
   },
   selectModel: {
-    paddingLeft: theme.spacing.unit * 2,
-    paddingRight: theme.spacing.unit * 2,
+    paddingLeft: theme.spacing(2),
+    paddingRight: theme.spacing(2),
   },
   permalink: {
     textAlign: 'center',

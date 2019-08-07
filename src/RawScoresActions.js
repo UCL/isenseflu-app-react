@@ -32,29 +32,29 @@ const actionsStyles = theme => ({
   root: {
     flexShrink: 0,
     color: theme.palette.text.secondary,
-    marginLeft: theme.spacing.unit * 2.5,
+    marginLeft: theme.spacing(2.5),
   },
 });
 
 class TablePaginationActions extends React.Component {
-  handleFirstPageButtonClick = (event) => {
+  handleFirstPageButtonClick = () => {
     const { onChangePage } = this.props;
-    onChangePage(0)(event);
+    onChangePage(0);
   };
 
-  handleBackButtonClick = (event) => {
+  handleBackButtonClick = () => {
     const { onChangePage, page } = this.props;
-    onChangePage(page - 1)(event);
+    onChangePage(page - 1);
   };
 
-  handleNextButtonClick = (event) => {
+  handleNextButtonClick = () => {
     const { onChangePage, page } = this.props;
-    onChangePage(page + 1)(event);
+    onChangePage(page + 1);
   };
 
-  handleLastPageButtonClick = (event) => {
+  handleLastPageButtonClick = () => {
     const { count, onChangePage, rowsPerPage } = this.props;
-    onChangePage(Math.max(0, Math.ceil(count / rowsPerPage) - 1))(event);
+    onChangePage(Math.max(0, Math.ceil(count / rowsPerPage) - 1));
   };
 
   render() {
