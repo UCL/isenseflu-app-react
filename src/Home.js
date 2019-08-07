@@ -181,7 +181,7 @@ class HomeComponent extends React.Component {
           charttitle={`${chartTitlePrefix} influenza-like illness rates`}
           modeldata={modelData}
           modelcontrols={modelToggleControls}
-          modelannotations={rateThresholds}
+          ratethresholds={rateThresholds}
           permalink={permaLink}
         />
         <DataFilteringComponent

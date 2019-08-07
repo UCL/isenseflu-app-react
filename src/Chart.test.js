@@ -11,7 +11,7 @@ test('renders ChartComponent without crashing', () => {
     charttitle: '',
     modelcontrols: React.createElement('span'),
     modeldata: [],
-    modelannotations: {},
+    ratethresholds: {},
     permalink: '',
   };
   const wrapper = shallow(<ChartComponent {...props} />);
