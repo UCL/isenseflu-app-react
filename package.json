@@ -29,11 +29,12 @@
     "eject": "react-scripts eject"
   },
   "devDependencies": {
+    "@typescript-eslint/experimental-utils": "^1.13.0",
     "enzyme": "^3.10.0",
     "enzyme-adapter-react-16": "^1.14.0",
     "eslint": "^5.16.0",
     "eslint-config-airbnb": "^17.1.1",
-    "eslint-plugin-jest": "^22.14.1",
+    "eslint-plugin-jest": "^22.15.0",
     "eslint-plugin-jsx-a11y": "^6.2.3",
     "react-test-renderer": "^16.8.6"
   },

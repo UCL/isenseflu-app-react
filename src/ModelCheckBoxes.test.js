@@ -62,8 +62,10 @@ test('toggling a checkbox calls handleChangeCallback', () => {
     startDate: '2019-01-01',
   };
   const wrapper = mount(<ModelCheckboxes {...props} />);
-  wrapper.find(Switch).at(1).find('input').simulate('change');
+  const aSwitch = wrapper.find(Switch).at(1);
+  aSwitch.find('input').simulate('change');
   expect(mockHandleChangeCallback).toHaveBeenCalledWith(
     expect.anything(), '2019-01-01', '2019-01-31', 'day', 0,
   );
+  mount.cleanUp();
 });
