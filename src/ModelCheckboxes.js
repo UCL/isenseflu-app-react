@@ -71,7 +71,7 @@ ModelCheckboxes.propTypes = {
   handleChangeCallback: PropTypes.func.isRequired,
 
   /** Complete list of public models available */
-  modellist: PropTypes.object.isRequired,
+  modellist: PropTypes.array.isRequired,
 
   /** The density of the data points returned, either day or week */
   resolution: PropTypes.string.isRequired,
