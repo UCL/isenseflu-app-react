@@ -61,25 +61,26 @@ const ModelCheckboxes = (props) => {
 };
 
 ModelCheckboxes.propTypes = {
-  /** Array of model ids that are active */
+  /** @type {number[]} Array of model ids that are active */
   activeIds: PropTypes.array.isRequired,
 
-  /** End date of requested time period, inclusive. In the format YYYY-MM-DD */
+  /** @type {string} End date of requested time period, inclusive. In the format YYYY-MM-DD */
   endDate: PropTypes.string.isRequired,
 
-  /** Callback function to pass value of switches */
+  /** @type {function(e: Object, start: string, end: string, resolution: string, smoothing: number)}
+   Callback function to pass value of switches */
   handleChangeCallback: PropTypes.func.isRequired,
 
-  /** Complete list of public models available */
+  /** @type {Object[]} Complete list of public models available */
   modellist: PropTypes.array.isRequired,
 
-  /** The density of the data points returned, either day or week */
+  /** @type {string} The density of the data points returned, either day or week */
   resolution: PropTypes.string.isRequired,
 
-  /** Number of days to smooth data over using a moving average filter */
+  /** @type {number} Number of days to smooth data over using a moving average filter */
   smoothing: PropTypes.number.isRequired,
 
-  /** Start date of requested time period, inclusive. In the format YYYY-MM-DD */
+  /** @type {string} Start date of requested time period, inclusive. In the format YYYY-MM-DD */
   startDate: PropTypes.string.isRequired,
 };
 

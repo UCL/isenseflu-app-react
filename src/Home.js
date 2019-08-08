@@ -197,7 +197,7 @@ class HomeComponent extends React.Component {
 }
 
 HomeComponent.propTypes = {
-  /** Window location */
+  /** @type {Object} Window location */
   location: PropTypes.object.isRequired,
 };
 

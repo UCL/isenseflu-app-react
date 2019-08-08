@@ -99,6 +99,7 @@ const App = (props) => {
 };
 
 App.propTypes = {
+  /** @type {Object} CSS classes used for styling the MUI component */
   classes: PropTypes.object.isRequired,
 };
 
