@@ -1,8 +1,8 @@
 ![i-sense flu](https://res.cloudinary.com/uclfmedia/image/upload/v1563449524/isenseflu/logo_300.svg)
 
-# isense flu app
+# i-sense flu app
 
-Frontend component of i-sense flu application. Displays model scores produced by the i-sense flu api component [https://github.com/UCL/isenseflu-api-flask](https://github.com/UCL/isenseflu-api-flask)
+Frontend component of the i-sense flu application. Displays model scores produced by the i-sense flu api component [https://github.com/UCL/isenseflu-api-flask](https://github.com/UCL/isenseflu-api-flask)
 
 [![Build Status](https://travis-ci.org/UCL/isenseflu-app-react.svg?branch=master)](https://travis-ci.org/UCL/isenseflu-app-react)
 ![GitHub release](https://img.shields.io/github/release/UCL/isenseflu-app-react.svg)
@@ -80,12 +80,12 @@ Please make sure to update tests as appropriate. Follow AirBnB Javascript style 
 
 ## Acknowledgements
 
-i-sense flu publish is supported by the EPSRC IRC project [i-sense](https://www.i-sense.org.uk/) (Early-Warning Sensing Systems for Infectious Diseases).
+i-senseflu app is supported by the EPSRC IRC project [i-sense](https://www.i-sense.org.uk/) (Early-Warning Sensing Systems for Infectious Diseases).
 
 
 ## Copyright
 
-isenseflu-app-react is licensed under the GNU General Public License, v3. A copy of this license is included in the file [LICENSE.md](LICENSE.md).
+i-senseflu app is licensed under the GNU General Public License, v3. A copy of this license is included in the file [LICENSE.md](LICENSE.md).
 
 
 &copy; 2019 UCL ([https://www.ucl.ac.uk](https://www.ucl.ac.uk)).

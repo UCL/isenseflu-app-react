@@ -37,7 +37,7 @@ import { dataFilteringPermalinkUrl, dataFilteringQueryUrl } from './Url';
 
 const styles = theme => ({
   filteringFields: {
-    padding: theme.spacing.unit * 2,
+    padding: theme.spacing(2),
   },
 });
 
@@ -96,7 +96,7 @@ class DataFilteringComponent extends Component {
       <Article header="Data Filtering">
         <Grid item xs={12}>
           <form onSubmit={this.handleSubmit(queryUrl, permalinkUrl, isWeekly)}>
-            <Grid container spacing={24} className={classes.filteringFields}>
+            <Grid container spacing={2} className={classes.filteringFields}>
               <Grid item xs={3}>
                 <FormGroup>
                   <InputLabel htmlFor="start-date">Start</InputLabel>

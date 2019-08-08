@@ -34,9 +34,6 @@ import HomeComponent from './Home';
 import { About, Docs } from './PublicTemplates';
 
 const theme = createMuiTheme({
-  typography: {
-    useNextVariants: true,
-  },
   overrides: {
     MuiTableCell: {
       body: {
@@ -51,6 +48,15 @@ const theme = createMuiTheme({
         fontSize: 14,
       },
     },
+    MuiFormControlLabel: {
+      root: {
+        paddingTop: 5,
+        paddingBottom: 5,
+      },
+      label: {
+        fontSize: 14,
+      },
+    },
   },
 });
 
@@ -58,9 +64,9 @@ const styles = aTheme => ({
   layout: {
     width: 'auto',
     display: 'block', // Fix IE11 issue.
-    marginTop: aTheme.spacing.unit * 4,
-    marginBottom: aTheme.spacing.unit * 4,
-    [aTheme.breakpoints.up(1024 + aTheme.spacing.unit * 3 * 2)]: {
+    marginTop: aTheme.spacing(4),
+    marginBottom: aTheme.spacing(4),
+    [aTheme.breakpoints.up(1024 + aTheme.spacing(3) * 2)]: {
       width: 1024,
       marginLeft: 'auto',
       marginRight: 'auto',

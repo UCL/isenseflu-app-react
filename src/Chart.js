@@ -38,11 +38,11 @@ import { generateChartData, generateChartOptions, getMaxScoreValue } from './Cha
 
 const styles = theme => ({
   lineChart: {
-    padding: theme.spacing.unit * 2,
+    padding: theme.spacing(2),
   },
   selectModel: {
-    paddingLeft: theme.spacing.unit * 2,
-    paddingRight: theme.spacing.unit * 2,
+    paddingLeft: theme.spacing(2),
+    paddingRight: theme.spacing(2),
   },
   permalink: {
     textAlign: 'center',
@@ -53,7 +53,7 @@ const ChartComponent = (props) => {
   const {
     classes,
     charttitle,
-    modelannotations,
+    ratethresholds,
     modelcontrols,
     modeldata,
     permalink,
@@ -61,7 +61,7 @@ const ChartComponent = (props) => {
 
   const chartData = generateChartData(modeldata);
   const maxscorevalue = getMaxScoreValue(modeldata);
-  const chartOptions = generateChartOptions(modelannotations, maxscorevalue);
+  const chartOptions = generateChartOptions(ratethresholds, maxscorevalue);
 
   return (
     <Article header={charttitle}>
@@ -91,7 +91,7 @@ ChartComponent.propTypes = {
   charttitle: PropTypes.string.isRequired,
 
   /** The set rate thresholds as provided by PHE */
-  modelannotations: PropTypes.object.isRequired,
+  ratethresholds: PropTypes.object.isRequired,
 
   /** Node containing toggle buttons to activate and deactivate models */
   modelcontrols: PropTypes.node.isRequired,

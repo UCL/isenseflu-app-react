@@ -26,7 +26,7 @@ import withStyles from '@material-ui/core/styles/withStyles';
 
 const styles = theme => ({
   framecontainer: {
-    marginBottom: theme.spacing.unit * 3,
+    marginBottom: theme.spacing(3),
   },
   internalframe: {
     border: 'none',

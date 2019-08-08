@@ -22,13 +22,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import FormGroup from '@material-ui/core/FormGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Switch from '@material-ui/core/Switch';
-
 import ChartComponent from './Chart';
 import DataFilteringComponent from './DataFiltering';
 import AveragesComponent from './Averages';
+import ModelCheckboxes from './ModelCheckboxes';
 import { RawScores } from './RawScores';
 import { homeFetchUrl, homeFetchScoresUrl, homePermalinkUrl } from './Url';
 import { homeModelData, homeScoresData } from './JsonData';
@@ -157,31 +154,23 @@ class HomeComponent extends React.Component {
       startDate,
     } = this.state;
 
-    const modelToggleControls = modelList.map(model => (
-      <FormGroup key={model.id}>
-        <FormControlLabel
-          control={(
-            <Switch
-              value={String(model.id)}
-              checked={activeModels.includes(model.id)}
-              onChange={e => this.handleChangeCallback(
-                e, startDate, endDate, resolution, smoothing,
-              )}
-              color="primary"
-            />
-          )}
-          label={model.name}
-        />
-      </FormGroup>
-    ));
-
     return (
       <React.Fragment>
         <ChartComponent
           charttitle={`${chartTitlePrefix} influenza-like illness rates`}
           modeldata={modelData}
-          modelcontrols={modelToggleControls}
-          modelannotations={rateThresholds}
+          modelcontrols={(
+            <ModelCheckboxes
+              activeIds={activeModels}
+              endDate={endDate}
+              handleChangeCallback={this.handleChangeCallback}
+              modellist={modelList}
+              resolution={resolution}
+              smoothing={smoothing}
+              startDate={startDate}
+            />
+          )}
+          ratethresholds={rateThresholds}
           permalink={permaLink}
         />
         <DataFilteringComponent

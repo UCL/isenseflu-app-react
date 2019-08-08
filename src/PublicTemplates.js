@@ -33,22 +33,22 @@ import InlineFrame from './InlineFrame';
 
 const styles = theme => ({
   paper: {
-    marginBottom: theme.spacing.unit * 3,
+    marginBottom: theme.spacing(3),
   },
   header: {
-    padding: theme.spacing.unit,
+    padding: theme.spacing(1),
     backgroundColor: grey[50],
   },
   formToolbar: {
     backgroundColor: grey[100],
-    padding: theme.spacing.unit,
+    padding: theme.spacing(1),
   },
 });
 
 export const ArticleComponent = (props) => {
   const { classes, children, header } = props;
   return (
-    <Paper className={classes.paper}>
+    <Paper className={classes.paper} elevation={2}>
       <Grid container spacing={0}>
         <Grid item xs={12} className={classes.header}>
           <Typography variant="h5" component="h2">
