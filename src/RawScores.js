@@ -35,6 +35,7 @@ import withStyles from '@material-ui/core/styles/withStyles';
 
 import { Article, FormFooter } from './PublicTemplates';
 import RawScoresActions from './RawScoresActions';
+import { rawScoresCsvUrl } from './Url';
 
 const styles = () => ({
 
@@ -51,15 +52,11 @@ const ScoreRow = (props) => {
 };
 
 ScoreRow.propTypes = {
+  /** @type {Object[]} List of model scores for a particular date */
   modelScores: PropTypes.array.isRequired,
-  scoreDate: PropTypes.string.isRequired,
-};
 
-export const generateQueryUrl = (modeldata, startDate, endDate) => {
-  const modelids = modeldata.map(m => m.id).map(m => `id=${m}`).join('&');
-  let apihost = `${process.env.REACT_APP_API_HOST}`;
-  apihost += apihost.endsWith('/') ? '' : '/';
-  return `${apihost}csv?${modelids}&startDate=${startDate}&endDate=${endDate}&ctype=.csv`;
+  /** @type {string} The date for a set of scores */
+  scoreDate: PropTypes.string.isRequired,
 };
 
 export const generateTableMatrix = (allDates, modeldata) => {
@@ -155,7 +152,7 @@ class RawScoresComponent extends React.Component {
           </Table>
           <FormFooter>
             <Button
-              href={generateQueryUrl(modeldata, startDate, endDate)}
+              href={rawScoresCsvUrl(modeldata, startDate, endDate)}
               variant="contained"
               download
             >
@@ -169,16 +166,16 @@ class RawScoresComponent extends React.Component {
 }
 
 RawScoresComponent.propTypes = {
-  /** Array with all the dates in the time series */
+  /** @type {string[]} Array with all the dates in the time series */
   allDates: PropTypes.array.isRequired,
 
-  /** End date of requested time period, inclusive. In the format YYYY-MM-DD */
+  /** @type {string} End date of requested time period, inclusive. In the format YYYY-MM-DD */
   endDate: PropTypes.string.isRequired,
 
-  /** Array containing the model metadata and scores */
+  /** @type {Object[]} Array containing the model metadata and scores */
   modeldata: PropTypes.array.isRequired,
 
-  /** Start date of requested time period, inclusive. In the format YYYY-MM-DD */
+  /** @type {string} Start date of requested time period, inclusive. In the format YYYY-MM-DD */
   startDate: PropTypes.string.isRequired,
 };
 

@@ -7,7 +7,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 
-import { generateQueryUrl, generateTableMatrix, RawScores } from './RawScores';
+import { generateTableMatrix, RawScores } from './RawScores';
 import { Article, FormFooter } from './PublicTemplates';
 
 test('renders RawScoresComponent wihout crashing', () => {
@@ -21,16 +21,6 @@ test('renders RawScoresComponent wihout crashing', () => {
   const shallow = createShallow();
   const wrapper = shallow(<RawScores {...props} />);
   expect(wrapper.dive().find(Article)).toHaveLength(1);
-});
-
-test('returns queryUrl', () => {
-  expect.assertions(1);
-  const modeldata = [{ id: 1 }];
-  const startDate = '2018-11-01';
-  const endDate = '2018-11-30';
-  const result = generateQueryUrl(modeldata, startDate, endDate);
-  const re = /\/csv\?id=1&startDate=2018-11-01&endDate=2018-11-30&ctype=\.csv/;
-  expect(result).toMatch(re);
 });
 
 test('generates table matrix', () => {
