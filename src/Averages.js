@@ -68,7 +68,7 @@ const AveragesComponent = (props) => {
 };
 
 AveragesComponent.propTypes = {
-  /** Array containing the model metadata and scores */
+  /** @type {Object[]} Array containing the model metadata and scores */
   modeldata: PropTypes.array.isRequired,
 };
 

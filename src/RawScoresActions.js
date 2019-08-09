@@ -98,22 +98,22 @@ class TablePaginationActions extends React.Component {
 }
 
 TablePaginationActions.propTypes = {
-  /** CSS classes used for styling the MUI component */
+  /** @type {Object} CSS classes used for styling the MUI component */
   classes: PropTypes.object.isRequired,
 
-  /** Total number of rows */
+  /** @type {number} Total number of rows */
   count: PropTypes.number.isRequired,
 
-  /** Callback function to pass the new page number */
+  /** @type {function(page: number)} Callback function to pass the new page number */
   onChangePage: PropTypes.func.isRequired,
 
-  /** Page number */
+  /** @type {number} Page number */
   page: PropTypes.number.isRequired,
 
-  /** Number of rows per page */
+  /** @type {number} Number of rows per page */
   rowsPerPage: PropTypes.number.isRequired,
 
-  /** MUI theme, used to obtain direction of text */
+  /** @type {Object} MUI theme, used to obtain direction of text */
   theme: PropTypes.object.isRequired,
 };
 

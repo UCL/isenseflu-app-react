@@ -84,22 +84,22 @@ const ChartComponent = (props) => {
 };
 
 ChartComponent.propTypes = {
-  /** CSS classes used for styling the MUI component */
+  /** @type {Object} CSS classes used for styling the MUI component */
   classes: PropTypes.object.isRequired,
 
-  /** The title of the chart */
+  /** @type {string} The title of the chart */
   charttitle: PropTypes.string.isRequired,
 
-  /** The set rate thresholds as provided by PHE */
+  /** @type {Object} The set rate thresholds as provided by PHE */
   ratethresholds: PropTypes.object.isRequired,
 
   /** Node containing toggle buttons to activate and deactivate models */
   modelcontrols: PropTypes.node.isRequired,
 
-  /** Array containing the model metadata and scores */
+  /** @type {Object[]} Array containing the model metadata and scores */
   modeldata: PropTypes.array.isRequired,
 
-  /** Permanent link to a specific data set and parameters */
+  /** @type {string} Permanent link to a specific data set and parameters */
   permalink: PropTypes.string.isRequired,
 };
 
