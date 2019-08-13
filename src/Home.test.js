@@ -316,7 +316,7 @@ test('handleUpdateModel updates modelData, activeModels, startDate, endDate and 
   expect(wrapper.state('activeModels')).toStrictEqual([]);
   expect(wrapper.state('modelData')).toHaveLength(0);
   expect(wrapper.state('startDate')).toStrictEqual('1970-01-01');
-  expect(wrapper.state('allDates')).toBeUndefined();
+  expect(wrapper.state('allDates')).toHaveLength(0);
   instance.handleUpdateModel(response);
   expect(wrapper.state('activeModels')).toStrictEqual([3]);
   expect(wrapper.state('modelData')).toHaveLength(1);

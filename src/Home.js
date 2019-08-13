@@ -33,6 +33,7 @@ import { homeModelData, homeScoresData } from './JsonData';
 class HomeComponent extends React.Component {
   state = {
     activeModels: [],
+    allDates: [],
     modelData: [], // For all components
     rateThresholds: {},
     modelList: [], // For toggle switches to select models being displayed
