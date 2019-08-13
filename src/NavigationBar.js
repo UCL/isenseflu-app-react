@@ -45,7 +45,7 @@ const styles = {
   },
 };
 
-const isActive = pathname => (window.location.pathname === pathname ? 'primary' : 'default');
+const isActive = (pathname) => (window.location.pathname === pathname ? 'primary' : 'default');
 
 const NavigationBar = (props) => {
   const { classes } = props;

@@ -149,7 +149,7 @@ export const dataFilteringQueryUrl = (ids, startDate, endDate, resolution, smoot
  * @return {[type]}           The URL to download the CSV file from
  */
 export const rawScoresCsvUrl = (modelData, startDate, endDate) => {
-  const modelids = modelData.map(m => m.id).map(m => `id=${m}`).join('&');
+  const modelids = modelData.map((m) => m.id).map((m) => `id=${m}`).join('&');
   let apihost = `${process.env.REACT_APP_API_HOST}`;
   apihost += apihost.endsWith('/') ? '' : '/';
   return `${apihost}csv?${modelids}&startDate=${startDate}&endDate=${endDate}&ctype=.csv`;

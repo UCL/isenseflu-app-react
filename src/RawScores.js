@@ -46,14 +46,14 @@ const ScoreRow = (props) => {
   return (
     <TableRow hover>
       <TableCell>{scoreDate}</TableCell>
-      { modelScores.map(s => (<TableCell key={s.model_id}>{s.score_value}</TableCell>)) }
+      { modelScores.map((s) => (<TableCell key={s.model_id}>{s.score_value}</TableCell>)) }
     </TableRow>
   );
 };
 
 ScoreRow.propTypes = {
   /** @type {Object[]} List of model scores for a particular date */
-  modelScores: PropTypes.array.isRequired,
+  modelScores: PropTypes.arrayOf(PropTypes.shape).isRequired,
 
   /** @type {string} The date for a set of scores */
   scoreDate: PropTypes.string.isRequired,
@@ -68,9 +68,9 @@ export const generateTableMatrix = (allDates, modeldata) => {
     const scoreValues = modeldata.map((m) => {
       const { id } = m;
       const val = m.datapoints.filter(
-        p => p.score_date === ad,
+        (p) => p.score_date === ad,
       ).map(
-        p => p.score_value,
+        (p) => p.score_value,
       );
       return {
         model_id: id,
@@ -119,7 +119,7 @@ class RawScoresComponent extends React.Component {
               <TableRow>
                 <TableCell>Date</TableCell>
                 {
-                  modeldata.map(m => (<TableCell key={m.id}>{`${m.name} (England)`}</TableCell>))
+                  modeldata.map((m) => (<TableCell key={m.id}>{`${m.name} (England)`}</TableCell>))
                 }
               </TableRow>
             </TableHead>
@@ -127,7 +127,13 @@ class RawScoresComponent extends React.Component {
               {
                 generateTableMatrix(allDates, modeldata)
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map(row => (<ScoreRow key={row.scoreDate} {...row} />))
+                  .map((row) => (
+                    <ScoreRow
+                      key={row.scoreDate}
+                      modelScores={row.modelScores}
+                      scoreDate={row.scoreDate}
+                    />
+                  ))
               }
             </TableBody>
             <TableFooter>
@@ -167,13 +173,13 @@ class RawScoresComponent extends React.Component {
 
 RawScoresComponent.propTypes = {
   /** @type {string[]} Array with all the dates in the time series */
-  allDates: PropTypes.array.isRequired,
+  allDates: PropTypes.arrayOf(PropTypes.string).isRequired,
 
   /** @type {string} End date of requested time period, inclusive. In the format YYYY-MM-DD */
   endDate: PropTypes.string.isRequired,
 
   /** @type {Object[]} Array containing the model metadata and scores */
-  modeldata: PropTypes.array.isRequired,
+  modeldata: PropTypes.arrayOf(PropTypes.shape).isRequired,
 
   /** @type {string} Start date of requested time period, inclusive. In the format YYYY-MM-DD */
   startDate: PropTypes.string.isRequired,

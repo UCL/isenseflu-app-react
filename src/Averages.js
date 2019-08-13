@@ -48,7 +48,7 @@ const AveragesComponent = (props) => {
           {
             modeldata.map((item) => {
               const avg = item.datapoints.map(
-                x => x.score_value,
+                (x) => x.score_value,
               ).reduce(
                 (sum, score) => sum + score,
               ) / item.datapoints.length;
@@ -69,7 +69,7 @@ const AveragesComponent = (props) => {
 
 AveragesComponent.propTypes = {
   /** @type {Object[]} Array containing the model metadata and scores */
-  modeldata: PropTypes.array.isRequired,
+  modeldata: PropTypes.arrayOf(PropTypes.shape).isRequired,
 };
 
 export { AveragesComponent as default };

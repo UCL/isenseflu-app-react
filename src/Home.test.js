@@ -1,7 +1,8 @@
 /*
 eslint {
   jest/no-hooks: [ "error", { "allow": [ "afterAll", "beforeAll" ] } ],
-  jest/no-test-callback: "off"
+  jest/no-test-callback: "off",
+  react/jsx-props-no-spreading: "off"
 }
 */
 import React from 'react';

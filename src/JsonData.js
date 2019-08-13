@@ -24,7 +24,7 @@ const processModelData = (modelDataJson) => {
   const activeModels = [];
   const modelData = [];
   modelDataJson.forEach((item) => {
-    datesList.push(item.data_points.map(p => p.score_date));
+    datesList.push(item.data_points.map((p) => p.score_date));
     activeModels.push(item.id);
     modelData.push(
       {
@@ -36,8 +36,8 @@ const processModelData = (modelDataJson) => {
       },
     );
   });
-  const startDate = new Date(Math.min.apply(null, datesList.flat().map(e => new Date(e))));
-  const endDate = new Date(Math.max.apply(null, datesList.flat().map(e => new Date(e))));
+  const startDate = new Date(Math.min.apply(null, datesList.flat().map((e) => new Date(e))));
+  const endDate = new Date(Math.max.apply(null, datesList.flat().map((e) => new Date(e))));
   return {
     modelData,
     startDate: startDate.toISOString().substring(0, 10),
@@ -53,7 +53,7 @@ const processModelData = (modelDataJson) => {
  * @param  {Object} jsondata JSON response containing the model list, rate thresholds and model data
  * @return {Object}          Object containing state variables for Home component
  */
-export const homeModelData = jsondata => (
+export const homeModelData = (jsondata) => (
   {
     ...processModelData(jsondata.model_data),
     modelList: jsondata.model_list,
@@ -67,4 +67,4 @@ export const homeModelData = jsondata => (
  * @param  {Object} jsondata JSON response containing the model data
  * @return {Object}          Object containing state variables for Home component
  */
-export const homeScoresData = jsondata => processModelData(jsondata.model_data);
+export const homeScoresData = (jsondata) => processModelData(jsondata.model_data);
