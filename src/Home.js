@@ -100,7 +100,7 @@ class HomeComponent extends React.Component {
           return response.json();
         }).then((jsondata) => {
           const newScoresData = homeScoresData(jsondata);
-          this.setState(prevState => ({
+          this.setState((prevState) => ({
             modelData: [...prevState.modelData, ...newScoresData.modelData],
             allDates: [...new Set([...prevState.allDates, ...newScoresData.allDates])],
             activeModels: [...prevState.activeModels, ...newScoresData.activeModels],
@@ -115,16 +115,16 @@ class HomeComponent extends React.Component {
     } else {
       const modelIdToFilter = parseInt(event.target.value, 10);
       const { modelData } = this.state;
-      const filteredModel = modelData.slice().filter(m => m.id !== modelIdToFilter);
+      const filteredModel = modelData.slice().filter((m) => m.id !== modelIdToFilter);
       const filteredDates = filteredModel.map(
-        m => m.datapoints,
+        (m) => m.datapoints,
       ).reduce(
-        (arr, datapoint) => [...arr, ...new Set([...datapoint.map(p => p.score_date)])], [],
+        (arr, datapoint) => [...arr, ...new Set([...datapoint.map((p) => p.score_date)])], [],
       );
-      this.setState(prevState => ({
+      this.setState((prevState) => ({
         modelData: filteredModel,
         allDates: filteredDates,
-        activeModels: prevState.activeModels.filter(id => id !== modelIdToFilter),
+        activeModels: prevState.activeModels.filter((id) => id !== modelIdToFilter),
       }), this.updatePermalinkStateCallback);
     }
   };
@@ -174,7 +174,7 @@ class HomeComponent extends React.Component {
           permalink={permaLink}
         />
         <DataFilteringComponent
-          modelIds={modelData.map(m => m.id)}
+          modelIds={modelData.map((m) => m.id)}
           startDate={startDate}
           endDate={endDate}
           resolution={resolution}

@@ -35,7 +35,7 @@ import { withStyles } from '@material-ui/core/styles';
 import { Article, FormFooter } from './PublicTemplates';
 import { dataFilteringPermalinkUrl, dataFilteringQueryUrl } from './Url';
 
-const styles = theme => ({
+const styles = (theme) => ({
   filteringFields: {
     padding: theme.spacing(2),
   },
@@ -177,7 +177,7 @@ class DataFilteringComponent extends Component {
 }
 
 DataFilteringComponent.propTypes = {
-  /** @type {Object[]} CSS classes used for styling the MUI component */
+  /** @type {Object} CSS classes used for styling the MUI component */
   classes: PropTypes.object.isRequired,
 
   /** @type {function(value: boolean)} Callback function to update the title of the chart based on
@@ -188,7 +188,7 @@ DataFilteringComponent.propTypes = {
   endDate: PropTypes.string.isRequired,
 
   /** @type {number[]} Array containing the ids of the models being displayed */
-  modelIds: PropTypes.array.isRequired,
+  modelIds: PropTypes.arrayOf(PropTypes.number).isRequired,
 
   /** @type {function(event: Object)} Callback function used to pass the values of each field target
    to the parent */

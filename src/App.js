@@ -60,7 +60,7 @@ const theme = createMuiTheme({
   },
 });
 
-const styles = aTheme => ({
+const styles = (aTheme) => ({
   layout: {
     width: 'auto',
     display: 'block', // Fix IE11 issue.

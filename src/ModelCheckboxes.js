@@ -37,14 +37,14 @@ const ModelCheckboxes = (props) => {
     startDate,
   } = props;
 
-  const models = modellist.map(model => (
+  const models = modellist.map((model) => (
     <FormGroup key={model.id}>
       <FormControlLabel
         control={(
           <Switch
             value={String(model.id)}
             checked={activeIds.includes(model.id)}
-            onChange={e => handleChangeCallback(e, startDate, endDate, resolution, smoothing)}
+            onChange={(e) => handleChangeCallback(e, startDate, endDate, resolution, smoothing)}
             color="primary"
           />
         )}
@@ -62,7 +62,7 @@ const ModelCheckboxes = (props) => {
 
 ModelCheckboxes.propTypes = {
   /** @type {number[]} Array of model ids that are active */
-  activeIds: PropTypes.array.isRequired,
+  activeIds: PropTypes.arrayOf(PropTypes.number).isRequired,
 
   /** @type {string} End date of requested time period, inclusive. In the format YYYY-MM-DD */
   endDate: PropTypes.string.isRequired,
@@ -72,7 +72,7 @@ ModelCheckboxes.propTypes = {
   handleChangeCallback: PropTypes.func.isRequired,
 
   /** @type {Object[]} Complete list of public models available */
-  modellist: PropTypes.array.isRequired,
+  modellist: PropTypes.arrayOf(PropTypes.shape).isRequired,
 
   /** @type {string} The density of the data points returned, either day or week */
   resolution: PropTypes.string.isRequired,

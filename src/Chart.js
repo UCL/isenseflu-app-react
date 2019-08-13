@@ -36,7 +36,7 @@ import 'chartjs-plugin-annotation';
 import { Article } from './PublicTemplates';
 import { generateChartData, generateChartOptions, getMaxScoreValue } from './ChartTemplate';
 
-const styles = theme => ({
+const styles = (theme) => ({
   lineChart: {
     padding: theme.spacing(2),
   },
@@ -97,7 +97,7 @@ ChartComponent.propTypes = {
   modelcontrols: PropTypes.node.isRequired,
 
   /** @type {Object[]} Array containing the model metadata and scores */
-  modeldata: PropTypes.array.isRequired,
+  modeldata: PropTypes.arrayOf(PropTypes.object).isRequired,
 
   /** @type {string} Permanent link to a specific data set and parameters */
   permalink: PropTypes.string.isRequired,

@@ -1,4 +1,5 @@
-/* eslint jest/no-hooks: [ "error", { "allow": [ "afterAll", "beforeAll" ] } ] */
+/* eslint jest/no-hooks: [ "error", { "allow": [ "afterAll", "beforeAll" ] } ],
+react/jsx-props-no-spreading: "off" */
 import React from 'react';
 
 import { createShallow } from '@material-ui/core/test-utils';

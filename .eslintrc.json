@@ -12,6 +12,7 @@
   "rules":
     {
       "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
-      "react/forbid-prop-types": "on"
+      "react/jsx-fragments": [1, "element"],
+      "react/forbid-prop-types": ["warn", {"forbid": ["any", "array"]}]
     }
 }

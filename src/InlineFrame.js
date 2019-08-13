@@ -24,7 +24,7 @@ import PropTypes from 'prop-types';
 
 import withStyles from '@material-ui/core/styles/withStyles';
 
-const styles = theme => ({
+const styles = (theme) => ({
   framecontainer: {
     marginBottom: theme.spacing(3),
   },

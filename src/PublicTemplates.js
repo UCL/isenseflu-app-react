@@ -31,7 +31,7 @@ import { withStyles } from '@material-ui/core/styles';
 
 import InlineFrame from './InlineFrame';
 
-const styles = theme => ({
+const styles = (theme) => ({
   paper: {
     marginBottom: theme.spacing(3),
   },

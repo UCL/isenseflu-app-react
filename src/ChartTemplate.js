@@ -56,17 +56,17 @@ export const getMaxScoreValue = (modeldata) => {
     return -Infinity;
   }
   const res = modeldata.map(
-    m => (
+    (m) => (
       {
         datapoints: m.datapoints,
         hasConfidenceInterval: (modeldata.length === 1) ? m.hasConfidenceInterval : false,
       }
     ),
   ).flatMap(
-    m => (
+    (m) => (
       m.hasConfidenceInterval
-        ? [...m.datapoints.map(d => d.confidence_interval_upper)]
-        : [...m.datapoints.map(d => d.score_value)]
+        ? [...m.datapoints.map((d) => d.confidence_interval_upper)]
+        : [...m.datapoints.map((d) => d.score_value)]
     ),
   );
   return Math.max(...res);
