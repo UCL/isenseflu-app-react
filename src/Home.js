@@ -22,6 +22,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import Snackbar from '@material-ui/core/Snackbar';
+
 import ChartComponent from './Chart';
 import DataFilteringComponent from './DataFiltering';
 import AveragesComponent from './Averages';
@@ -33,6 +35,7 @@ import { homeModelData, homeScoresData } from './JsonData';
 class HomeComponent extends React.Component {
   state = {
     activeModels: [],
+    allDates: [],
     modelData: [], // For all components
     rateThresholds: {},
     modelList: [], // For toggle switches to select models being displayed
@@ -42,17 +45,20 @@ class HomeComponent extends React.Component {
     smoothing: 0, // for DataFiltering
     permaLink: window.location.href,
     chartTitlePrefix: 'Daily',
+    errorMessages: [],
   }
 
   componentDidMount() {
     const { location } = this.props;
     const fetchUrl = homeFetchUrl(location.search);
     fetch(fetchUrl).then((response) => {
-      if (!response.ok) { throw response; }
+      if (!response.ok) { throw Error('Cannot fetch scores from API'); }
       return response.json();
     }).then((jsondata) => {
       const didMountData = homeModelData(jsondata);
       this.setState(didMountData);
+    }).catch((error) => {
+      this.setState({ errorMessages: [error.message] });
     });
   }
 
@@ -96,7 +102,9 @@ class HomeComponent extends React.Component {
       );
       fetch(fetchUrl)
         .then((response) => {
-          if (!response.ok) { throw response; }
+          if (!response.ok) {
+            throw Error('Cannot reach API to fetch scores for the range required');
+          }
           return response.json();
         }).then((jsondata) => {
           const newScoresData = homeScoresData(jsondata);
@@ -111,6 +119,10 @@ class HomeComponent extends React.Component {
               ? newScoresData.endDate
               : prevState.endDate,
           }), this.updatePermalinkStateCallback);
+        }).catch((error) => {
+          this.setState((prevState) => (
+            { errorMessages: [...prevState.errorMessages, error.message] }
+          ));
         });
     } else {
       const modelIdToFilter = parseInt(event.target.value, 10);
@@ -145,6 +157,7 @@ class HomeComponent extends React.Component {
       allDates,
       chartTitlePrefix,
       endDate,
+      errorMessages,
       modelData,
       modelList,
       permaLink,
@@ -191,6 +204,7 @@ class HomeComponent extends React.Component {
           startDate={startDate}
           endDate={endDate}
         />
+        {errorMessages.forEach((message) => (<Snackbar message={message} />))}
       </React.Fragment>
     );
   }

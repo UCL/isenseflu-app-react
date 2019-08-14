@@ -39,7 +39,25 @@ test('when event.target.checked is false the modelId is removed from activeModel
   expect(wrapper.state('permaLink')).toStrictEqual(expected);
 });
 
-test('when event.target.checked is true the modelId is added to activeModels', (done) => {
+test('when event.target.checked is true but handleChangeCallback cannot reach the API', (done) => {
+  expect.assertions(2);
+  jest.spyOn(global, 'fetch').mockImplementation(() => Promise.resolve({ ok: false }));
+  const props = {
+    location: { search: '' },
+  };
+  const wrapper = shallow(<HomeComponent {...props} />, { disableLifecycleMethods: true });
+  const instance = wrapper.instance();
+  const event = { target: { checked: true, value: 2 } };
+  instance.handleChangeCallback(event, '2019-06-26', '2019-06-28');
+  process.nextTick(() => {
+    expect(wrapper.state('errorMessages')).toHaveLength(1);
+    expect(wrapper.state('errorMessages')[0]).toStrictEqual('Cannot reach API to fetch scores for the range required');
+    global.fetch.mockReset();
+    done();
+  });
+});
+
+test('when event.target.checked is true, handleChangeCallback adds modelId to activeModels', (done) => {
   expect.assertions(7);
   try {
     const response = {
@@ -110,6 +128,144 @@ test('when event.target.checked is true the modelId is added to activeModels', (
   } catch (e) {
     done(e);
   }
+});
+
+test('when event.target.checked is true, handleChangeCallback adds modelId to activeModels. Start and end dates within the range in set in state', (done) => {
+  expect.assertions(7);
+  try {
+    const response = {
+      model_data: [
+        {
+          id: 2,
+          name: 'Model 2',
+          average_score: 3.8055417187683727,
+          has_confidence_interval: true,
+          start_date: '2019-06-26',
+          end_date: '2019-06-28',
+          data_points: [
+            {
+              score_date: '2019-06-28',
+              score_value: 3.49504958214849,
+              confidence_interval_lower: 0.263175153943189,
+              confidence_interval_upper: 6.72692401035379,
+            },
+            {
+              score_date: '2019-06-27',
+              score_value: 3.5872420985975,
+              confidence_interval_lower: 0.237621760695548,
+              confidence_interval_upper: 6.93686243649945,
+            },
+            {
+              score_date: '2019-06-26',
+              score_value: 4.39709536259043,
+              confidence_interval_lower: 0.542736648153371,
+              confidence_interval_upper: 8.25145407702749,
+            },
+          ],
+        },
+      ],
+    };
+    const jsonPromise = Promise.resolve(response);
+    const fetchPromise = Promise.resolve({
+      ok: true,
+      json: () => jsonPromise,
+    });
+    jest.spyOn(global, 'fetch').mockImplementation(() => fetchPromise);
+    const props = {
+      location: { search: '' },
+    };
+    const wrapper = shallow(<HomeComponent {...props} />, { disableLifecycleMethods: true });
+    const instance = wrapper.instance();
+    instance.setState({
+      allDates: [],
+      activeModels: [1],
+      startDate: '2019-06-26',
+      endDate: '2019-06-28',
+      resolution: 'day',
+      smoothing: 0,
+    });
+    expect(wrapper.state('activeModels')).toStrictEqual([1]);
+    const event = { target: { checked: true, value: 2 } };
+    instance.handleChangeCallback(event, '2019-06-26', '2019-06-28');
+    process.nextTick(() => {
+      expect(wrapper.state('activeModels')).toStrictEqual([1, 2]);
+      expect(wrapper.state('allDates')).toStrictEqual(['2019-06-28', '2019-06-27', '2019-06-26']);
+      expect(wrapper.state('startDate')).toStrictEqual('2019-06-26');
+      expect(wrapper.state('endDate')).toStrictEqual('2019-06-28');
+      const { location } = window;
+      expect(wrapper.state('permaLink')).toStrictEqual(`${location.protocol}//${location.host}${location.pathname}?source=plink&id=1&id=2&startDate=2019-06-26&endDate=2019-06-28&resolution=day&smoothing=0`);
+      expect(wrapper.state('modelData')).toHaveLength(1);
+      global.fetch.mockReset();
+      done();
+    });
+  } catch (e) {
+    done(e);
+  }
+});
+
+test('when event.target.checked is false, handleChangeCallback adds modelId to activeModels', () => {
+  expect.assertions(4);
+  const props = {
+    location: { search: '' },
+  };
+  const wrapper = shallow(<HomeComponent {...props} />, { disableLifecycleMethods: true });
+  const instance = wrapper.instance();
+  instance.setState({
+    allDates: ['2019-06-26', '2019-06-27', '2019-06-28'],
+    activeModels: [1, 2],
+    modelData: [
+      {
+        id: 1,
+        datapoints: [
+          {
+            score_date: '2019-06-28',
+            score_value: 3.49504958214849,
+            confidence_interval_lower: 0.263175153943189,
+            confidence_interval_upper: 6.72692401035379,
+          },
+          {
+            score_date: '2019-06-27',
+            score_value: 3.5872420985975,
+            confidence_interval_lower: 0.237621760695548,
+            confidence_interval_upper: 6.93686243649945,
+          },
+        ],
+      },
+      {
+        id: 2,
+        datapoints: [
+          {
+            score_date: '2019-06-28',
+            score_value: 4.53303987156752,
+            confidence_interval_lower: 1.29101711739689,
+            confidence_interval_upper: 7.77506262573815,
+          },
+          {
+            score_date: '2019-06-27',
+            score_value: 4.39709536259043,
+            confidence_interval_lower: 0.542736648153371,
+            confidence_interval_upper: 8.25145407702749,
+          },
+          {
+            score_date: '2019-06-26',
+            score_value: 4.81214979509769,
+            confidence_interval_lower: 1.83559311227191,
+            confidence_interval_upper: 7.78870647792348,
+          },
+        ],
+      },
+    ],
+    startDate: '2019-06-26',
+    endDate: '2019-06-28',
+    resolution: 'day',
+    smoothing: 0,
+  });
+  expect(wrapper.state('activeModels')).toStrictEqual([1, 2]);
+  expect(wrapper.state('allDates')).toStrictEqual(['2019-06-26', '2019-06-27', '2019-06-28']);
+  const event = { target: { checked: false, value: 2 } };
+  instance.handleChangeCallback(event, '2019-06-26', '2019-06-28');
+  expect(wrapper.state('activeModels')).toStrictEqual([1]);
+  expect(wrapper.state('allDates')).toStrictEqual(['2019-06-28', '2019-06-27']);
 });
 
 test('handleUpdateModel updates modelData, activeModels, startDate, endDate and allDates', () => {
@@ -316,7 +472,7 @@ test('handleUpdateModel updates modelData, activeModels, startDate, endDate and 
   expect(wrapper.state('activeModels')).toStrictEqual([]);
   expect(wrapper.state('modelData')).toHaveLength(0);
   expect(wrapper.state('startDate')).toStrictEqual('1970-01-01');
-  expect(wrapper.state('allDates')).toBeUndefined();
+  expect(wrapper.state('allDates')).toHaveLength(0);
   instance.handleUpdateModel(response);
   expect(wrapper.state('activeModels')).toStrictEqual([3]);
   expect(wrapper.state('modelData')).toHaveLength(1);
@@ -401,8 +557,51 @@ test('componentDidMount set values for activeModels, allDates, modelList, startD
   });
 });
 
-test('handleChartTitleUpdate sets state value for chartTitlePrefix to Weekly', () => {
+test('componentDidMount does not get response.ok when fetching scores', (done) => {
+  expect.assertions(2);
+  jest.spyOn(global, 'fetch').mockImplementation(() => Promise.resolve({ ok: false }));
+  const props = {
+    location: { search: '' },
+  };
+  const wrapper = shallow(<HomeComponent {...props} />);
+  process.nextTick(() => {
+    expect(wrapper.state('errorMessages')).toHaveLength(1);
+    expect(wrapper.state('errorMessages')[0]).toStrictEqual('Cannot fetch scores from API');
+    global.fetch.mockReset();
+    done();
+  });
+});
+
+test('handleUpdatePermalink sets state value for permaLink', () => {
+  expect.assertions(1);
+  const props = {
+    location: { search: '' },
+  };
+  const wrapper = shallow(<HomeComponent {...props} />, { disableLifecycleMethods: true });
+  const instance = wrapper.instance();
+  instance.handleUpdatePermalink('/plinkUrl');
+  expect(wrapper.state('permaLink')).toStrictEqual('/plinkUrl');
+  global.fetch.mockReset();
+});
+
+test('handlePropsChange sets state from event target name and value if value not undefined', () => {
   expect.assertions(4);
+  const props = {
+    location: { search: '' },
+  };
+  const wrapper = shallow(<HomeComponent {...props} />, { disableLifecycleMethods: true });
+  const instance = wrapper.instance();
+  instance.handlePropsChange({ target: { type: 'checkbox', checked: true, name: 'check0' } });
+  expect(wrapper.state('check0')).toBe(true);
+  expect(wrapper.state('resolution')).toBe('day');
+  instance.handlePropsChange({ target: { type: 'select-one', value: undefined, name: 'resolution' } });
+  expect(wrapper.state('resolution')).toBe('day');
+  instance.handlePropsChange({ target: { type: 'select-one', value: 'week', name: 'resolution' } });
+  expect(wrapper.state('resolution')).toBe('week');
+});
+
+test('handleChartTitleUpdate sets state value for chartTitlePrefix to Weekly', () => {
+  expect.assertions(5);
   const defaultTitle = 'Daily influenza-like illness rates';
   const updatedTitle = 'Weekly influenza-like illness rates';
   const props = {
@@ -412,6 +611,8 @@ test('handleChartTitleUpdate sets state value for chartTitlePrefix to Weekly', (
   expect(wrapper.state('chartTitlePrefix')).toStrictEqual('Daily');
   expect(wrapper.find(ChartComponent).dive().prop('charttitle')).toStrictEqual(defaultTitle);
   const instance = wrapper.instance();
+  instance.handleChartTitleUpdate(false);
+  expect(wrapper.state('chartTitlePrefix')).toStrictEqual('Daily');
   instance.handleChartTitleUpdate(true);
   expect(wrapper.state('chartTitlePrefix')).toStrictEqual('Weekly');
   expect(wrapper.find(ChartComponent).dive().prop('charttitle')).toStrictEqual(updatedTitle);
