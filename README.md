@@ -59,6 +59,25 @@ serve -s build
 `serve` uses port 5000 by default.
 
 
+## Testing
+
+### Test coverage
+
+![coverage](coverage.svg)
+
+Install `make-coverage-badge`:
+
+```
+npm install -g make-coverage-badge
+```
+
+Run test with the coverage option. It must include the `json-summary` reporter to generate the badge:
+
+```
+npm test -- --coverage --watchAll=false --coverageReporters json-summary html
+make-coverage-badge --output-path coverage.svg
+```
+
 ## Reporting bugs
 
 Please use the GitHub issue tracker for any bugs or feature suggestions:
