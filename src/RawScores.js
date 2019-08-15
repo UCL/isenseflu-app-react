@@ -35,29 +35,12 @@ import withStyles from '@material-ui/core/styles/withStyles';
 
 import { Article, FormFooter } from './PublicTemplates';
 import RawScoresActions from './RawScoresActions';
+import ScoreRow from './ScoreRow';
 import { rawScoresCsvUrl } from './Url';
 
 const styles = () => ({
 
 });
-
-const ScoreRow = (props) => {
-  const { modelScores, scoreDate } = props;
-  return (
-    <TableRow hover>
-      <TableCell>{scoreDate}</TableCell>
-      { modelScores.map((s) => (<TableCell key={s.model_id}>{s.score_value}</TableCell>)) }
-    </TableRow>
-  );
-};
-
-ScoreRow.propTypes = {
-  /** @type {Object[]} List of model scores for a particular date */
-  modelScores: PropTypes.arrayOf(PropTypes.shape).isRequired,
-
-  /** @type {string} The date for a set of scores */
-  scoreDate: PropTypes.string.isRequired,
-};
 
 export const generateTableMatrix = (allDates, modeldata) => {
   const matrix = [];

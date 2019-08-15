@@ -79,11 +79,13 @@ export const getMaxScoreValue = (modeldata) => {
  * @see {@link https://www.chartjs.org/docs/latest/charts/line.html#data-structure}
  */
 export const generateChartData = (modeldata) => {
-  if (modeldata.length === 0) {
+  const isAnArray = Array.isArray(modeldata);
+
+  if (isAnArray && modeldata.length === 0) {
     return {};
   }
 
-  if (modeldata.length === 1) {
+  if (isAnArray && modeldata.length === 1) {
     const template = {
       datasets: [
         {
@@ -127,7 +129,7 @@ export const generateChartData = (modeldata) => {
     return template;
   }
 
-  if (modeldata.length > 1) {
+  if (isAnArray && modeldata.length > 1) {
     const template = {
       datasets: [],
     };
