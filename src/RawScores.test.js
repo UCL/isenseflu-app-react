@@ -140,7 +140,7 @@ test('renders a table header with 3 columns', () => {
 });
 
 test('renders a table body with 3 rows', () => {
-  expect.assertions(1);
+  expect.assertions(4);
   const allDates = ['2018-10-01', '2018-10-02', '2018-10-03'];
   const modeldata = [
     {
@@ -179,6 +179,9 @@ test('renders a table body with 3 rows', () => {
   const shallow = createShallow({ dive: true });
   const wrapper = shallow(<RawScores {...props} />);
   expect(wrapper.find(TableBody).children()).toHaveLength(3);
+  wrapper.find(TableBody).children().forEach((child) => {
+    expect(child.name()).toStrictEqual('ScoreRow');
+  });
 });
 
 test('renders a form footer with a download button', () => {
