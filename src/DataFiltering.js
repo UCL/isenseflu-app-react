@@ -66,14 +66,21 @@ class DataFilteringComponent extends Component {
 
   handleSubmit = (queryUrl, permalinkUrl, isWeekly) => (event) => {
     event.preventDefault();
-    const { chartTitleCallback, permalinkCallback, updateCallback } = this.props;
+    const {
+      chartTitleCallback,
+      errorCallback,
+      permalinkCallback,
+      updateCallback,
+    } = this.props;
     fetch(queryUrl)
       .then((response) => {
-        if (!response.ok) { throw response; }
+        if (!response.ok) { throw Error('DataFiltering: Cannot fetch scores from API'); }
         return response.json();
       }).then((jsondata) => {
         updateCallback(jsondata);
         chartTitleCallback(isWeekly);
+      }).catch((error) => {
+        errorCallback(error.message);
       });
     this.setState({ isDisabled: true });
     permalinkCallback(permalinkUrl);
@@ -186,6 +193,9 @@ DataFilteringComponent.propTypes = {
 
   /** @type {string} End date of requested time period, inclusive. In the format YYYY-MM-DD */
   endDate: PropTypes.string.isRequired,
+
+  /** @type {function(message: string)} Callback function to pass error messages from fetch */
+  errorCallback: PropTypes.func.isRequired,
 
   /** @type {number[]} Array containing the ids of the models being displayed */
   modelIds: PropTypes.arrayOf(PropTypes.number).isRequired,

@@ -618,6 +618,19 @@ test('handleChartTitleUpdate sets state value for chartTitlePrefix to Weekly', (
   expect(wrapper.find(ChartComponent).dive().prop('charttitle')).toStrictEqual(updatedTitle);
 });
 
+test('handleErrorCallback adds error message to state', () => {
+  expect.assertions(3);
+  const props = {
+    location: { search: 'source=plink&id=1&id=2' },
+  };
+  const wrapper = shallow(<HomeComponent {...props} />, { disableLifecycleMethods: true });
+  expect(wrapper.state('errorMessages')).toHaveLength(0);
+  const instance = wrapper.instance();
+  instance.handleErrorCallback('Error message');
+  expect(wrapper.state('errorMessages')).toHaveLength(1);
+  expect(wrapper.state('errorMessages')[0]).toStrictEqual('Error message');
+});
+
 afterAll(() => {
   delete process.env.REACT_APP_API_HOST;
 });

@@ -16,7 +16,7 @@
     "react-chartjs-2": "^2.7.6",
     "react-dom": "^16.9.0",
     "react-router-dom": "^5.0.1",
-    "react-scripts": "3.1.0",
+    "react-scripts": "3.1.1",
     "typeface-clear-sans": "0.0.44"
   },
   "scripts": {
@@ -29,7 +29,7 @@
     "enzyme": "^3.10.0",
     "enzyme-adapter-react-16": "^1.14.0",
     "eslint": "6.1.0",
-    "eslint-config-airbnb": "^18.0.0",
+    "eslint-config-airbnb": "^18.0.1",
     "eslint-plugin-import": "^2.18.2",
     "eslint-plugin-jest": "^22.15.1",
     "eslint-plugin-jsx-a11y": "^6.2.3",
