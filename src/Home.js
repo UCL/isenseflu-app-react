@@ -151,6 +151,12 @@ class HomeComponent extends React.Component {
     }
   };
 
+  handleErrorCallback = (message) => {
+    this.setState((prevState) => (
+      { errorMessages: [...prevState.errorMessages, message] }
+    ));
+  };
+
   render() {
     const {
       activeModels,
@@ -196,6 +202,7 @@ class HomeComponent extends React.Component {
           onChangeCallback={this.handlePropsChange}
           permalinkCallback={this.handleUpdatePermalink}
           chartTitleCallback={this.handleChartTitleUpdate}
+          errorCallback={this.handleErrorCallback}
         />
         <AveragesComponent modeldata={modelData} />
         <RawScores
