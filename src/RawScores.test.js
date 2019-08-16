@@ -24,6 +24,21 @@ test('renders RawScoresComponent wihout crashing', () => {
   expect(wrapper.dive().find(Article)).toHaveLength(1);
 });
 
+test('renders RawScoresComponent with allDates set to undefined', () => {
+  expect.assertions(2);
+  const props = {
+    allDates: undefined,
+    endDate: '',
+    modeldata: [],
+    startDate: '',
+  };
+  const shallow = createShallow();
+  const spy = jest.spyOn(console, 'error').mockImplementation();
+  const wrapper = shallow(<RawScores {...props} />);
+  expect(wrapper.dive().find(Article)).toHaveLength(1);
+  expect(spy).toHaveBeenCalledTimes(1);
+});
+
 test('generates table matrix', () => {
   expect.assertions(2);
   const resultUndefined = generateTableMatrix(undefined, undefined);
