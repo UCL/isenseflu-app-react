@@ -71,6 +71,7 @@ export const generateTableMatrix = (allDates, modeldata) => {
   return matrix;
 };
 
+/* eslint { react/state-in-constructor: "off" } */
 class RawScoresComponent extends React.Component {
   state = {
     page: 0,
