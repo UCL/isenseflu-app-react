@@ -32,6 +32,7 @@ import { RawScores } from './RawScores';
 import { homeFetchUrl, homeFetchScoresUrl, homePermalinkUrl } from './Url';
 import { homeModelData, homeScoresData } from './JsonData';
 
+/* eslint { react/state-in-constructor: "off" } */
 class HomeComponent extends React.Component {
   state = {
     activeModels: [],
@@ -210,6 +211,7 @@ class HomeComponent extends React.Component {
           allDates={allDates}
           startDate={startDate}
           endDate={endDate}
+          resolution={resolution}
         />
         {errorMessages.forEach((message) => (<Snackbar message={message} />))}
       </React.Fragment>

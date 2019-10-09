@@ -71,6 +71,7 @@ export const generateTableMatrix = (allDates, modeldata) => {
   return matrix;
 };
 
+/* eslint { react/state-in-constructor: "off" } */
 class RawScoresComponent extends React.Component {
   state = {
     page: 0,
@@ -87,7 +88,7 @@ class RawScoresComponent extends React.Component {
 
   render() {
     const {
-      allDates, endDate, modeldata, startDate,
+      allDates, endDate, modeldata, resolution, startDate,
     } = this.props;
 
     const { page, rowsPerPage } = this.state;
@@ -141,7 +142,7 @@ class RawScoresComponent extends React.Component {
           </Table>
           <FormFooter>
             <Button
-              href={rawScoresCsvUrl(modeldata, startDate, endDate)}
+              href={rawScoresCsvUrl(modeldata, startDate, endDate, resolution)}
               variant="contained"
               download
             >
@@ -160,6 +161,9 @@ RawScoresComponent.propTypes = {
 
   /** @type {string} End date of requested time period, inclusive. In the format YYYY-MM-DD */
   endDate: PropTypes.string.isRequired,
+
+  /** @type {String} Whether the CSV files should include weekly (true) or daily (false) data */
+  resolution: PropTypes.string.isRequired,
 
   /** @type {Object[]} Array containing the model metadata and scores */
   modeldata: PropTypes.arrayOf(PropTypes.shape).isRequired,

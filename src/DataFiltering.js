@@ -41,6 +41,7 @@ const styles = (theme) => ({
   },
 });
 
+/* eslint { react/state-in-constructor: "off" } */
 class DataFilteringComponent extends Component {
   state = {
     isDisabled: true,
