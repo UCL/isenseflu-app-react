@@ -17,6 +17,7 @@ test('renders RawScoresComponent wihout crashing', () => {
     allDates: [],
     endDate: '',
     modeldata: [],
+    resolution: 'day',
     startDate: '',
   };
   const shallow = createShallow();
@@ -30,6 +31,7 @@ test('renders RawScoresComponent with allDates set to undefined', () => {
     allDates: undefined,
     endDate: '',
     modeldata: [],
+    resolution: 'day',
     startDate: '',
   };
   const shallow = createShallow();
@@ -104,6 +106,7 @@ test('changes page variable in state', () => {
   const props = {
     allDates: [],
     endDate: '',
+    resolution: 'day',
     modeldata: [],
     startDate: '',
   };
@@ -139,6 +142,7 @@ test('renders a table header with 3 columns', () => {
   const props = {
     allDates: [],
     endDate: '',
+    resolution: 'day',
     modeldata: [
       { id: 1, name: 'Model 1' },
       { id: 2, name: 'Model 2' },
@@ -187,6 +191,7 @@ test('renders a table body with 3 rows', () => {
   ];
   const props = {
     allDates,
+    resolution: 'day',
     modeldata,
     startDate: '2018-10-01',
     endDate: '2018-10-03',
@@ -232,6 +237,7 @@ test('renders a form footer with a download button', () => {
   ];
   const props = {
     allDates,
+    resolution: 'week',
     modeldata,
     startDate: '2018-10-01',
     endDate: '2018-10-03',
@@ -241,5 +247,5 @@ test('renders a form footer with a download button', () => {
   const button = wrapper.find(FormFooter).find(Button);
   expect(button.prop('download')).toBe(true);
   expect(button.prop('href'))
-    .toMatch(/csv\?id=1&id=2&startDate=2018-10-01&endDate=2018-10-03&ctype=\.csv$/);
+    .toMatch(/csv\?id=1&id=2&startDate=2018-10-01&endDate=2018-10-03&resolution=week&ctype=\.csv$/);
 });

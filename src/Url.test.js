@@ -76,13 +76,14 @@ describe.each(['/apipath/', '/apipath'])('variable REACT_APP_API_HOST could end 
     expect(result).toStrictEqual(expected);
   });
 
-  test('returns queryUrl', () => {
+  test('generates URL for exporting data as a CSV file', () => {
     expect.assertions(1);
     const modeldata = [{ id: 1 }];
     const startDate = '2018-11-01';
     const endDate = '2018-11-30';
-    const result = rawScoresCsvUrl(modeldata, startDate, endDate);
-    const re = /\/csv\?id=1&startDate=2018-11-01&endDate=2018-11-30&ctype=\.csv/;
+    const resolution = 'week';
+    const result = rawScoresCsvUrl(modeldata, startDate, endDate, resolution);
+    const re = /\/csv\?id=1&startDate=2018-11-01&endDate=2018-11-30&resolution=week&ctype=\.csv/;
     expect(result).toMatch(re);
   });
 

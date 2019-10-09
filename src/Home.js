@@ -211,6 +211,7 @@ class HomeComponent extends React.Component {
           allDates={allDates}
           startDate={startDate}
           endDate={endDate}
+          resolution={resolution}
         />
         {errorMessages.forEach((message) => (<Snackbar message={message} />))}
       </React.Fragment>

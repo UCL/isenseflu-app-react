@@ -143,14 +143,15 @@ export const dataFilteringQueryUrl = (ids, startDate, endDate, resolution, smoot
 
 /**
  * Generates the URL used to download the scores in CSV format
- * @param  {[type]} modelData The model score data
- * @param  {[type]} startDate Start date of requested time period. In ISO format YYYY-MM-DD
- * @param  {[type]} endDate   End date of requested time period. In ISO format YYYY-MM-DD
- * @return {[type]}           The URL to download the CSV file from
+ * @param  {Object} modelData The model score data
+ * @param  {String} startDate Start date of requested time period. In ISO format YYYY-MM-DD
+ * @param  {String} endDate   End date of requested time period. In ISO format YYYY-MM-DD
+ * @param  {String} resolution Either week or day
+ * @return {String}           The URL to download the CSV file from
  */
-export const rawScoresCsvUrl = (modelData, startDate, endDate) => {
+export const rawScoresCsvUrl = (modelData, startDate, endDate, resolution) => {
   const modelids = modelData.map((m) => m.id).map((m) => `id=${m}`).join('&');
   let apihost = `${process.env.REACT_APP_API_HOST}`;
   apihost += apihost.endsWith('/') ? '' : '/';
-  return `${apihost}csv?${modelids}&startDate=${startDate}&endDate=${endDate}&ctype=.csv`;
+  return `${apihost}csv?${modelids}&startDate=${startDate}&endDate=${endDate}&resolution=${resolution}&ctype=.csv`;
 };
