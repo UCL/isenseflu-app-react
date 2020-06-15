@@ -311,7 +311,8 @@ describe('generates the data for the chart', () => {
         {
           label: 'Model 1',
           fill: false,
-          borderColor: '#007bff',
+          borderColor: '#381460',
+          backgroundColor: '#381460',
           data: [
             { t: new Date('2019-06-28'), y: 3.49504958214849 },
             { t: new Date('2019-06-27'), y: 3.5872420985975 },
@@ -321,7 +322,8 @@ describe('generates the data for the chart', () => {
         {
           label: 'Model 2',
           fill: false,
-          borderColor: '#d100c7',
+          borderColor: '#ffbd69',
+          backgroundColor: '#ffbd69',
           data: [
             { t: new Date('2019-06-28'), y: 2.49504958214849 },
             { t: new Date('2019-06-27'), y: 2.5872420985975 },

@@ -11,6 +11,7 @@
     "@material-ui/icons": "^4.4.3",
     "chart.js": "^2.8.0",
     "chartjs-plugin-annotation": "^0.5.7",
+    "chroma-js": "^2.1.0",
     "prop-types": "^15.7.2",
     "react": "^16.10.2",
     "react-chartjs-2": "^2.8.0",

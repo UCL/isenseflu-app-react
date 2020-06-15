@@ -18,6 +18,20 @@
  * You should have received a copy of the GNU General Public License
  * along with i-sense flu app.  If not, see <http://www.gnu.org/licenses/>.
  */
+import chroma from 'chroma-js';
+
+/**
+  * Creatas a palette of colours.
+  * @param  {Number} totalColours The total number of colours to generate
+  * @return {Array}       An array of colours in hex format, including the leading # character
+  */
+export const createColourPalette = (totalColours) => {
+  const palette = chroma
+    .scale(['381460', 'ffbd69'])
+    .mode('lch')
+    .colors(totalColours);
+  return palette;
+};
 
 /**
  * Allocates a colour to a model based on its index in the list of models displayed. It has a
@@ -130,14 +144,16 @@ export const generateChartData = (modeldata) => {
   }
 
   if (isAnArray && modeldata.length > 1) {
+    const palette = createColourPalette(modeldata.length);
     const template = {
       datasets: [],
     };
-    modeldata.forEach((model) => {
+    modeldata.forEach((model, index) => {
       const modelTemplate = {
         label: model.name,
         fill: false,
-        borderColor: createColour(model.id - 1),
+        borderColor: palette[index],
+        backgroundColor: palette[index],
         data: [],
         pointStyle: 'line',
       };
