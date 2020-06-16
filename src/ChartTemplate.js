@@ -220,7 +220,8 @@ export const generateChartOptions = (thresholddata, maxvalue) => (
       position: 'bottom',
       labels: {
         fontSize: 14,
-        usePointStyle: true,
+        usePointStyle: false,
+        boxWidth: 15,
       },
     },
     title: {
