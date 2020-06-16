@@ -118,6 +118,7 @@ export const generateChartData = (modeldata) => {
           label: 'Upper confidence interval',
           fill: false,
           borderColor: 'rgba(168, 198, 224, 1)',
+          backgroundColor: 'rgba(63, 127, 191, 0.2)',
           data: [],
           pointStyle: 'line',
         },

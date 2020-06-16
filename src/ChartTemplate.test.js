@@ -250,6 +250,7 @@ describe('generates the data for the chart', () => {
           label: 'Upper confidence interval',
           fill: false,
           borderColor: 'rgba(168, 198, 224, 1)',
+          backgroundColor: 'rgba(63, 127, 191, 0.2)',
           data: [
             { t: new Date('2019-06-28'), y: 6.72692401035379 },
             { t: new Date('2019-06-27'), y: 6.93686243649945 },
