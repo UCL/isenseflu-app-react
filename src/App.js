@@ -30,8 +30,9 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import './App.css';
 
 import NavigationBar from './NavigationBar';
-import HomeComponent from './Home';
-import { About, Docs } from './PublicTemplates';
+import About from './About';
+import Docs from './Docs';
+import Home from './Home';
 
 const theme = createMuiTheme({
   overrides: {
@@ -87,7 +88,7 @@ const App = (props) => {
         <main className={classes.layout}>
           <Router>
             <section>
-              <Route exact path="/" component={HomeComponent} />
+              <Route exact path="/" component={Home} />
               <Route exact path="/about" component={About} />
               <Route exact path="/docs" component={Docs} />
             </section>

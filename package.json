@@ -12,6 +12,7 @@
     "chart.js": "^2.9.3",
     "chartjs-plugin-annotation": "^0.5.7",
     "chroma-js": "^2.1.0",
+    "mdx.macro": "^0.2.9",
     "prop-types": "^15.7.2",
     "react": "^16.13.1",
     "react-chartjs-2": "^2.9.0",

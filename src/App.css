@@ -1,13 +1,66 @@
-.App {
+.md {
+  font-size: 1rem;
 }
 
-.App-header {
-
+.md code {
+  color: #2471a3;
+  font-size: 0.9em;
+  white-space: pre-wrap;
+  font-family: Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono,
+    Bitstream Vera Sans Mono, Courier New, monospace, serif;
+}
+.md code:before,
+code:after {
+  content: "\`";
 }
 
-.App-title {
+.md pre {
+  position: relative;
+  overflow: hidden;
+  background: #1d1f21;
+  color: #f8f8f2;
+  white-space: pre;
+  margin: 1.5rem 0;
+  border-radius: 3px;
 }
 
-.App-intro {
+.md pre > code {
+  color: #7fb3d5;
+  padding: 1.5rem;
+  display: block;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  font-size: 14px;
+  line-height: 20px;
+}
+.md pre > code:before,
+.md pre > code:after {
+  content: none;
+}
 
+.md ul {
+  padding-left: 1.5rem;
+  margin: 1.25rem 0;
+  list-style-type: disc;
+}
+.md li {
+  margin-bottom: 0.625rem;
+}
+
+.md blockquote {
+  color: #666666;
+  background: #fafafa;
+  border: 1px solid #eaeaea;
+  border-radius: 3px;
+  padding: 1rem 1.25rem;
+  margin: 1.5rem 0;
+}
+.md blockquote p {
+  margin: 0;
+}
+
+.md hr {
+  border: 0;
+  border-top: 1px solid #eaeaea;
+  margin: 1.25rem 0;
 }
