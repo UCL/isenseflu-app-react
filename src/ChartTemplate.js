@@ -250,7 +250,7 @@ export const generateChartOptions = (thresholddata, maxvalue) => (
               day: 'D MMM',
             },
             tooltipFormat: 'Do of MMM, YYYY',
-            stepSize: 7,
+            minUnit: 'day',
           },
           ticks: {
             fontSize: 14,

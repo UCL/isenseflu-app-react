@@ -63,7 +63,7 @@ const NavigationBar = (props) => {
         <IconButton
           className={classes.button}
           aria-label="Twitter"
-          href="https://www.twitter.com/isenseflu"
+          href="https://www.twitter.com/fludetector"
         >
           <FontAwesomeIcon icon={faTwitter} />
         </IconButton>
