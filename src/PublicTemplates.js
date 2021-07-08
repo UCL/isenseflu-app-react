@@ -29,8 +29,6 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 
-import InlineFrame from './InlineFrame';
-
 const styles = (theme) => ({
   paper: {
     marginBottom: theme.spacing(3),
@@ -94,11 +92,3 @@ FormFooterComponent.propTypes = {
 };
 
 export const FormFooter = withStyles(styles)(FormFooterComponent);
-
-export const About = () => (
-  <InlineFrame title="About" src="/muistatic/about.html" height="1500px" width="100%" />
-);
-
-export const Docs = () => (
-  <InlineFrame title="Docs" src="/muistatic/docs.html" height="2050px" width="100%" />
-);
