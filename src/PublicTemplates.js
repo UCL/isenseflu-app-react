@@ -96,7 +96,7 @@ FormFooterComponent.propTypes = {
 export const FormFooter = withStyles(styles)(FormFooterComponent);
 
 export const About = () => (
-  <InlineFrame title="About" src="/muistatic/about.html" height="1500px" width="100%" />
+  <InlineFrame title="About" src="/muistatic/about.html" height="1650px" width="100%" />
 );
 
 export const Docs = () => (
