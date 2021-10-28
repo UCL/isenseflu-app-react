@@ -21,7 +21,7 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
@@ -85,13 +85,13 @@ const App = (props) => {
           <NavigationBar />
         </header>
         <main className={classes.layout}>
-          <Router>
-            <section>
+          <section>
+            <Switch>
               <Route exact path="/" component={HomeComponent} />
               <Route exact path="/about" component={About} />
               <Route exact path="/docs" component={Docs} />
-            </section>
-          </Router>
+            </Switch>
+          </section>
         </main>
       </MuiThemeProvider>
     </React.Fragment>
