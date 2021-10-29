@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
 
-import { Router } from 'react-router-dom';
+import { Router, Switch } from 'react-router-dom';
 import { render, screen } from '@testing-library/react';
 import { createMemoryHistory } from 'history';
 
@@ -27,7 +27,7 @@ test('renders App with default route', () => {
   expect.assertions(1);
   const history = createMemoryHistory();
   render(<Router history={history}><App /></Router>);
-  expect(screen.getByText('you are home')).toBeTruthy();
+  expect(screen.getByText('you are home')).toBeInTheDocument();
 });
 
 test('renders App with different routes', () => {
@@ -35,8 +35,8 @@ test('renders App with different routes', () => {
   const history = createMemoryHistory();
   history.push('/about');
   render(<Router history={history}><App /></Router>);
-  expect(screen.getByText('you are about')).toBeTruthy();
+  expect(screen.getByText('you are about')).toBeInTheDocument();
   history.push('/docs');
   render(<Router history={history}><App /></Router>);
-  expect(screen.getByText('you are docs')).toBeTruthy();
+  expect(screen.getByText('you are docs')).toBeInTheDocument();
 });
