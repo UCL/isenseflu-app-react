@@ -1,5 +1,6 @@
 import React from 'react';
-import { createMount } from '@material-ui/core/test-utils';
+
+import { render, screen } from '@testing-library/react';
 
 import {
   About,
@@ -8,36 +9,27 @@ import {
   FormFooter,
 } from './PublicTemplates';
 
-test('renders About without crashing', () => {
+test('renders About iframe without crashing', () => {
   expect.assertions(1);
-  const mount = createMount();
-  const wrapper = mount(<About />);
-  expect(wrapper.exists()).toBe(true);
-  mount.cleanUp();
+  render(<About />);
+  expect(document.querySelector('iframe')).toBeInTheDocument();
 });
 
 test('renders Article without crashing', () => {
-  expect.assertions(1);
-  const mount = createMount();
-  const span = React.createElement('span');
-  const wrapper = mount(<Article header="header">{span}</Article>);
-  expect(wrapper.exists()).toBe(true);
-  mount.cleanUp();
+  expect.assertions(2);
+  render(<Article header="header"><span>SPAN TEXT</span></Article>);
+  expect(screen.getByText('header')).toBeInTheDocument();
+  expect(screen.getByText('SPAN TEXT')).toBeInTheDocument();
 });
 
-test('renders Docs without crashing', () => {
+test('renders Docs iframe without crashing', () => {
   expect.assertions(1);
-  const mount = createMount();
-  const wrapper = mount(<Docs />);
-  expect(wrapper.exists()).toBe(true);
-  mount.cleanUp();
+  render(<Docs />);
+  expect(document.querySelector('iframe')).toBeInTheDocument();
 });
 
 test('renders FormFooter without crashing', () => {
   expect.assertions(1);
-  const mount = createMount();
-  const span = React.createElement('span');
-  const wrapper = mount(<FormFooter>{span}</FormFooter>);
-  expect(wrapper.exists()).toBe(true);
-  mount.cleanUp();
+  render(<FormFooter><span>SPAN TEXT</span></FormFooter>);
+  expect(screen.getByText('SPAN TEXT')).toBeInTheDocument();
 });
