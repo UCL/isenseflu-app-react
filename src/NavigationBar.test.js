@@ -2,9 +2,6 @@ import React from 'react';
 
 import { render, screen } from '@testing-library/react';
 
-import Button from '@material-ui/core/Button';
-import { createShallow } from '@material-ui/core/test-utils';
-
 import NavigationBar from './NavigationBar';
 
 test('renders NavigationBar wihout crashing', () => {
