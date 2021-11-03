@@ -1,12 +1,13 @@
 /* eslint react/jsx-props-no-spreading: "off" */
 import React from 'react';
 
-import { createShallow } from '@material-ui/core/test-utils';
+import { render, screen, prettyDOM } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 
 import RawScoresActions from './RawScoresActions';
 
-test('renders RawScoresActions wihout crashing', () => {
-  expect.assertions(2);
+test('renders RawScoresActions four buttons without crashing', () => {
+  expect.assertions(1);
   const props = {
     modeldata: [],
     rowsPerPage: 10,
@@ -14,30 +15,26 @@ test('renders RawScoresActions wihout crashing', () => {
     page: 1,
     onChangePage: () => {},
   };
-  const shallow = createShallow();
-  const wrapper = shallow(<RawScoresActions {...props} />);
-  expect(wrapper.dive().type()).toBe('div');
-  expect(wrapper.dive().children()).toHaveLength(4);
+  render(<RawScoresActions {...props} />);
+  expect(screen.getAllByRole('button')).toHaveLength(4);
 });
 
-test('renders with theme.direction set to rtl', () => {
-  expect.assertions(6);
+test('renders buttons in order with theme.direction not set to rtl', () => {
+  // setting theme.direction to rtl does not change order
+  expect.assertions(4);
   const props = {
     modeldata: [],
     rowsPerPage: 10,
     count: 100,
     page: 1,
     onChangePage: () => {},
-    theme: { direction: 'rtl' },
   };
-  const shallow = createShallow({ dive: true });
-  const wrapper = shallow(<RawScoresActions {...props} />);
-  expect(wrapper.type()).toBe('div');
-  expect(wrapper.children()).toHaveLength(4);
-  expect(wrapper.childAt(0).find('LastPageIcon').exists()).toBe(true);
-  expect(wrapper.childAt(1).find('KeyboardArrowRightIcon').exists()).toBe(true);
-  expect(wrapper.childAt(2).find('KeyboardArrowLeftIcon').exists()).toBe(true);
-  expect(wrapper.childAt(3).find('FirstPageIcon').exists()).toBe(true);
+  render(<RawScoresActions {...props} />);
+  const buttons = screen.getAllByRole('button');
+  expect(buttons[0]).toHaveAttribute('aria-label', 'First Page');
+  expect(buttons[1]).toHaveAttribute('aria-label', 'Previous Page');
+  expect(buttons[2]).toHaveAttribute('aria-label', 'Next Page');
+  expect(buttons[3]).toHaveAttribute('aria-label', 'Last Page');
 });
 
 describe('table pagination', () => {
@@ -50,10 +47,8 @@ describe('table pagination', () => {
       page: 1,
       onChangePage: jest.fn(),
     };
-    const shallow = createShallow();
-    const wrapper = shallow(<RawScoresActions {...props} />);
-    const instance = wrapper.dive().instance();
-    instance.handleFirstPageButtonClick();
+    render(<RawScoresActions {...props} />);
+    userEvent.click(screen.getAllByRole('button')[0]);
     expect(props.onChangePage).toHaveBeenCalledWith(0);
   });
   it('calls back page button', () => {
@@ -65,10 +60,8 @@ describe('table pagination', () => {
       page: 2,
       onChangePage: jest.fn(),
     };
-    const shallow = createShallow();
-    const wrapper = shallow(<RawScoresActions {...props} />);
-    const instance = wrapper.dive().instance();
-    instance.handleBackButtonClick();
+    render(<RawScoresActions {...props} />);
+    userEvent.click(screen.getAllByRole('button')[1]);
     expect(props.onChangePage).toHaveBeenCalledWith(1);
   });
   it('calls next page button', () => {
@@ -80,10 +73,8 @@ describe('table pagination', () => {
       page: 1,
       onChangePage: jest.fn(),
     };
-    const shallow = createShallow();
-    const wrapper = shallow(<RawScoresActions {...props} />);
-    const instance = wrapper.dive().instance();
-    instance.handleNextButtonClick();
+    render(<RawScoresActions {...props} />);
+    userEvent.click(screen.getAllByRole('button')[2]);
     expect(props.onChangePage).toHaveBeenCalledWith(2);
   });
   it('calls last page button', () => {
@@ -95,10 +86,8 @@ describe('table pagination', () => {
       page: 1,
       onChangePage: jest.fn(),
     };
-    const shallow = createShallow();
-    const wrapper = shallow(<RawScoresActions {...props} />);
-    const instance = wrapper.dive().instance();
-    instance.handleLastPageButtonClick();
+    render(<RawScoresActions {...props} />);
+    userEvent.click(screen.getAllByRole('button')[3]);
     expect(props.onChangePage).toHaveBeenCalledWith(9);
   });
 });
