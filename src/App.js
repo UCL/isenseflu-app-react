@@ -24,7 +24,7 @@ import PropTypes from 'prop-types';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 import CssBaseline from '@material-ui/core/CssBaseline';
-import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import { MuiThemeProvider, createTheme } from '@material-ui/core/styles';
 import withStyles from '@material-ui/core/styles/withStyles';
 
 import './App.css';
@@ -33,7 +33,7 @@ import NavigationBar from './NavigationBar';
 import HomeComponent from './Home';
 import { About, Docs } from './PublicTemplates';
 
-const theme = createMuiTheme({
+const theme = createTheme({
   overrides: {
     MuiTableCell: {
       body: {
