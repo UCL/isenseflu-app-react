@@ -1,17 +1,42 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
 
-import { createShallow } from '@material-ui/core/test-utils';
+import { Router, Switch } from 'react-router-dom';
+import { render, screen } from '@testing-library/react';
+import { createMemoryHistory } from 'history';
 
 import App from './App';
 import NavigationBar from './NavigationBar';
 
-test('renders App without crashing', () => {
+jest.mock('./Home', () => {
+  return jest.fn().mockImplementation(() => <div>you are home</div>);
+});
+
+jest.mock('./PublicTemplates', () => {
+  return {
+    About: () => {
+      return <div>you are about</div>;
+    },
+    Docs: () => {
+      return <div>you are docs</div>;
+    }
+  }
+});
+
+test('renders App with default route', () => {
+  expect.assertions(1);
+  const history = createMemoryHistory();
+  render(<Router history={history}><App /></Router>);
+  expect(screen.getByText('you are home')).toBeInTheDocument();
+});
+
+test('renders App with different routes', () => {
   expect.assertions(2);
-  const shallow = createShallow();
-  const wrapper = shallow(<App />);
-  // it should render 3 routes
-  expect(wrapper.dive().find(Route)).toHaveLength(3);
-  // it should render 1 NavigationBar
-  expect(wrapper.dive().find(NavigationBar)).toHaveLength(1);
+  const history = createMemoryHistory();
+  history.push('/about');
+  render(<Router history={history}><App /></Router>);
+  expect(screen.getByText('you are about')).toBeInTheDocument();
+  history.push('/docs');
+  render(<Router history={history}><App /></Router>);
+  expect(screen.getByText('you are docs')).toBeInTheDocument();
 });

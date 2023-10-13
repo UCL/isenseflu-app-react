@@ -1,24 +1,22 @@
 import React from 'react';
 
-import { createShallow } from '@material-ui/core/test-utils';
+import { render, screen, within } from '@testing-library/react';
+
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 
-import { Article } from './PublicTemplates';
 import AveragesComponent from './Averages';
 
-test('renders About without crashing', () => {
+test('renders AveragesComponent table without crashing ', () => {
   expect.assertions(1);
-  const shallow = createShallow();
   const modeldata = [];
-  const wrapper = shallow(<AveragesComponent modeldata={modeldata} />);
-  expect(wrapper.find(Article)).toHaveLength(1);
+  render(<AveragesComponent modeldata={modeldata} />);
+  expect(screen.getByRole('table')).toBeInTheDocument();
 });
 
 test('renders a table with the model name, region and average', () => {
-  expect.assertions(5);
-  const shallow = createShallow();
+  expect.assertions(4);
   const modeldata = [
     {
       id: 1,
@@ -30,12 +28,11 @@ test('renders a table with the model name, region and average', () => {
       ],
     },
   ];
-  const wrapper = shallow(<AveragesComponent modeldata={modeldata} />);
-  const row = wrapper.find(TableBody).find(TableRow);
-  expect(row).toHaveLength(1);
-  const cells = row.find(TableCell);
-  expect(cells).toHaveLength(3);
-  expect(cells.at(0).dive().childAt(0).text()).toStrictEqual(modeldata[0].name);
-  expect(cells.at(1).dive().childAt(0).text()).toStrictEqual('England');
-  expect(cells.at(2).dive().childAt(0).text()).toStrictEqual('1');
+  render(<AveragesComponent modeldata={modeldata} />);
+  const tbody = screen.getAllByRole('rowgroup')[1];
+  expect(tbody).toBeInTheDocument();
+  const cells = within(tbody).getAllByRole('cell');
+  expect(cells[0]).toHaveTextContent(modeldata[0].name);
+  expect(cells[1]).toHaveTextContent('England');
+  expect(cells[2]).toHaveTextContent('1');
 });

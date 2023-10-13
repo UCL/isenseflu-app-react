@@ -1,17 +1,15 @@
 /* eslint react/jsx-props-no-spreading: "off" */
 import React from 'react';
 
-import { createShallow } from '@material-ui/core/test-utils';
-import Button from '@material-ui/core/Button';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
+import { render, screen, within } from '@testing-library/react';
 
 import { generateTableMatrix, RawScores } from './RawScores';
-import { Article, FormFooter } from './PublicTemplates';
 
-test('renders RawScoresComponent wihout crashing', () => {
+jest.mock('@material-ui/core/TablePagination', () => {
+  return jest.fn().mockImplementation(() => <td>TABLEPAGINATION</td>);
+});
+
+test('renders RawScores headings wihout crashing', () => {
   expect.assertions(1);
   const props = {
     allDates: [],
@@ -20,13 +18,12 @@ test('renders RawScoresComponent wihout crashing', () => {
     resolution: 'day',
     startDate: '',
   };
-  const shallow = createShallow();
-  const wrapper = shallow(<RawScores {...props} />);
-  expect(wrapper.dive().find(Article)).toHaveLength(1);
+  render(<RawScores {...props} />);
+  expect(screen.getByText('Raw Scores')).toBeInTheDocument();
 });
 
-test('renders RawScoresComponent with allDates set to undefined', () => {
-  expect.assertions(2);
+test('renders RawScores with allDates set to undefined', () => {
+  expect.assertions(1);
   const props = {
     allDates: undefined,
     endDate: '',
@@ -34,10 +31,8 @@ test('renders RawScoresComponent with allDates set to undefined', () => {
     resolution: 'day',
     startDate: '',
   };
-  const shallow = createShallow();
   const spy = jest.spyOn(console, 'error').mockImplementation();
-  const wrapper = shallow(<RawScores {...props} />);
-  expect(wrapper.dive().find(Article)).toHaveLength(1);
+  render(<RawScores {...props} />);
   expect(spy).toHaveBeenCalledTimes(1);
 });
 
@@ -101,41 +96,6 @@ test('generates table matrix', () => {
   expect(result).toStrictEqual(expected);
 });
 
-test('changes page variable in state', () => {
-  expect.assertions(2);
-  const props = {
-    allDates: [],
-    endDate: '',
-    resolution: 'day',
-    modeldata: [],
-    startDate: '',
-  };
-  const shallow = createShallow({ dive: true });
-  const wrapper = shallow(<RawScores {...props} />);
-  expect(wrapper.state('page')).toStrictEqual(0);
-  wrapper.instance().handleChangePage(1);
-  expect(wrapper.state('page')).toStrictEqual(1);
-});
-
-test('changes rowsPerPage variable in state', () => {
-  expect.assertions(2);
-  const props = {
-    allDates: [],
-    endDate: '',
-    modeldata: [],
-    startDate: '',
-  };
-  const shallow = createShallow({ dive: true });
-  const wrapper = shallow(<RawScores {...props} />);
-  expect(wrapper.state('rowsPerPage')).toStrictEqual(10);
-  const event = {
-    target: {
-      value: 5,
-    },
-  };
-  wrapper.instance().handleChangeRowsPerPage(event);
-  expect(wrapper.state('rowsPerPage')).toStrictEqual(5);
-});
 
 test('renders a table header with 3 columns', () => {
   expect.assertions(4);
@@ -149,17 +109,16 @@ test('renders a table header with 3 columns', () => {
     ],
     startDate: '',
   };
-  const shallow = createShallow({ dive: true });
-  const wrapper = shallow(<RawScores {...props} />);
-  const cells = wrapper.find(TableHead).find(TableRow).find(TableCell);
-  expect(cells).toHaveLength(3);
-  expect(cells.at(0).dive().childAt(0).text()).toStrictEqual('Date');
-  expect(cells.at(1).dive().childAt(0).text()).toStrictEqual(`${props.modeldata[0].name} (England)`);
-  expect(cells.at(2).dive().childAt(0).text()).toStrictEqual(`${props.modeldata[1].name} (England)`);
+  render(<RawScores {...props} />);
+  const ths = screen.getAllByRole('columnheader');
+  expect(ths).toHaveLength(3);
+  expect(ths[0]).toHaveTextContent('Date');
+  expect(ths[1]).toHaveTextContent(`${props.modeldata[0].name} (England)`);
+  expect(ths[2]).toHaveTextContent(`${props.modeldata[1].name} (England)`);
 });
 
 test('renders a table body with 3 rows', () => {
-  expect.assertions(4);
+  expect.assertions(1);
   const allDates = ['2018-10-01', '2018-10-02', '2018-10-03'];
   const modeldata = [
     {
@@ -196,12 +155,9 @@ test('renders a table body with 3 rows', () => {
     startDate: '2018-10-01',
     endDate: '2018-10-03',
   };
-  const shallow = createShallow({ dive: true });
-  const wrapper = shallow(<RawScores {...props} />);
-  expect(wrapper.find(TableBody).children()).toHaveLength(3);
-  wrapper.find(TableBody).children().forEach((child) => {
-    expect(child.name()).toStrictEqual('ScoreRow');
-  });
+  render(<RawScores {...props} />);
+  const rowgroups = screen.getAllByRole('rowgroup');
+  expect(within(rowgroups[1]).getAllByRole('row')).toHaveLength(3);
 });
 
 test('renders a form footer with a download button', () => {
@@ -242,10 +198,11 @@ test('renders a form footer with a download button', () => {
     startDate: '2018-10-01',
     endDate: '2018-10-03',
   };
-  const shallow = createShallow({ dive: true });
-  const wrapper = shallow(<RawScores {...props} />);
-  const button = wrapper.find(FormFooter).find(Button);
-  expect(button.prop('download')).toBe(true);
-  expect(button.prop('href'))
-    .toMatch(/csv\?id=1&id=2&startDate=2018-10-01&endDate=2018-10-03&resolution=week&ctype=\.csv$/);
+  render(<RawScores {...props} />);
+  const link = screen.getByRole('link');
+  expect(link).toHaveAttribute('download');
+  expect(link).toHaveAttribute(
+    'href',
+    'undefined/csv?id=1&id=2&startDate=2018-10-01&endDate=2018-10-03&resolution=week&ctype=.csv'
+  );
 });

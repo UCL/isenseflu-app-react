@@ -1,7 +1,7 @@
 /* eslint react/jsx-props-no-spreading: "off" */
 import React from 'react';
 
-import { shallow } from 'enzyme';
+import { render, screen } from '@testing-library/react';
 
 import ChartComponent from './Chart';
 import { Article } from './PublicTemplates';
@@ -15,6 +15,6 @@ test('renders ChartComponent without crashing', () => {
     ratethresholds: {},
     permalink: '',
   };
-  const wrapper = shallow(<ChartComponent {...props} />);
-  expect(wrapper.dive().find(Article)).toHaveLength(1);
+  render(<ChartComponent {...props} />);
+  expect(screen.getByText('Select model to display')).toBeInTheDocument();
 });

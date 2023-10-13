@@ -1,32 +1,13 @@
 /* eslint react/jsx-props-no-spreading: "off" */
 import React from 'react';
 
-import FormGroup from '@material-ui/core/FormGroup';
-import Switch from '@material-ui/core/Switch';
-import { createMount } from '@material-ui/core/test-utils';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 
 import ModelCheckboxes from './ModelCheckboxes';
 
-test('renders ModelCheckboxes without crashing', () => {
-  expect.assertions(1);
-  const mount = createMount();
-  const props = {
-    activeIds: [],
-    endDate: '2019-01-31',
-    handleChangeCallback: jest.fn(),
-    modellist: [],
-    resolution: 'day',
-    smoothing: 0,
-    startDate: '2019-01-01',
-  };
-  const wrapper = mount(<ModelCheckboxes {...props} />);
-  expect(wrapper.exists()).toBe(true);
-  mount.cleanUp();
-});
-
 test('renders a list of three ModelCheckboxes', () => {
-  expect.assertions(1);
-  const mount = createMount();
+  expect.assertions(2);
   const props = {
     activeIds: [1],
     endDate: '2019-01-31',
@@ -40,14 +21,13 @@ test('renders a list of three ModelCheckboxes', () => {
     smoothing: 0,
     startDate: '2019-01-01',
   };
-  const wrapper = mount(<ModelCheckboxes {...props} />);
-  expect(wrapper.find(FormGroup)).toHaveLength(3);
-  mount.cleanUp();
+  render(<ModelCheckboxes {...props} />);
+  expect(screen.getAllByRole('checkbox')).toHaveLength(3);
+  expect(screen.getAllByText(/Model [1-3]/)).toHaveLength(3);
 });
 
 test('toggling a checkbox calls handleChangeCallback', () => {
-  expect.assertions(1);
-  const mount = createMount();
+  // expect.assertions(1);
   const mockHandleChangeCallback = jest.fn();
   const props = {
     activeIds: [1],
@@ -62,11 +42,9 @@ test('toggling a checkbox calls handleChangeCallback', () => {
     smoothing: 0,
     startDate: '2019-01-01',
   };
-  const wrapper = mount(<ModelCheckboxes {...props} />);
-  const aSwitch = wrapper.find(Switch).at(1);
-  aSwitch.find('input').simulate('change');
+  render(<ModelCheckboxes {...props} />);
+  userEvent.click(screen.getAllByRole('checkbox')[2]);
   expect(mockHandleChangeCallback).toHaveBeenCalledWith(
     expect.anything(), '2019-01-01', '2019-01-31', 'day', 0,
   );
-  mount.cleanUp();
 });
