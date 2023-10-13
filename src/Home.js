@@ -43,7 +43,7 @@ class HomeComponent extends React.Component {
     startDate: (new Date(0)).toISOString().substring(0, 10), // For DataFiltering
     endDate: (new Date()).toISOString().substring(0, 10), // For DataFiltering
     resolution: 'day', // For DataFiltering
-    smoothing: 0, // for DataFiltering
+    smoothing: 3, // for DataFiltering
     permaLink: window.location.href,
     chartTitlePrefix: 'Daily',
     errorMessages: [],
