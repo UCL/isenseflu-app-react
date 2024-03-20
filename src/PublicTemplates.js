@@ -75,7 +75,6 @@ ArticleComponent.propTypes = {
 
 export const Article = withStyles(styles, { withTheme: true })(ArticleComponent);
 
-
 const FormFooterComponent = (props) => {
   const { classes, children } = props;
   return (

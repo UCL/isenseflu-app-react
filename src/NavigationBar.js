@@ -31,14 +31,15 @@ import { withStyles } from '@material-ui/core/styles';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTwitter } from '@fortawesome/free-brands-svg-icons';
 
-import logo from './logo.svg';
+import Logo from './Logo';
 
 const styles = {
   appBar: {
     position: 'relative',
   },
   appLogo: {
-    height: 35,
+    display: 'inline-block',
+    width: 140,
   },
   flexGrow: {
     flexGrow: 1,
@@ -55,7 +56,9 @@ const NavigationBar = (props) => {
 
       <Toolbar>
         <div className={classes.flexGrow}>
-          <img src={logo} className={classes.appLogo} alt="logo" />
+          <span className={classes.appLogo}>
+            <Logo />
+          </span>
         </div>
         <Button href="/" color={isActive('/')}>Home</Button>
         <Button href="/about" color={isActive('/about')}>About</Button>

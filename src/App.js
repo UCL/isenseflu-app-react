@@ -86,11 +86,13 @@ const App = (props) => {
         </header>
         <main className={classes.layout}>
           <section>
-            <Switch>
-              <Route exact path="/" component={HomeComponent} />
-              <Route exact path="/about" component={About} />
-              <Route exact path="/docs" component={Docs} />
-            </Switch>
+            <Router>
+              <Switch>
+                <Route exact path="/" component={HomeComponent} />
+                <Route exact path="/about" component={About} />
+                <Route exact path="/docs" component={Docs} />
+              </Switch>
+            </Router>
           </section>
         </main>
       </MuiThemeProvider>
