@@ -22,7 +22,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import Snackbar from '@material-ui/core/Snackbar';
+import Snackbar from '@mui/material/Snackbar';
 
 import ChartComponent from './Chart';
 import DataFilteringComponent from './DataFiltering';

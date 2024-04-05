@@ -22,29 +22,24 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import Button from '@material-ui/core/Button';
-import Grid from '@material-ui/core/Grid';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableFooter from '@material-ui/core/TableFooter';
-import TableHead from '@material-ui/core/TableHead';
-import TablePagination from '@material-ui/core/TablePagination';
-import TableRow from '@material-ui/core/TableRow';
-import withStyles from '@material-ui/core/styles/withStyles';
+import Button from '@mui/material/Button';
+import Grid from '@mui/material/Grid';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableFooter from '@mui/material/TableFooter';
+import TableHead from '@mui/material/TableHead';
+import TablePagination from '@mui/material/TablePagination';
+import TableRow from '@mui/material/TableRow';
 
 import { Article, FormFooter } from './PublicTemplates';
 import RawScoresActions from './RawScoresActions';
 import ScoreRow from './ScoreRow';
 import { rawScoresCsvUrl } from './Url';
 
-const styles = () => ({
-
-});
-
 export const generateTableMatrix = (allDates, modeldata) => {
   const matrix = [];
-  if (allDates === undefined) {
+  if (allDates === undefined || allDates.length === 0) {
     return matrix;
   }
   allDates.forEach((ad) => {
@@ -125,8 +120,8 @@ class RawScoresComponent extends React.Component {
                 <TablePagination
                   colSpan={2}
                   count={totalCount}
-                  onChangePage={this.handleChangePage}
-                  onChangeRowsPerPage={this.handleChangeRowsPerPage}
+                  onPageChange={this.handleChangePage}
+                  onRowsPerPageChange={this.handleChangeRowsPerPage}
                   page={page}
                   rowsPerPage={rowsPerPage}
                   backIconButtonProps={{
@@ -172,4 +167,4 @@ RawScoresComponent.propTypes = {
   startDate: PropTypes.string.isRequired,
 };
 
-export const RawScores = withStyles(styles)(RawScoresComponent);
+export { RawScoresComponent as RawScores };

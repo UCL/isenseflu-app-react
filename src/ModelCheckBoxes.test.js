@@ -26,8 +26,8 @@ test('renders a list of three ModelCheckboxes', () => {
   expect(screen.getAllByText(/Model [1-3]/)).toHaveLength(3);
 });
 
-test('toggling a checkbox calls handleChangeCallback', () => {
-  // expect.assertions(1);
+test('toggling a checkbox calls handleChangeCallback', async () => {
+  expect.assertions(1);
   const mockHandleChangeCallback = jest.fn();
   const props = {
     activeIds: [1],
@@ -43,7 +43,7 @@ test('toggling a checkbox calls handleChangeCallback', () => {
     startDate: '2019-01-01',
   };
   render(<ModelCheckboxes {...props} />);
-  userEvent.click(screen.getAllByRole('checkbox')[2]);
+  await userEvent.click(screen.getAllByRole('checkbox')[2]);
   expect(mockHandleChangeCallback).toHaveBeenCalledWith(
     expect.anything(), '2019-01-01', '2019-01-31', 'day', 0,
   );

@@ -13,7 +13,7 @@ test('renders RawScoresActions four buttons without crashing', () => {
     rowsPerPage: 10,
     count: 100,
     page: 1,
-    onChangePage: () => {},
+    onPageChange: () => {},
   };
   render(<RawScoresActions {...props} />);
   expect(screen.getAllByRole('button')).toHaveLength(4);
@@ -27,7 +27,7 @@ test('renders buttons in order with theme.direction not set to rtl', () => {
     rowsPerPage: 10,
     count: 100,
     page: 1,
-    onChangePage: () => {},
+    onPageChange: () => {},
   };
   render(<RawScoresActions {...props} />);
   const buttons = screen.getAllByRole('button');
@@ -38,56 +38,60 @@ test('renders buttons in order with theme.direction not set to rtl', () => {
 });
 
 describe('table pagination', () => {
-  it('calls first page button', () => {
+  it('calls first page button', async () => {
     expect.assertions(1);
     const props = {
       modeldata: [],
       rowsPerPage: 10,
       count: 100,
       page: 1,
-      onChangePage: jest.fn(),
+      onPageChange: jest.fn(),
+      classes: {},
     };
     render(<RawScoresActions {...props} />);
-    userEvent.click(screen.getAllByRole('button')[0]);
-    expect(props.onChangePage).toHaveBeenCalledWith(0);
+    await userEvent.click(screen.getAllByRole('button')[0]);
+    expect(props.onPageChange).toHaveBeenCalledWith(0);
   });
-  it('calls back page button', () => {
+  it('calls back page button', async () => {
     expect.assertions(1);
     const props = {
       modeldata: [],
       rowsPerPage: 10,
       count: 100,
       page: 2,
-      onChangePage: jest.fn(),
+      onPageChange: jest.fn(),
+      classes: {},
     };
     render(<RawScoresActions {...props} />);
-    userEvent.click(screen.getAllByRole('button')[1]);
-    expect(props.onChangePage).toHaveBeenCalledWith(1);
+    await userEvent.click(screen.getAllByRole('button')[1]);
+    expect(props.onPageChange).toHaveBeenCalledWith(1);
   });
-  it('calls next page button', () => {
+  it('calls next page button', async () => {
     expect.assertions(1);
     const props = {
       modeldata: [],
       rowsPerPage: 10,
       count: 100,
       page: 1,
-      onChangePage: jest.fn(),
+      onPageChange: jest.fn(),
+      classes: {},
     };
     render(<RawScoresActions {...props} />);
-    userEvent.click(screen.getAllByRole('button')[2]);
-    expect(props.onChangePage).toHaveBeenCalledWith(2);
+    await userEvent.click(screen.getAllByRole('button')[2]);
+    expect(props.onPageChange).toHaveBeenCalledWith(2);
   });
-  it('calls last page button', () => {
+  it('calls last page button', async () => {
     expect.assertions(1);
     const props = {
       modeldata: [],
       rowsPerPage: 10,
       count: 100,
       page: 1,
-      onChangePage: jest.fn(),
+      onPageChange: jest.fn(),
+      classes: {},
     };
     render(<RawScoresActions {...props} />);
-    userEvent.click(screen.getAllByRole('button')[3]);
-    expect(props.onChangePage).toHaveBeenCalledWith(9);
+    await userEvent.click(screen.getAllByRole('button')[3]);
+    expect(props.onPageChange).toHaveBeenCalledWith(9);
   });
 });
