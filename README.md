@@ -25,7 +25,7 @@ i-sense flu is a multi-module application that uses Google search data to estima
 
 - ECMAScript 6
 - React
-- Material UI
+- Material UI 5
 - Node
 - REST
 
