@@ -21,104 +21,103 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import IconButton from '@material-ui/core/IconButton';
-import FirstPageIcon from '@material-ui/icons/FirstPage';
-import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
-import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
-import LastPageIcon from '@material-ui/icons/LastPage';
-import { withStyles } from '@material-ui/core/styles';
+import IconButton from '@mui/material/IconButton';
+import FirstPageIcon from '@mui/icons-material/FirstPage';
+import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
+import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
+import LastPageIcon from '@mui/icons-material/LastPage';
+import { styled } from '@mui/material/styles';
 
-const actionsStyles = (theme) => ({
-  root: {
-    flexShrink: 0,
-    color: theme.palette.text.secondary,
-    marginLeft: theme.spacing(2.5),
-  },
-});
+const ActionsWrapper = styled('div')(({ theme }) => ({
+  flexShrink: 0,
+  color: theme.palette.text.secondary,
+  marginLeft: theme.spacing(2.5),
+}));
 
 class TablePaginationActions extends React.Component {
   handleFirstPageButtonClick = () => {
-    const { onChangePage } = this.props;
-    onChangePage(0);
+    const { onPageChange } = this.props;
+    onPageChange(0);
   };
 
   handleBackButtonClick = () => {
-    const { onChangePage, page } = this.props;
-    onChangePage(page - 1);
+    const { onPageChange, page } = this.props;
+    onPageChange(page - 1);
   };
 
   handleNextButtonClick = () => {
-    const { onChangePage, page } = this.props;
-    onChangePage(page + 1);
+    const { onPageChange, page } = this.props;
+    onPageChange(page + 1);
   };
 
   handleLastPageButtonClick = () => {
-    const { count, onChangePage, rowsPerPage } = this.props;
-    onChangePage(Math.max(0, Math.ceil(count / rowsPerPage) - 1));
+    const { count, onPageChange, rowsPerPage } = this.props;
+    onPageChange(Math.max(0, Math.ceil(count / rowsPerPage) - 1));
   };
 
   render() {
     const {
-      classes, count, page, rowsPerPage, theme,
+      count, page, rowsPerPage,
     } = this.props;
 
     return (
-      <div className={classes.root}>
+      <ActionsWrapper>
         <IconButton
           onClick={this.handleFirstPageButtonClick}
           disabled={page === 0}
           aria-label="First Page"
+          size="large"
         >
-          {theme.direction === 'rtl' ? <LastPageIcon /> : <FirstPageIcon />}
+          <FirstPageIcon />
         </IconButton>
         <IconButton
           onClick={this.handleBackButtonClick}
           disabled={page === 0}
           aria-label="Previous Page"
+          size="large"
         >
-          {theme.direction === 'rtl' ? <KeyboardArrowRight /> : <KeyboardArrowLeft />}
+          <KeyboardArrowLeft />
         </IconButton>
         <IconButton
           onClick={this.handleNextButtonClick}
           disabled={page >= Math.ceil(count / rowsPerPage) - 1}
           aria-label="Next Page"
+          size="large"
         >
-          {theme.direction === 'rtl' ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
+          <KeyboardArrowRight />
         </IconButton>
         <IconButton
           onClick={this.handleLastPageButtonClick}
           disabled={page >= Math.ceil(count / rowsPerPage) - 1}
           aria-label="Last Page"
+          size="large"
         >
-          {theme.direction === 'rtl' ? <FirstPageIcon /> : <LastPageIcon />}
+          <LastPageIcon />
         </IconButton>
-      </div>
+      </ActionsWrapper>
     );
   }
 }
 
 TablePaginationActions.propTypes = {
-  /** @type {Object} CSS classes used for styling the MUI component */
-  classes: PropTypes.object.isRequired,
-
   /** @type {number} Total number of rows */
   count: PropTypes.number.isRequired,
 
   /** @type {function(page: number)} Callback function to pass the new page number */
-  onChangePage: PropTypes.func.isRequired,
+  onPageChange: PropTypes.func.isRequired,
 
   /** @type {number} Page number */
   page: PropTypes.number.isRequired,
 
   /** @type {number} Number of rows per page */
   rowsPerPage: PropTypes.number.isRequired,
-
-  /** @type {Object} MUI theme, used to obtain direction of text */
-  theme: PropTypes.object.isRequired,
 };
 
-const RawScoresActions = withStyles(actionsStyles, { withTheme: true })(
-  TablePaginationActions,
-);
+// This styling definition is redundant, as it is not read. REMOVE
+const RawScoresActions = styled(TablePaginationActions)(({ theme }) => ({
+  flexShrink: 0,
+  color: theme.palette.text.secondary,
+  marginLeft: theme.spacing(2.5),
+}));
 
 export { RawScoresActions as default };

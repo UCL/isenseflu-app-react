@@ -20,12 +20,12 @@
  */
 
 import React from 'react';
-import PropTypes from 'prop-types';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
-import CssBaseline from '@material-ui/core/CssBaseline';
-import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
-import withStyles from '@material-ui/core/styles/withStyles';
+import CssBaseline from '@mui/material/CssBaseline';
+import {
+  ThemeProvider, StyledEngineProvider, createTheme, styled,
+} from '@mui/material/styles';
 
 import './App.css';
 
@@ -33,74 +33,82 @@ import NavigationBar from './NavigationBar';
 import HomeComponent from './Home';
 import { About, Docs } from './PublicTemplates';
 
-const theme = createMuiTheme({
-  overrides: {
+const customTheme = createTheme({
+  components: {
     MuiTableCell: {
-      body: {
-        fontSize: 16,
-      },
-      head: {
-        fontSize: 16,
+      styleOverrides: {
+        body: {
+          fontSize: 16,
+        },
+        head: {
+          fontSize: 16,
+        },
       },
     },
     MuiTablePagination: {
-      caption: {
-        fontSize: 14,
+      styleOverrides: {
+        caption: {
+          fontSize: 14,
+        },
       },
     },
     MuiFormControlLabel: {
-      root: {
-        paddingTop: 5,
-        paddingBottom: 5,
-      },
-      label: {
-        fontSize: 14,
+      styleOverrides: {
+        root: {
+          paddingTop: 5,
+          paddingBottom: 5,
+        },
+        label: {
+          fontSize: 14,
+        },
       },
     },
   },
 });
 
-const styles = (aTheme) => ({
-  layout: {
-    width: 'auto',
-    display: 'block', // Fix IE11 issue.
-    marginTop: aTheme.spacing(4),
-    marginBottom: aTheme.spacing(4),
-    [aTheme.breakpoints.up(1024 + aTheme.spacing(3) * 2)]: {
-      width: 1024,
-      marginLeft: 'auto',
-      marginRight: 'auto',
-    },
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <HomeComponent location={window.location} />,
   },
-});
+  {
+    path: '/about',
+    element: <About />,
+  },
+  {
+    path: '/docs',
+    element: <Docs />,
+  },
+]);
 
-const App = (props) => {
-  const { classes } = props;
+const Main = styled('main')(({ theme }) => ({
+  width: 'auto',
+  display: 'block', // Fix IE11 issue.
+  marginTop: theme.spacing(4),
+  marginBottom: theme.spacing(4),
+  [theme.breakpoints.up('lg')]: {
+    width: 1024,
+    marginLeft: 'auto',
+    marginRight: 'auto',
+  },
+}));
 
-  return (
-    <React.Fragment>
-      <CssBaseline />
-      <MuiThemeProvider theme={theme}>
+const App = () => (
+  <React.Fragment>
+    <CssBaseline />
+    <StyledEngineProvider injectFirst>
+      <ThemeProvider theme={customTheme}>
         <header>
           <NavigationBar />
         </header>
-        <main className={classes.layout}>
-          <Router>
-            <section>
-              <Route exact path="/" component={HomeComponent} />
-              <Route exact path="/about" component={About} />
-              <Route exact path="/docs" component={Docs} />
-            </section>
-          </Router>
-        </main>
-      </MuiThemeProvider>
-    </React.Fragment>
-  );
-};
+        <Main>
+          <section>
+            <RouterProvider router={router} />
+          </section>
+        </Main>
+      </ThemeProvider>
+    </StyledEngineProvider>
+  </React.Fragment>
+);
 
-App.propTypes = {
-  /** @type {Object} CSS classes used for styling the MUI component */
-  classes: PropTypes.object.isRequired,
-};
-
-export default withStyles(styles)(App);
+export { App as default };

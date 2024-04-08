@@ -1,10 +1,18 @@
 /* eslint react/jsx-props-no-spreading: "off" */
 import React from 'react';
 
-import { shallow } from 'enzyme';
+import { render, screen } from '@testing-library/react';
 
 import ChartComponent from './Chart';
-import { Article } from './PublicTemplates';
+
+jest.mock('react-chartjs-2', () => {
+  /* eslint global-require: "off" */
+  const { forwardRef } = require('react');
+  const Line = forwardRef((props, ref) => <div ref={ref} {...props} />);
+  return {
+    Line,
+  };
+});
 
 test('renders ChartComponent without crashing', () => {
   expect.assertions(1);
@@ -15,6 +23,6 @@ test('renders ChartComponent without crashing', () => {
     ratethresholds: {},
     permalink: '',
   };
-  const wrapper = shallow(<ChartComponent {...props} />);
-  expect(wrapper.dive().find(Article)).toHaveLength(1);
+  render(<ChartComponent {...props} />);
+  expect(screen.getByText('Select model to display')).toBeInTheDocument();
 });

@@ -22,31 +22,29 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import Button from '@material-ui/core/Button';
-import FormGroup from '@material-ui/core/FormGroup';
-import Grid from '@material-ui/core/Grid';
-import Input from '@material-ui/core/Input';
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import Select from '@material-ui/core/Select';
-import Typography from '@material-ui/core/Typography';
-import { withStyles } from '@material-ui/core/styles';
+import Button from '@mui/material/Button';
+import FormGroup from '@mui/material/FormGroup';
+import Grid from '@mui/material/Grid';
+import Input from '@mui/material/Input';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
+import Typography from '@mui/material/Typography';
+import { styled } from '@mui/material/styles';
 
 import { Article, FormFooter } from './PublicTemplates';
-import { dataFilteringPermalinkUrl, dataFilteringQueryUrl } from './Url';
+import { dataFilteringPermalinkUrl as dataFilteringPermalink, dataFilteringQueryUrl } from './Url';
 
-const styles = (theme) => ({
-  filteringFields: {
-    padding: theme.spacing(2),
-  },
-});
+const FilteringFields = styled(Grid)(({ theme }) => ({
+  padding: theme.spacing(2),
+}));
 
 /* eslint { react/state-in-constructor: "off" } */
 class DataFilteringComponent extends Component {
   state = {
     isDisabled: true,
     isWeekly: false,
-  }
+  };
 
   handlePropsChange = (event) => {
     const { onChangeCallback } = this.props;
@@ -54,7 +52,7 @@ class DataFilteringComponent extends Component {
     this.setState({
       isDisabled: false,
     });
-  }
+  };
 
   handleResolutionChange = (event) => {
     const { onChangeCallback } = this.props;
@@ -63,7 +61,7 @@ class DataFilteringComponent extends Component {
       isWeekly: event.target.value === 'week',
       isDisabled: false,
     });
-  }
+  };
 
   handleSubmit = (queryUrl, permalinkUrl, isWeekly) => (event) => {
     event.preventDefault();
@@ -85,26 +83,24 @@ class DataFilteringComponent extends Component {
       });
     this.setState({ isDisabled: true });
     permalinkCallback(permalinkUrl);
-  }
+  };
 
   render() {
     const {
-      classes, endDate, modelIds, startDate, resolution, smoothing,
+      endDate, modelIds, startDate, resolution, smoothing,
     } = this.props;
 
     const { isDisabled, isWeekly } = this.state;
 
     const queryUrl = dataFilteringQueryUrl(modelIds, startDate, endDate, resolution, smoothing);
 
-    const permalinkUrl = dataFilteringPermalinkUrl(
-      modelIds, startDate, endDate, resolution, smoothing,
-    );
+    const permalink = dataFilteringPermalink(modelIds, startDate, endDate, resolution, smoothing);
 
     return (
       <Article header="Data Filtering">
         <Grid item xs={12}>
-          <form onSubmit={this.handleSubmit(queryUrl, permalinkUrl, isWeekly)}>
-            <Grid container spacing={2} className={classes.filteringFields}>
+          <form onSubmit={this.handleSubmit(queryUrl, permalink, isWeekly)}>
+            <FilteringFields container spacing={2}>
               <Grid item xs={3}>
                 <FormGroup>
                   <InputLabel htmlFor="start-date">Start</InputLabel>
@@ -142,6 +138,7 @@ class DataFilteringComponent extends Component {
                     value={resolution}
                     onChange={this.handleResolutionChange}
                     inputProps={{ name: 'resolution', id: 'resolution' }}
+                    variant="standard"
                   >
                     <MenuItem value="day">Day</MenuItem>
                     <MenuItem value="week">Week</MenuItem>
@@ -158,6 +155,7 @@ class DataFilteringComponent extends Component {
                     value={smoothing}
                     onChange={this.handlePropsChange}
                     inputProps={{ name: 'smoothing', id: 'smoothing' }}
+                    variant="standard"
                   >
                     <MenuItem value={0}>No smoothing</MenuItem>
                     <MenuItem value={3}>3-day moving average</MenuItem>
@@ -169,7 +167,7 @@ class DataFilteringComponent extends Component {
                   </Typography>
                 </FormGroup>
               </Grid>
-            </Grid>
+            </FilteringFields>
             <FormFooter>
               {
                 isDisabled
@@ -185,9 +183,6 @@ class DataFilteringComponent extends Component {
 }
 
 DataFilteringComponent.propTypes = {
-  /** @type {Object} CSS classes used for styling the MUI component */
-  classes: PropTypes.object.isRequired,
-
   /** @type {function(value: boolean)} Callback function to update the title of the chart based on
   the resolution of the data */
   chartTitleCallback: PropTypes.func.isRequired,
@@ -205,7 +200,7 @@ DataFilteringComponent.propTypes = {
    to the parent */
   onChangeCallback: PropTypes.func.isRequired,
 
-  /** @type {function(permalinkUrl: string)} Callback function to update the query parameters in the
+  /** @type {function(permalink: string)} Callback function to update the query parameters in the
    permalink URL */
   permalinkCallback: PropTypes.func.isRequired,
 
@@ -223,4 +218,4 @@ DataFilteringComponent.propTypes = {
   updateCallback: PropTypes.func.isRequired,
 };
 
-export default withStyles(styles)(DataFilteringComponent);
+export { DataFilteringComponent as default };

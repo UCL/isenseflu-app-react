@@ -1,6 +1,14 @@
 /* eslint-disable */
 
-import { configure } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
+import '@testing-library/jest-dom';
 
-configure({ adapter: new Adapter() });
+import MutationObserver from '@sheerun/mutationobserver-shim'
+window.MutationObserver = MutationObserver
+
+import 'jest-canvas-mock';
+
+module.exports = {
+  transform: {},
+  transformIgnorePatterns: [],
+  setupFilesAfterEnv: ["esm"],
+};

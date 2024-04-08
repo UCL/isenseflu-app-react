@@ -22,36 +22,58 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import Grid from '@material-ui/core/Grid';
-import IconButton from '@material-ui/core/IconButton';
-import Typography from '@material-ui/core/Typography';
-import { withStyles } from '@material-ui/core/styles';
+import Grid from '@mui/material/Grid';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
+import { styled } from '@mui/material/styles';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLink } from '@fortawesome/free-solid-svg-icons';
 
+import {
+  Chart as ChartJs,
+  Filler,
+  Legend,
+  LineController,
+  LinearScale,
+  LineElement,
+  PointElement,
+  TimeScale,
+  Title,
+  Tooltip,
+} from 'chart.js';
+import 'chartjs-adapter-date-fns';
+
 import { Line } from 'react-chartjs-2';
-import 'chartjs-plugin-annotation';
+import annotationPlugin from 'chartjs-plugin-annotation';
 
 import { Article } from './PublicTemplates';
 import { generateChartData, generateChartOptions, getMaxScoreValue } from './ChartTemplate';
 
-const styles = (theme) => ({
-  lineChart: {
-    padding: theme.spacing(2),
-  },
-  selectModel: {
-    paddingLeft: theme.spacing(2),
-    paddingRight: theme.spacing(2),
-  },
-  permalink: {
-    textAlign: 'center',
-  },
-});
+ChartJs.register(
+  Filler,
+  Legend,
+  LineController,
+  LinearScale,
+  LineElement,
+  PointElement,
+  TimeScale,
+  Title,
+  Tooltip,
+  annotationPlugin,
+);
+
+const LineChart = styled(Grid)(({ theme }) => ({
+  padding: theme.spacing(2),
+}));
+
+const ModelSelector = styled(Grid)(({ theme }) => ({
+  paddingLeft: theme.spacing(2),
+  paddingRight: theme.spacing(2),
+}));
 
 const ChartComponent = (props) => {
   const {
-    classes,
     charttitle,
     ratethresholds,
     modelcontrols,
@@ -65,17 +87,17 @@ const ChartComponent = (props) => {
 
   return (
     <Article header={charttitle}>
-      <Grid item xs={12} className={classes.lineChart}>
+      <LineChart item xs={12}>
         <Line data={chartData} options={chartOptions} />
-      </Grid>
-      <Grid item xs={11} className={classes.selectModel}>
+      </LineChart>
+      <ModelSelector item xs={11}>
         <Typography variant="h6">
           Select model to display
         </Typography>
         {modelcontrols}
-      </Grid>
-      <Grid item xs={1} className={classes.permalink}>
-        <IconButton href={permalink}>
+      </ModelSelector>
+      <Grid item xs={1} sx={{ textAlign: 'center' }}>
+        <IconButton href={permalink} size="large">
           <FontAwesomeIcon icon={faLink} />
         </IconButton>
       </Grid>
@@ -84,9 +106,6 @@ const ChartComponent = (props) => {
 };
 
 ChartComponent.propTypes = {
-  /** @type {Object} CSS classes used for styling the MUI component */
-  classes: PropTypes.object.isRequired,
-
   /** @type {string} The title of the chart */
   charttitle: PropTypes.string.isRequired,
 
@@ -103,4 +122,4 @@ ChartComponent.propTypes = {
   permalink: PropTypes.string.isRequired,
 };
 
-export default withStyles(styles)(ChartComponent);
+export { ChartComponent as default };

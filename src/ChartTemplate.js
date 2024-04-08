@@ -96,7 +96,7 @@ export const generateChartData = (modeldata) => {
   const isAnArray = Array.isArray(modeldata);
 
   if (isAnArray && modeldata.length === 0) {
-    return {};
+    return { datasets: [] };
   }
 
   if (isAnArray && modeldata.length === 1) {
@@ -106,7 +106,7 @@ export const generateChartData = (modeldata) => {
           label: 'Model Scores',
           fill: false,
           borderColor: 'rgba(0, 123, 255, 1)',
-          backgroundColor: 'rgba(63, 127, 191, 0.2)',
+          backgroundColor: 'rgba(63, 127, 191, 1)',
           data: [],
           pointStyle: 'line',
         },
@@ -134,10 +134,10 @@ export const generateChartData = (modeldata) => {
     }
     modeldata[0].datapoints.slice().forEach((datapoint) => {
       const date = new Date(Date.parse(datapoint.score_date));
-      template.datasets[0].data.push({ t: date, y: datapoint.score_value });
+      template.datasets[0].data.push({ x: date, y: datapoint.score_value });
       if (modeldata[0].hasConfidenceInterval) {
-        template.datasets[1].data.push({ t: date, y: datapoint.confidence_interval_upper });
-        template.datasets[2].data.push({ t: date, y: datapoint.confidence_interval_lower });
+        template.datasets[1].data.push({ x: date, y: datapoint.confidence_interval_upper });
+        template.datasets[2].data.push({ x: date, y: datapoint.confidence_interval_lower });
       }
     });
     template.datasets[0].label = modeldata[0].name;
@@ -160,7 +160,7 @@ export const generateChartData = (modeldata) => {
       };
       model.datapoints.slice().forEach((datapoint) => {
         const date = new Date(Date.parse(datapoint.score_date));
-        modelTemplate.data.push({ t: date, y: datapoint.score_value });
+        modelTemplate.data.push({ x: date, y: datapoint.score_value });
       });
       template.datasets.push(modelTemplate);
     });
@@ -187,16 +187,16 @@ const generateAnnotations = (thresholddata, maxvalue) => {
         {
           type: 'line',
           mode: 'horizontal',
-          scaleID: 'y-axis-0',
+          scaleID: 'y',
           value: entry[1].value,
           borderColor: thresholdColours[entry[0]],
           borderWidth: 2,
           label: {
             backgroundColor: 'rgba(0,0,0,0.05)',
-            fontColor: '#666',
-            position: 'left',
+            color: '#666',
+            position: 'start',
             yAdjust: -10,
-            enabled: true,
+            display: true,
             content: entry[1].label,
           },
         },
@@ -216,47 +216,42 @@ const generateAnnotations = (thresholddata, maxvalue) => {
  */
 export const generateChartOptions = (thresholddata, maxvalue) => (
   {
-    legend: {
-      display: true,
-      position: 'bottom',
-      labels: {
-        fontSize: 14,
-        usePointStyle: false,
-        boxWidth: 15,
-      },
-    },
     title: {
       display: false,
     },
     scales: {
-      yAxes: [
+      y:
         {
           ticks: {
             beginAtZero: true,
-            fontSize: 14,
+            font: {
+              size: 14,
+            },
           },
-          scaleLabel: {
+          title: {
             display: true,
-            labelString: 'Influenza-like illness rate per 100,000 people',
-            fontSize: 16,
+            text: 'Influenza-like illness rate per 100,000 people',
+            font: {
+              size: 16,
+            },
           },
         },
-      ],
-      xAxes: [
+      x:
         {
           type: 'time',
           time: {
             displayFormats: {
-              day: 'D MMM',
+              day: 'd MMM',
             },
-            tooltipFormat: 'Do of MMM, YYYY',
+            tooltipFormat: 'do \'of\' MMM, yyyy',
             minUnit: 'day',
           },
           ticks: {
-            fontSize: 14,
+            font: {
+              size: 14,
+            },
           },
         },
-      ],
     },
     tooltips: {
       backgroundColor: 'rgba(255,255,255,0.8)',
@@ -264,9 +259,22 @@ export const generateChartOptions = (thresholddata, maxvalue) => (
       bodyFontStyle: 'bold',
       titleFontColor: '#666',
     },
-    annotation: {
-      drawTime: 'afterDatasetsDraw',
-      annotations: generateAnnotations(thresholddata, maxvalue),
+    plugins: {
+      annotation: {
+        drawTime: 'afterDatasetsDraw',
+        annotations: generateAnnotations(thresholddata, maxvalue),
+      },
+      legend: {
+        display: true,
+        position: 'bottom',
+        labels: {
+          font: {
+            size: 14,
+          },
+          usePointStyle: false,
+          boxWidth: 15,
+        },
+      },
     },
   }
 );

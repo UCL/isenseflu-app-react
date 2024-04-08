@@ -121,24 +121,22 @@ describe('adds threshold lines as annotation elements in chart.js', () => {
       label: 'Very high epidemic rate',
     },
   };
-  it.each([[14.1, 13.1], [25.0, 24.2], [70.0, 68.7], [110.0, 108.9]])(
-    'for a score of %f adds a threshold line of %f', (score, threshold) => {
-      const result = generateChartOptions(thresholddata, score);
-      const { annotation } = result;
-      const idx = annotation.annotations.length - 1;
-      expect(annotation.annotations[idx].value).toBe(threshold);
-    },
-  );
+  it.each([[14.1, 13.1], [25.0, 24.2], [70.0, 68.7], [110.0, 108.9]])('for a score of %f adds a threshold line of %f', (score, threshold) => {
+    const result = generateChartOptions(thresholddata, score);
+    const { annotation } = result.plugins;
+    const idx = annotation.annotations.length - 1;
+    expect(annotation.annotations[idx].value).toBe(threshold);
+  });
   it('for a score value set to undefined it does not add a threshold line', () => {
     expect.assertions(1);
     const result = generateChartOptions(thresholddata, undefined);
-    const { annotation } = result;
+    const { annotation } = result.plugins;
     expect(annotation.annotations).toHaveLength(0);
   });
   it('for thresholddata set to undefined', () => {
     expect.assertions(1);
     const result = generateChartOptions(undefined, 14.1);
-    const { annotation } = result;
+    const { annotation } = result.plugins;
     expect(annotation.annotations).toHaveLength(0);
   });
 });
@@ -154,7 +152,7 @@ describe('generates the data for the chart', () => {
     expect.assertions(1);
     const modeldata = [];
     const result = generateChartData(modeldata);
-    expect(result).toStrictEqual({});
+    expect(result).toStrictEqual({ datasets: [] });
   });
 
   it('for modeldata with one model without confidence interval', () => {
@@ -188,11 +186,11 @@ describe('generates the data for the chart', () => {
           label: 'Model 3',
           fill: false,
           borderColor: 'rgba(0, 123, 255, 1)',
-          backgroundColor: 'rgba(63, 127, 191, 0.2)',
+          backgroundColor: 'rgba(63, 127, 191, 1)',
           data: [
-            { t: new Date('2019-06-28'), y: 3.49504958214849 },
-            { t: new Date('2019-06-27'), y: 3.5872420985975 },
-            { t: new Date('2019-06-26'), y: 4.39709536259043 },
+            { x: new Date('2019-06-28'), y: 3.49504958214849 },
+            { x: new Date('2019-06-27'), y: 3.5872420985975 },
+            { x: new Date('2019-06-26'), y: 4.39709536259043 },
           ],
           pointStyle: 'line',
         },
@@ -238,11 +236,11 @@ describe('generates the data for the chart', () => {
           label: 'Model 3',
           fill: false,
           borderColor: 'rgba(0, 123, 255, 1)',
-          backgroundColor: 'rgba(63, 127, 191, 0.2)',
+          backgroundColor: 'rgba(63, 127, 191, 1)',
           data: [
-            { t: new Date('2019-06-28'), y: 3.49504958214849 },
-            { t: new Date('2019-06-27'), y: 3.5872420985975 },
-            { t: new Date('2019-06-26'), y: 4.39709536259043 },
+            { x: new Date('2019-06-28'), y: 3.49504958214849 },
+            { x: new Date('2019-06-27'), y: 3.5872420985975 },
+            { x: new Date('2019-06-26'), y: 4.39709536259043 },
           ],
           pointStyle: 'line',
         },
@@ -252,9 +250,9 @@ describe('generates the data for the chart', () => {
           borderColor: 'rgba(168, 198, 224, 1)',
           backgroundColor: 'rgba(63, 127, 191, 0.2)',
           data: [
-            { t: new Date('2019-06-28'), y: 6.72692401035379 },
-            { t: new Date('2019-06-27'), y: 6.93686243649945 },
-            { t: new Date('2019-06-26'), y: 8.25145407702749 },
+            { x: new Date('2019-06-28'), y: 6.72692401035379 },
+            { x: new Date('2019-06-27'), y: 6.93686243649945 },
+            { x: new Date('2019-06-26'), y: 8.25145407702749 },
           ],
           pointStyle: 'line',
         },
@@ -264,9 +262,9 @@ describe('generates the data for the chart', () => {
           borderColor: 'rgba(168, 198, 224, 1)',
           backgroundColor: 'rgba(63, 127, 191, 0.2)',
           data: [
-            { t: new Date('2019-06-28'), y: 0.263175153943189 },
-            { t: new Date('2019-06-27'), y: 0.237621760695548 },
-            { t: new Date('2019-06-26'), y: 0.542736648153371 },
+            { x: new Date('2019-06-28'), y: 0.263175153943189 },
+            { x: new Date('2019-06-27'), y: 0.237621760695548 },
+            { x: new Date('2019-06-26'), y: 0.542736648153371 },
           ],
           pointStyle: 'line',
         },
@@ -315,8 +313,8 @@ describe('generates the data for the chart', () => {
           borderColor: '#381460',
           backgroundColor: '#381460',
           data: [
-            { t: new Date('2019-06-28'), y: 3.49504958214849 },
-            { t: new Date('2019-06-27'), y: 3.5872420985975 },
+            { x: new Date('2019-06-28'), y: 3.49504958214849 },
+            { x: new Date('2019-06-27'), y: 3.5872420985975 },
           ],
           pointStyle: 'line',
         },
@@ -326,8 +324,8 @@ describe('generates the data for the chart', () => {
           borderColor: '#ffbd69',
           backgroundColor: '#ffbd69',
           data: [
-            { t: new Date('2019-06-28'), y: 2.49504958214849 },
-            { t: new Date('2019-06-27'), y: 2.5872420985975 },
+            { x: new Date('2019-06-28'), y: 2.49504958214849 },
+            { x: new Date('2019-06-27'), y: 2.5872420985975 },
           ],
           pointStyle: 'line',
         },

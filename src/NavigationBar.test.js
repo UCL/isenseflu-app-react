@@ -1,14 +1,12 @@
 import React from 'react';
 
-import Button from '@material-ui/core/Button';
-import { createShallow } from '@material-ui/core/test-utils';
+import { render, screen } from '@testing-library/react';
 
 import NavigationBar from './NavigationBar';
 
-test('renders DataFilteringComponent wihout crashing', () => {
+test('renders NavigationBar wihout crashing', () => {
   expect.assertions(1);
-  const shallow = createShallow();
-  const wrapper = shallow(<NavigationBar />);
+  render(<NavigationBar />);
   // it should have 3 buttons
-  expect(wrapper.dive().find(Button)).toHaveLength(3);
+  expect(screen.getAllByRole('link')).toHaveLength(4);
 });
