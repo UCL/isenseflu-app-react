@@ -23,7 +23,7 @@ import React from 'react';
 // import ReactDOM from 'react-dom';
 import { createRoot } from 'react-dom/client';
 
-import 'typeface-clear-sans';
+import '@fontsource/clear-sans';
 import './index.css';
 import App from './App';
 // import registerServiceWorker from './registerServiceWorker';
