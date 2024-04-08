@@ -22,78 +22,72 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import grey from '@material-ui/core/colors/grey';
-import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import { withStyles } from '@material-ui/core/styles';
+import grey from '@mui/material/colors/grey';
+import Grid from '@mui/material/Grid';
+import Paper from '@mui/material/Paper';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
+import { styled } from '@mui/material/styles';
 
 import InlineFrame from './InlineFrame';
 
-const styles = (theme) => ({
-  paper: {
-    marginBottom: theme.spacing(3),
-  },
-  header: {
-    padding: theme.spacing(1),
-    backgroundColor: grey[50],
-  },
-  formToolbar: {
-    backgroundColor: grey[100],
-    padding: theme.spacing(1),
-  },
-});
+const StyledPaper = styled(Paper)(({ theme }) => ({
+  marginBottom: theme.spacing(3),
+}));
+
+const HeaderGrid = styled(Grid)(({ theme }) => ({
+  padding: theme.spacing(1),
+  backgroundColor: grey[50],
+}));
 
 export const ArticleComponent = (props) => {
-  const { classes, children, header } = props;
+  const { children, header } = props;
   return (
-    <Paper className={classes.paper} elevation={2}>
+    <StyledPaper elevation={2}>
       <Grid container spacing={0}>
-        <Grid item xs={12} className={classes.header}>
+        <HeaderGrid item xs={12}>
           <Typography variant="h5" component="h2">
             {header}
           </Typography>
-        </Grid>
+        </HeaderGrid>
         <Grid container item xs={12}>
           {children}
         </Grid>
       </Grid>
-    </Paper>
+    </StyledPaper>
   );
 };
 
 ArticleComponent.propTypes = {
+  /** React node with the content to display within the grid */
   children: PropTypes.node.isRequired,
-
-  /** @type {Object} CSS classes used for styling the MUI component */
-  classes: PropTypes.object.isRequired,
 
   /** @type {string} The title of the section */
   header: PropTypes.string.isRequired,
 };
 
-export const Article = withStyles(styles, { withTheme: true })(ArticleComponent);
+export { ArticleComponent as Article };
 
+const StyledToolbar = styled(Toolbar)(({ theme }) => ({
+  backgroundColor: grey[100],
+  padding: theme.spacing(1),
+}));
 
 const FormFooterComponent = (props) => {
-  const { classes, children } = props;
+  const { children } = props;
   return (
-    <Toolbar variant="dense" className={classes.formToolbar} disableGutters>
+    <StyledToolbar variant="dense" disableGutters>
       {children}
-    </Toolbar>
+    </StyledToolbar>
   );
 };
 
 FormFooterComponent.propTypes = {
   /** React node with the content to display within the grid */
   children: PropTypes.node.isRequired,
-
-  /** @type {Object} CSS classes used for styling the MUI component */
-  classes: PropTypes.object.isRequired,
 };
 
-export const FormFooter = withStyles(styles)(FormFooterComponent);
+export { FormFooterComponent as FormFooter };
 
 export const About = () => (
   <InlineFrame title="About" src="/muistatic/about.html" height="1650px" width="100%" />

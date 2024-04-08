@@ -4,7 +4,15 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 
 import ChartComponent from './Chart';
-import { Article } from './PublicTemplates';
+
+jest.mock('react-chartjs-2', () => {
+  /* eslint global-require: "off" */
+  const { forwardRef } = require('react');
+  const Line = forwardRef((props, ref) => <div ref={ref} {...props} />);
+  return {
+    Line,
+  };
+});
 
 test('renders ChartComponent without crashing', () => {
   expect.assertions(1);

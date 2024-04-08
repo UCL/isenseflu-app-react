@@ -6,3 +6,9 @@ import MutationObserver from '@sheerun/mutationobserver-shim'
 window.MutationObserver = MutationObserver
 
 import 'jest-canvas-mock';
+
+module.exports = {
+  transform: {},
+  transformIgnorePatterns: [],
+  setupFilesAfterEnv: ["esm"],
+};

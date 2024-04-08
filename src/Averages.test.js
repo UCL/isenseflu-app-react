@@ -2,13 +2,9 @@ import React from 'react';
 
 import { render, screen, within } from '@testing-library/react';
 
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableRow from '@material-ui/core/TableRow';
-
 import AveragesComponent from './Averages';
 
-test('renders AveragesComponent table without crashing ', () => {
+test('renders AveragesComponent table without crashing', () => {
   expect.assertions(1);
   const modeldata = [];
   render(<AveragesComponent modeldata={modeldata} />);

@@ -68,7 +68,7 @@ export const homeFetchScoresUrl = (id, startDate, endDate, resolution, smoothing
  * Updates the URL used to set the permaLink state variable in the Home component as done by the
  * callback function handleChangeCallback() which is called by the modelcontrols prop in the Chart
  * component.
- * @param  {String} locationSearch String containing the value of location.search in the component
+ * @param  {String} locSearch String containing the value of location.search in the component
  * @param  {Array}  id             Array containing the ids of the models to be present in the URL
  * @param  {String} startDate      Start date of requested time period. In ISO format YYYY-MM-DD
  * @param  {String} endDate        End date of requested time period. In ISO format YYYY-MM-DD
@@ -76,10 +76,8 @@ export const homeFetchScoresUrl = (id, startDate, endDate, resolution, smoothing
  * @param  {String} smoothing      Number of days to smooth data over using a moving average filter
  * @return {String}                The URL to be used in the permaLink
  */
-export const homePermalinkUrl = (
-  locationSearch, ids, startDate, endDate, resolution, smoothing,
-) => {
-  const searchParams = new URLSearchParams(locationSearch);
+export const homePermalinkUrl = (locSearch, ids, startDate, endDate, resolution, smoothing) => {
+  const searchParams = new URLSearchParams(locSearch);
   searchParams.set('source', 'plink');
   searchParams.delete('id');
   ids.forEach((id) => {

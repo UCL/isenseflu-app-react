@@ -22,20 +22,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import withStyles from '@material-ui/core/styles/withStyles';
-
-const styles = (theme) => ({
-  framecontainer: {
-    marginBottom: theme.spacing(3),
-  },
-  internalframe: {
-    border: 'none',
-  },
-});
+import { styled } from '@mui/material/styles';
 
 const InlineFrameComponent = (props) => {
   const {
-    classes,
     height,
     width,
     src,
@@ -43,22 +33,18 @@ const InlineFrameComponent = (props) => {
   } = props;
 
   return (
-    <div className={classes.framecontainer}>
+    <div>
       <iframe
         title={title}
         src={src}
         height={height}
         width={width}
-        className={classes.internalframe}
       />
     </div>
   );
 };
 
 InlineFrameComponent.propTypes = {
-  /** @type {Object} CSS classes used for styling the MUI component */
-  classes: PropTypes.object.isRequired,
-
   /** @type {string} Height of the frame in pixels, with px suffix */
   height: PropTypes.string.isRequired,
 
@@ -72,6 +58,11 @@ InlineFrameComponent.propTypes = {
   title: PropTypes.string.isRequired,
 };
 
-const InlineFrame = withStyles(styles)(InlineFrameComponent);
+const InlineFrame = styled(InlineFrameComponent)(({ theme }) => ({
+  marginBottom: theme.spacing(3),
+  '& .iframe': {
+    border: 'none',
+  },
+}));
 
 export { InlineFrame as default };

@@ -2,8 +2,7 @@
 react/jsx-props-no-spreading: "off" */
 import React from 'react';
 
-import { render, screen, fireEvent, prettyDOM, within } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { render, screen } from '@testing-library/react';
 
 import DataFilteringComponent from './DataFiltering';
 
@@ -46,11 +45,10 @@ test('function handlePropsChange calls onChangeCallback and toggles isDisabled',
   render(<DataFilteringComponent {...props} />);
   expect(screen.getByText('Show data').closest('button')).toBeDisabled();
   // Reimplement after upgrade of Material UI
-  //expect(props.onChangeCallback).toHaveBeenCalledTimes(1);
-  //expect(wrapper.state('isDisabled')).toBe(false);
+  // expect(props.onChangeCallback).toHaveBeenCalledTimes(1);
+  // expect(wrapper.state('isDisabled')).toBe(false);
 });
 
-/* eslint jest/no-test-callback: "off" */
 describe('handleSubmit calls updateCallback, chartTitleCallback and permalinkCallback', () => {
   it('when the API does return OK', (done) => {
     // expect.assertions(4);
