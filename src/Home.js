@@ -47,7 +47,7 @@ class HomeComponent extends React.Component {
     permaLink: window.location.href,
     chartTitlePrefix: 'Daily',
     errorMessages: [],
-  }
+  };
 
   componentDidMount() {
     const { location } = this.props;
@@ -66,7 +66,7 @@ class HomeComponent extends React.Component {
   handleUpdateModel = (updatedata) => {
     const updatedModelData = homeScoresData(updatedata);
     this.setState({ ...updatedModelData });
-  }
+  };
 
   handlePropsChange = (event) => {
     const { target } = event;
@@ -77,7 +77,7 @@ class HomeComponent extends React.Component {
         [name]: value,
       });
     }
-  }
+  };
 
   updatePermalinkStateCallback = () => {
     const { location } = this.props;
@@ -93,11 +93,12 @@ class HomeComponent extends React.Component {
       smoothing,
     );
     this.setState({ permaLink: permaLinkUrl });
-  }
+  };
 
   handleChangeCallback = (event, startDate, endDate, resolution, smoothing) => {
     if (event.target.checked) {
       // Download data for that particular model
+      /* eslint function-paren-newline: "off" */
       const fetchUrl = homeFetchScoresUrl(
         event.target.value, startDate, endDate, resolution, smoothing,
       );

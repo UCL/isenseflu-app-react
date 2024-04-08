@@ -1,7 +1,7 @@
 /* eslint react/jsx-props-no-spreading: "off" */
 import React from 'react';
 
-import { render, screen, prettyDOM } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import RawScoresActions from './RawScoresActions';

@@ -1,6 +1,6 @@
 {
-  "extends": ["airbnb", "plugin:jest/all", "plugin:jest-dom/recommended"],
-  "parser": "babel-eslint",
+  "extends": ["airbnb", "plugin:jest/recommended", "plugin:jest-dom/recommended"],
+  "parser": "@babel/eslint-parser",
   "plugins": ["jest"],
   "env":
     {
@@ -11,8 +11,10 @@
     },
   "rules":
     {
+      "no-restricted-exports": ["error", { "restrictDefaultExports": { "named": false } }],
       "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
       "react/jsx-fragments": [1, "element"],
-      "react/forbid-prop-types": ["warn", {"forbid": ["any", "array"]}]
+      "react/forbid-prop-types": ["warn", {"forbid": ["any", "array"]}],
+      "react/function-component-definition": [2, { "namedComponents": "arrow-function" }]
     }
 }

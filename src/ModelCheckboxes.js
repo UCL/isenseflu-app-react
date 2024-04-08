@@ -18,7 +18,7 @@
  * You should have received a copy of the GNU General Public License
  * along with i-sense flu app.  If not, see <http://www.gnu.org/licenses/>.
  */
-
+/* eslint react/jsx-no-useless-fragment: "off" */
 import React from 'react';
 import PropTypes from 'prop-types';
 

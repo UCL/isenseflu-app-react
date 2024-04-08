@@ -71,7 +71,7 @@ class RawScoresComponent extends React.Component {
   state = {
     page: 0,
     rowsPerPage: 10,
-  }
+  };
 
   handleChangePage = (page) => {
     this.setState({ page });

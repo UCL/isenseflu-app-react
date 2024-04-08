@@ -44,6 +44,7 @@ test('toggling a checkbox calls handleChangeCallback', async () => {
   };
   render(<ModelCheckboxes {...props} />);
   await userEvent.click(screen.getAllByRole('checkbox')[2]);
+  /* eslint function-paren-newline: "off" */
   expect(mockHandleChangeCallback).toHaveBeenCalledWith(
     expect.anything(), '2019-01-01', '2019-01-31', 'day', 0,
   );

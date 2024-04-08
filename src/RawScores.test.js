@@ -5,8 +5,6 @@ import { render, screen, within } from '@testing-library/react';
 
 import { generateTableMatrix, RawScores } from './RawScores';
 
-//jest.mock('@mui/material/TablePagination', () => jest.fn().mockImplementation(() => <td>TABLEPAGINATION</td>));
-
 describe('tests RawScores component', () => {
   it('renders RawScores headings wihout crashing', () => {
     expect.assertions(1);

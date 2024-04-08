@@ -33,7 +33,7 @@ import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 
 import { Article, FormFooter } from './PublicTemplates';
-import { dataFilteringPermalinkUrl, dataFilteringQueryUrl } from './Url';
+import { dataFilteringPermalinkUrl as dataFilteringPermalink, dataFilteringQueryUrl } from './Url';
 
 const FilteringFields = styled(Grid)(({ theme }) => ({
   padding: theme.spacing(2),
@@ -44,7 +44,7 @@ class DataFilteringComponent extends Component {
   state = {
     isDisabled: true,
     isWeekly: false,
-  }
+  };
 
   handlePropsChange = (event) => {
     const { onChangeCallback } = this.props;
@@ -52,7 +52,7 @@ class DataFilteringComponent extends Component {
     this.setState({
       isDisabled: false,
     });
-  }
+  };
 
   handleResolutionChange = (event) => {
     const { onChangeCallback } = this.props;
@@ -61,7 +61,7 @@ class DataFilteringComponent extends Component {
       isWeekly: event.target.value === 'week',
       isDisabled: false,
     });
-  }
+  };
 
   handleSubmit = (queryUrl, permalinkUrl, isWeekly) => (event) => {
     event.preventDefault();
@@ -83,7 +83,7 @@ class DataFilteringComponent extends Component {
       });
     this.setState({ isDisabled: true });
     permalinkCallback(permalinkUrl);
-  }
+  };
 
   render() {
     const {
@@ -94,14 +94,12 @@ class DataFilteringComponent extends Component {
 
     const queryUrl = dataFilteringQueryUrl(modelIds, startDate, endDate, resolution, smoothing);
 
-    const permalinkUrl = dataFilteringPermalinkUrl(
-      modelIds, startDate, endDate, resolution, smoothing,
-    );
+    const permalink = dataFilteringPermalink(modelIds, startDate, endDate, resolution, smoothing);
 
     return (
       <Article header="Data Filtering">
         <Grid item xs={12}>
-          <form onSubmit={this.handleSubmit(queryUrl, permalinkUrl, isWeekly)}>
+          <form onSubmit={this.handleSubmit(queryUrl, permalink, isWeekly)}>
             <FilteringFields container spacing={2}>
               <Grid item xs={3}>
                 <FormGroup>
@@ -202,7 +200,7 @@ DataFilteringComponent.propTypes = {
    to the parent */
   onChangeCallback: PropTypes.func.isRequired,
 
-  /** @type {function(permalinkUrl: string)} Callback function to update the query parameters in the
+  /** @type {function(permalink: string)} Callback function to update the query parameters in the
    permalink URL */
   permalinkCallback: PropTypes.func.isRequired,
 

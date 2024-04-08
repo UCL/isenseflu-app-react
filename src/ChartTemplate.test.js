@@ -121,14 +121,12 @@ describe('adds threshold lines as annotation elements in chart.js', () => {
       label: 'Very high epidemic rate',
     },
   };
-  it.each([[14.1, 13.1], [25.0, 24.2], [70.0, 68.7], [110.0, 108.9]])(
-    'for a score of %f adds a threshold line of %f', (score, threshold) => {
-      const result = generateChartOptions(thresholddata, score);
-      const { annotation } = result.plugins;
-      const idx = annotation.annotations.length - 1;
-      expect(annotation.annotations[idx].value).toBe(threshold);
-    },
-  );
+  it.each([[14.1, 13.1], [25.0, 24.2], [70.0, 68.7], [110.0, 108.9]])('for a score of %f adds a threshold line of %f', (score, threshold) => {
+    const result = generateChartOptions(thresholddata, score);
+    const { annotation } = result.plugins;
+    const idx = annotation.annotations.length - 1;
+    expect(annotation.annotations[idx].value).toBe(threshold);
+  });
   it('for a score value set to undefined it does not add a threshold line', () => {
     expect.assertions(1);
     const result = generateChartOptions(thresholddata, undefined);
@@ -154,7 +152,7 @@ describe('generates the data for the chart', () => {
     expect.assertions(1);
     const modeldata = [];
     const result = generateChartData(modeldata);
-    expect(result).toStrictEqual({datasets: []});
+    expect(result).toStrictEqual({ datasets: [] });
   });
 
   it('for modeldata with one model without confidence interval', () => {
