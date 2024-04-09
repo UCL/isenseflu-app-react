@@ -19,7 +19,7 @@
  * along with i-sense flu app.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
 import Button from '@mui/material/Button';
@@ -66,89 +66,76 @@ export const generateTableMatrix = (allDates, modeldata) => {
   return matrix;
 };
 
-/* eslint { react/state-in-constructor: "off" } */
-class RawScoresComponent extends React.Component {
-  state = {
-    page: 0,
-    rowsPerPage: 10,
-  };
+const RawScoresComponent = ({
+  allDates, endDate, modeldata, resolution, startDate,
+}) => {
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
 
-  handleChangePage = (page) => {
-    this.setState({ page });
-  };
+  const handleChangePage = (pageNumber) => setPage(pageNumber);
 
-  handleChangeRowsPerPage = (event) => {
-    this.setState({ rowsPerPage: event.target.value });
-  };
+  const handleChangeRowsPerPage = (event) => setRowsPerPage(event.target.value);
 
-  render() {
-    const {
-      allDates, endDate, modeldata, resolution, startDate,
-    } = this.props;
+  const totalCount = (allDates !== undefined) ? allDates.length : 0;
 
-    const { page, rowsPerPage } = this.state;
-
-    const totalCount = (allDates !== undefined) ? allDates.length : 0;
-
-    return (
-      <Article header="Raw Scores">
-        <Grid item xs={12}>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell>Date</TableCell>
-                {
-                  modeldata.map((m) => (<TableCell key={m.id}>{`${m.name} (England)`}</TableCell>))
-                }
-              </TableRow>
-            </TableHead>
-            <TableBody>
+  return (
+    <Article header="Raw Scores">
+      <Grid item xs={12}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>Date</TableCell>
               {
-                generateTableMatrix(allDates, modeldata)
-                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((row) => (
-                    <ScoreRow
-                      key={row.scoreDate}
-                      modelScores={row.modelScores}
-                      scoreDate={row.scoreDate}
-                    />
-                  ))
+                modeldata.map((m) => (<TableCell key={m.id}>{`${m.name} (England)`}</TableCell>))
               }
-            </TableBody>
-            <TableFooter>
-              <TableRow>
-                <TablePagination
-                  colSpan={2}
-                  count={totalCount}
-                  onPageChange={this.handleChangePage}
-                  onRowsPerPageChange={this.handleChangeRowsPerPage}
-                  page={page}
-                  rowsPerPage={rowsPerPage}
-                  backIconButtonProps={{
-                    'aria-label': 'Previous Page',
-                  }}
-                  nextIconButtonProps={{
-                    'aria-label': 'Next Page',
-                  }}
-                  ActionsComponent={RawScoresActions}
-                />
-              </TableRow>
-            </TableFooter>
-          </Table>
-          <FormFooter>
-            <Button
-              href={rawScoresCsvUrl(modeldata, startDate, endDate, resolution)}
-              variant="contained"
-              download
-            >
-              Export to CSV
-            </Button>
-          </FormFooter>
-        </Grid>
-      </Article>
-    );
-  }
-}
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {
+              generateTableMatrix(allDates, modeldata)
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .map((row) => (
+                  <ScoreRow
+                    key={row.scoreDate}
+                    modelScores={row.modelScores}
+                    scoreDate={row.scoreDate}
+                  />
+                ))
+            }
+          </TableBody>
+          <TableFooter>
+            <TableRow>
+              <TablePagination
+                colSpan={2}
+                count={totalCount}
+                onPageChange={handleChangePage}
+                onRowsPerPageChange={handleChangeRowsPerPage}
+                page={page}
+                rowsPerPage={rowsPerPage}
+                backIconButtonProps={{
+                  'aria-label': 'Previous Page',
+                }}
+                nextIconButtonProps={{
+                  'aria-label': 'Next Page',
+                }}
+                ActionsComponent={RawScoresActions}
+              />
+            </TableRow>
+          </TableFooter>
+        </Table>
+        <FormFooter>
+          <Button
+            href={rawScoresCsvUrl(modeldata, startDate, endDate, resolution)}
+            variant="contained"
+            download
+          >
+            Export to CSV
+          </Button>
+        </FormFooter>
+      </Grid>
+    </Article>
+  );
+};
 
 RawScoresComponent.propTypes = {
   /** @type {string[]} Array with all the dates in the time series */
