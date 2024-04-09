@@ -34,72 +34,61 @@ const ActionsWrapper = styled('div')(({ theme }) => ({
   marginLeft: theme.spacing(2.5),
 }));
 
-class TablePaginationActions extends React.Component {
-  handleFirstPageButtonClick = () => {
-    const { onPageChange } = this.props;
-    onPageChange(0);
-  };
+const RawScoresActions = ({
+  count,
+  onPageChange,
+  page,
+  rowsPerPage,
+}) => {
+  const handleFirstPageButtonClick = () => onPageChange(0);
 
-  handleBackButtonClick = () => {
-    const { onPageChange, page } = this.props;
-    onPageChange(page - 1);
-  };
+  const handleBackButtonClick = () => onPageChange(page - 1);
 
-  handleNextButtonClick = () => {
-    const { onPageChange, page } = this.props;
-    onPageChange(page + 1);
-  };
+  const handleNextButtonClick = () => onPageChange(page + 1);
 
-  handleLastPageButtonClick = () => {
-    const { count, onPageChange, rowsPerPage } = this.props;
+  const handleLastPageButtonClick = () => {
     onPageChange(Math.max(0, Math.ceil(count / rowsPerPage) - 1));
   };
 
-  render() {
-    const {
-      count, page, rowsPerPage,
-    } = this.props;
+  return (
+    <ActionsWrapper>
+      <IconButton
+        onClick={handleFirstPageButtonClick}
+        disabled={page === 0}
+        aria-label="First Page"
+        size="large"
+      >
+        <FirstPageIcon />
+      </IconButton>
+      <IconButton
+        onClick={handleBackButtonClick}
+        disabled={page === 0}
+        aria-label="Previous Page"
+        size="large"
+      >
+        <KeyboardArrowLeft />
+      </IconButton>
+      <IconButton
+        onClick={handleNextButtonClick}
+        disabled={page >= Math.ceil(count / rowsPerPage) - 1}
+        aria-label="Next Page"
+        size="large"
+      >
+        <KeyboardArrowRight />
+      </IconButton>
+      <IconButton
+        onClick={handleLastPageButtonClick}
+        disabled={page >= Math.ceil(count / rowsPerPage) - 1}
+        aria-label="Last Page"
+        size="large"
+      >
+        <LastPageIcon />
+      </IconButton>
+    </ActionsWrapper>
+  );
+};
 
-    return (
-      <ActionsWrapper>
-        <IconButton
-          onClick={this.handleFirstPageButtonClick}
-          disabled={page === 0}
-          aria-label="First Page"
-          size="large"
-        >
-          <FirstPageIcon />
-        </IconButton>
-        <IconButton
-          onClick={this.handleBackButtonClick}
-          disabled={page === 0}
-          aria-label="Previous Page"
-          size="large"
-        >
-          <KeyboardArrowLeft />
-        </IconButton>
-        <IconButton
-          onClick={this.handleNextButtonClick}
-          disabled={page >= Math.ceil(count / rowsPerPage) - 1}
-          aria-label="Next Page"
-          size="large"
-        >
-          <KeyboardArrowRight />
-        </IconButton>
-        <IconButton
-          onClick={this.handleLastPageButtonClick}
-          disabled={page >= Math.ceil(count / rowsPerPage) - 1}
-          aria-label="Last Page"
-          size="large"
-        >
-          <LastPageIcon />
-        </IconButton>
-      </ActionsWrapper>
-    );
-  }
-}
-
-TablePaginationActions.propTypes = {
+RawScoresActions.propTypes = {
   /** @type {number} Total number of rows */
   count: PropTypes.number.isRequired,
 
@@ -112,12 +101,5 @@ TablePaginationActions.propTypes = {
   /** @type {number} Number of rows per page */
   rowsPerPage: PropTypes.number.isRequired,
 };
-
-// This styling definition is redundant, as it is not read. REMOVE
-const RawScoresActions = styled(TablePaginationActions)(({ theme }) => ({
-  flexShrink: 0,
-  color: theme.palette.text.secondary,
-  marginLeft: theme.spacing(2.5),
-}));
 
 export { RawScoresActions as default };
