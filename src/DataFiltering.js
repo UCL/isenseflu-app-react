@@ -19,7 +19,7 @@
  * along with i-sense flu app.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
 import Button from '@mui/material/Button';
@@ -39,148 +39,136 @@ const FilteringFields = styled(Grid)(({ theme }) => ({
   padding: theme.spacing(2),
 }));
 
-/* eslint { react/state-in-constructor: "off" } */
-class DataFilteringComponent extends Component {
-  state = {
-    isDisabled: true,
-    isWeekly: false,
-  };
+const DataFilteringComponent = ({
+  chartTitleCallback,
+  endDate,
+  errorCallback,
+  modelIds,
+  onChangeCallback,
+  permalinkCallback,
+  resolution,
+  smoothing,
+  startDate,
+  updateCallback,
+}) => {
+  const [isDisabled, setDisabled] = useState(true);
+  const [isWeekly, setWeekly] = useState(true);
 
-  handlePropsChange = (event) => {
-    const { onChangeCallback } = this.props;
+  const handlePropsChange = (event) => {
     onChangeCallback(event);
-    this.setState({
-      isDisabled: false,
-    });
+    setDisabled(true);
   };
 
-  handleResolutionChange = (event) => {
-    const { onChangeCallback } = this.props;
+  const handleResolutionChange = (event) => {
     onChangeCallback(event);
-    this.setState({
-      isWeekly: event.target.value === 'week',
-      isDisabled: false,
-    });
+    setWeekly(event.target.value === 'week');
+    setDisabled(false);
   };
 
-  handleSubmit = (queryUrl, permalinkUrl, isWeekly) => (event) => {
+  const handleSubmit = (queryUrl, permalinkUrl, weekly) => (event) => {
     event.preventDefault();
-    const {
-      chartTitleCallback,
-      errorCallback,
-      permalinkCallback,
-      updateCallback,
-    } = this.props;
-    fetch(queryUrl)
-      .then((response) => {
-        if (!response.ok) { throw Error('DataFiltering: Cannot fetch scores from API'); }
-        return response.json();
-      }).then((jsondata) => {
-        updateCallback(jsondata);
-        chartTitleCallback(isWeekly);
-      }).catch((error) => {
-        errorCallback(error.message);
-      });
-    this.setState({ isDisabled: true });
+    const fetchData = async (url) => {
+      const response = await fetch(url);
+      if (!response.ok) { throw Error('DataFiltering: Cannot fetch scores from API'); }
+      const jsondata = await response.json();
+      updateCallback(jsondata);
+      chartTitleCallback(weekly);
+    };
+    fetchData().catch((error) => {
+      errorCallback(error.message);
+    });
+    setDisabled(true);
     permalinkCallback(permalinkUrl);
   };
 
-  render() {
-    const {
-      endDate, modelIds, startDate, resolution, smoothing,
-    } = this.props;
+  const queryUrl = dataFilteringQueryUrl(modelIds, startDate, endDate, resolution, smoothing);
 
-    const { isDisabled, isWeekly } = this.state;
+  const permalink = dataFilteringPermalink(modelIds, startDate, endDate, resolution, smoothing);
 
-    const queryUrl = dataFilteringQueryUrl(modelIds, startDate, endDate, resolution, smoothing);
-
-    const permalink = dataFilteringPermalink(modelIds, startDate, endDate, resolution, smoothing);
-
-    return (
-      <Article header="Data Filtering">
-        <Grid item xs={12}>
-          <form onSubmit={this.handleSubmit(queryUrl, permalink, isWeekly)}>
-            <FilteringFields container spacing={2}>
-              <Grid item xs={3}>
-                <FormGroup>
-                  <InputLabel htmlFor="start-date">Start</InputLabel>
-                  <Input
-                    type="date"
-                    name="startDate"
-                    id="start-date"
-                    value={startDate}
-                    onChange={this.handlePropsChange}
-                  />
-                  <Typography variant="caption">
-                    Only show data collected on or after this date
-                  </Typography>
-                </FormGroup>
-              </Grid>
-              <Grid item xs={3}>
-                <FormGroup>
-                  <InputLabel htmlFor="end-date">End</InputLabel>
-                  <Input
-                    type="date"
-                    name="endDate"
-                    id="end-date"
-                    value={endDate}
-                    onChange={this.handlePropsChange}
-                  />
-                  <Typography variant="caption">
-                    Only show data collected on or before this date
-                  </Typography>
-                </FormGroup>
-              </Grid>
-              <Grid item xs={3}>
-                <FormGroup>
-                  <InputLabel htmlFor="resolution">Resolution</InputLabel>
-                  <Select
-                    value={resolution}
-                    onChange={this.handleResolutionChange}
-                    inputProps={{ name: 'resolution', id: 'resolution' }}
-                    variant="standard"
-                  >
-                    <MenuItem value="day">Day</MenuItem>
-                    <MenuItem value="week">Week</MenuItem>
-                  </Select>
-                  <Typography variant="caption">
-                    How many data points to show
-                  </Typography>
-                </FormGroup>
-              </Grid>
-              <Grid item xs={3}>
-                <FormGroup>
-                  <InputLabel htmlFor="smoothing">Smoothing</InputLabel>
-                  <Select
-                    value={smoothing}
-                    onChange={this.handlePropsChange}
-                    inputProps={{ name: 'smoothing', id: 'smoothing' }}
-                    variant="standard"
-                  >
-                    <MenuItem value={0}>No smoothing</MenuItem>
-                    <MenuItem value={3}>3-day moving average</MenuItem>
-                    <MenuItem value={5}>5-day moving average</MenuItem>
-                    <MenuItem value={7}>7-day moving average</MenuItem>
-                  </Select>
-                  <Typography variant="caption">
-                    Smooth the data to avoid overly spiky results
-                  </Typography>
-                </FormGroup>
-              </Grid>
-            </FilteringFields>
-            <FormFooter>
-              {
-                isDisabled
-                  ? <Button type="submit" variant="contained" disabled>Show data</Button>
-                  : <Button type="submit" variant="contained">Show data</Button>
-              }
-            </FormFooter>
-          </form>
-        </Grid>
-      </Article>
-    );
-  }
-}
+  return (
+    <Article header="Data Filtering">
+      <Grid item xs={12}>
+        <form onSubmit={handleSubmit(queryUrl, permalink, isWeekly)}>
+          <FilteringFields container spacing={2}>
+            <Grid item xs={3}>
+              <FormGroup>
+                <InputLabel htmlFor="start-date">Start</InputLabel>
+                <Input
+                  type="date"
+                  name="startDate"
+                  id="start-date"
+                  value={startDate}
+                  onChange={handlePropsChange}
+                />
+                <Typography variant="caption">
+                  Only show data collected on or after this date
+                </Typography>
+              </FormGroup>
+            </Grid>
+            <Grid item xs={3}>
+              <FormGroup>
+                <InputLabel htmlFor="end-date">End</InputLabel>
+                <Input
+                  type="date"
+                  name="endDate"
+                  id="end-date"
+                  value={endDate}
+                  onChange={handlePropsChange}
+                />
+                <Typography variant="caption">
+                  Only show data collected on or before this date
+                </Typography>
+              </FormGroup>
+            </Grid>
+            <Grid item xs={3}>
+              <FormGroup>
+                <InputLabel htmlFor="resolution">Resolution</InputLabel>
+                <Select
+                  value={resolution}
+                  onChange={handleResolutionChange}
+                  inputProps={{ name: 'resolution', id: 'resolution' }}
+                  variant="standard"
+                >
+                  <MenuItem value="day">Day</MenuItem>
+                  <MenuItem value="week">Week</MenuItem>
+                </Select>
+                <Typography variant="caption">
+                  How many data points to show
+                </Typography>
+              </FormGroup>
+            </Grid>
+            <Grid item xs={3}>
+              <FormGroup>
+                <InputLabel htmlFor="smoothing">Smoothing</InputLabel>
+                <Select
+                  value={smoothing}
+                  onChange={handlePropsChange}
+                  inputProps={{ name: 'smoothing', id: 'smoothing' }}
+                  variant="standard"
+                >
+                  <MenuItem value={0}>No smoothing</MenuItem>
+                  <MenuItem value={3}>3-day moving average</MenuItem>
+                  <MenuItem value={5}>5-day moving average</MenuItem>
+                  <MenuItem value={7}>7-day moving average</MenuItem>
+                </Select>
+                <Typography variant="caption">
+                  Smooth the data to avoid overly spiky results
+                </Typography>
+              </FormGroup>
+            </Grid>
+          </FilteringFields>
+          <FormFooter>
+            {
+              isDisabled
+                ? <Button type="submit" variant="contained" disabled>Show data</Button>
+                : <Button type="submit" variant="contained">Show data</Button>
+            }
+          </FormFooter>
+        </form>
+      </Grid>
+    </Article>
+  );
+};
 
 DataFilteringComponent.propTypes = {
   /** @type {function(value: boolean)} Callback function to update the title of the chart based on
